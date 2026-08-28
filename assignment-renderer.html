@@ -1,0 +1,858 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Answer Sheet — Nikhil Chary Sriramoju</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:wght@400;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+<style>
+    :root{
+        --ink:#0f172a;
+        --slate:#1e293b;
+        --slate-2:#334155;
+        --canvas:#eef1f5;
+        --paper:#ffffff;
+        --rule-blue:#dbe3ee;
+        --margin-red:#dc2626;
+        --muted:#94a3b8;
+        --muted-2:#64748b;
+        --accent:#2563eb;
+        --accent-dark:#1d4ed8;
+        --generate:#16a34a;
+        --generate-dark:#15803d;
+        --hl-name:#fde68a;
+        --hl-name-ink:#78350f;
+        --hl-key:#bbf7d0;
+        --hl-key-ink:#14532d;
+    }
+    *{ box-sizing:border-box; margin:0; padding:0; }
+    body{
+        font-family:'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+        background:var(--canvas);
+        height:100vh;
+        overflow:hidden;
+    }
+    .app{ display:flex; height:100vh; }
+
+    /* ---------- Sidebar ---------- */
+    .sidebar{
+        width:320px;
+        flex-shrink:0;
+        background:var(--slate);
+        color:#e2e8f0;
+        display:flex;
+        flex-direction:column;
+        padding:20px;
+        gap:18px;
+        overflow-y:auto;
+    }
+    .brand{ display:flex; flex-direction:column; gap:2px; }
+    .brand .mark{
+        width:34px; height:34px; border-radius:8px;
+        background:linear-gradient(135deg, var(--margin-red), var(--accent));
+        display:flex; align-items:center; justify-content:center;
+        font-family:'Source Serif 4', serif; font-weight:700; color:#fff; font-size:1.05rem;
+        margin-bottom:8px;
+    }
+    .brand h1{ font-size:1.05rem; font-weight:700; color:#fff; }
+    .brand p{ font-size:0.75rem; color:var(--muted); margin-top:2px; }
+    .credit-line{
+        font-size:0.72rem; font-weight:700; color:#cbd5e1; margin-top:6px;
+        text-transform:uppercase; letter-spacing:0.03em; line-height:1.4;
+    }
+    .credit-line span{
+        background:linear-gradient(135deg, #fbbf24, #f87171, #60a5fa);
+        -webkit-background-clip:text; background-clip:text; color:transparent;
+        font-weight:800; letter-spacing:0.04em;
+    }
+
+    .card{
+        background:#152033;
+        border:1px solid #2d3d54;
+        border-radius:10px;
+        padding:14px;
+        display:flex;
+        flex-direction:column;
+        gap:10px;
+    }
+    .card h2{
+        font-size:0.7rem; font-weight:700; text-transform:uppercase; letter-spacing:0.06em;
+        color:var(--muted); display:flex; align-items:center; gap:6px;
+    }
+    textarea#question-input{
+        width:100%; min-height:64px; resize:vertical;
+        background:var(--ink); border:1px solid var(--slate-2); color:#fff;
+        padding:9px 10px; border-radius:7px; font-size:0.85rem; font-family:inherit; outline:none;
+        line-height:1.4;
+    }
+    textarea#question-input:focus{ border-color:var(--accent); }
+    .row{ display:flex; gap:8px; }
+    .row > *{ flex:1; }
+    select, .card input[type="text"]{
+        background:var(--ink); border:1px solid var(--slate-2); color:#fff;
+        padding:8px 10px; border-radius:7px; font-size:0.82rem; outline:none; font-family:inherit;
+    }
+    select:focus, .card input[type="text"]:focus{ border-color:var(--accent); }
+    .field-label{ font-size:0.68rem; color:var(--muted); display:block; margin-bottom:3px; }
+    .card > .row{ gap:8px; }
+    .card input[type="text"]{ width:100%; margin-bottom:8px; }
+
+    .btn{
+        border:none; border-radius:7px; font-weight:700; cursor:pointer;
+        font-size:0.85rem; padding:10px 14px; transition:background .15s ease, opacity .15s ease;
+        font-family:inherit;
+    }
+    .btn:disabled{ background:#475569 !important; cursor:not-allowed; opacity:.7; }
+    .btn-generate{ background:var(--generate); color:#fff; width:100%; }
+    .btn-generate:hover:not(:disabled){ background:var(--generate-dark); }
+    .btn-ghost{
+        background:transparent; border:1px solid #2d3d54; color:#cbd5e1;
+    }
+    .btn-ghost:hover{ background:#1e2c42; }
+
+    .status{ font-size:0.72rem; color:var(--muted); line-height:1.4; min-height:14px; }
+    .status.error{ color:#fca5a5; }
+    .status.ok{ color:#86efac; }
+
+    .toggle-row{ display:flex; align-items:center; gap:8px; font-size:0.78rem; color:#cbd5e1; }
+    .toggle-row input{ accent-color:var(--generate); }
+
+    .sidebar-footer{ margin-top:auto; padding-top:10px; border-top:1px solid #2d3d54; }
+    .sidebar-footer p{ font-size:0.7rem; color:var(--muted); margin-bottom:6px; }
+    .sidebar-footer a{
+        display:block; font-size:0.75rem; color:#93c5fd; text-decoration:none; margin-bottom:4px;
+    }
+    .sidebar-footer a:hover{ text-decoration:underline; }
+
+    /* ---------- Main ---------- */
+    .main{ flex:1; display:flex; flex-direction:column; min-width:0; }
+    .topbar{
+        background:var(--ink); color:#fff; padding:10px 20px;
+        display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap;
+    }
+    .topbar .view-tabs{ display:none; gap:6px; }
+    .tab-btn{
+        background:#1e293b; color:#cbd5e1; border:1px solid #334155; border-radius:6px;
+        padding:6px 12px; font-size:0.78rem; cursor:pointer; font-family:inherit;
+    }
+    .tab-btn.active{ background:var(--accent); color:#fff; border-color:var(--accent); }
+    .topbar-actions{ display:flex; gap:8px; align-items:center; flex-wrap:wrap; }
+    .btn-small{
+        background:#1e293b; color:#e2e8f0; border:1px solid #334155; border-radius:6px;
+        padding:7px 12px; font-size:0.78rem; cursor:pointer; font-family:inherit; font-weight:600;
+    }
+    .btn-small:hover{ background:#243244; }
+    .btn-export{ background:var(--accent); border-color:var(--accent); }
+    .btn-export:hover{ background:var(--accent-dark); }
+
+    .container{ display:flex; flex:1; overflow:hidden; gap:14px; padding:14px; }
+    .panel{ flex:1; display:flex; flex-direction:column; min-width:0; }
+    .panel-title{
+        font-size:0.72rem; font-weight:700; color:var(--muted-2); margin-bottom:6px;
+        text-transform:uppercase; letter-spacing:0.06em;
+    }
+    textarea#markdown-input{
+        width:100%; height:100%; padding:16px; border:1px solid #cbd5e1; border-radius:10px;
+        font-family:"SFMono-Regular", Consolas, "Courier New", monospace; font-size:12.5px; line-height:1.55;
+        resize:none; outline:none; background:#fff;
+    }
+    textarea#markdown-input:focus{ border-color:var(--accent); }
+
+    /* Answer sheet preview */
+    #preview-wrap{
+        flex:1; border-radius:10px; overflow:hidden; border:1px solid #cbd5e1;
+        background:var(--paper); position:relative; box-shadow:0 1px 3px rgba(15,23,42,.06);
+    }
+    #preview{
+        width:100%; height:100%; overflow-y:auto;
+        padding:40px 44px;
+        position:relative;
+        line-height:1.85;
+        color:#1e293b;
+        font-family:'Source Serif 4', Georgia, serif;
+        background:#ffffff;
+    }
+    #preview h1, #preview h2, #preview h3{
+        font-family:'Source Serif 4', serif; margin-top:1.1em; margin-bottom:0.4em; color:var(--ink);
+    }
+    #preview h1{ font-size:1.35rem; border-bottom:2px solid var(--ink); padding-bottom:6px; }
+    #preview h2{ font-size:1.08rem; color:var(--accent-dark); }
+
+    .details-strip{
+        display:flex; flex-wrap:wrap; gap:6px 14px;
+        border:1px solid #cbd5e1; border-radius:8px;
+        background:#f8fafc; padding:10px 14px; margin-bottom:20px;
+        font-family:'Inter', sans-serif; font-size:0.78rem; color:#334155;
+    }
+    .details-strip .d-item{ white-space:nowrap; }
+    .details-strip .d-label{ font-weight:700; color:var(--ink); }
+    #preview p{ margin-bottom:0.9em; text-align:justify; font-size:0.96rem; }
+    #preview blockquote{
+        border-left:3px solid var(--accent); background:#f8fafc; padding:8px 14px;
+        margin:1em 0; font-size:0.9rem; color:#334155;
+    }
+    #preview table{ border-collapse:collapse; width:100%; margin:1.3em 0; font-size:0.88rem; font-family:'Inter',sans-serif; }
+    #preview th, #preview td{ border:1px solid #94a3b8; padding:8px 12px; text-align:left; }
+    #preview th{ background:#f1f5f9; font-weight:700; }
+    #preview pre{ background:#f8fafc; border:1px solid #e2e8f0; border-radius:6px; padding:12px; overflow-x:auto; margin-bottom:1.1em; font-family:"SFMono-Regular", Consolas, "Courier New", monospace; font-size:0.82rem; line-height:1.5; }
+    #preview pre:has(.mermaid){ background:transparent; border:none; padding:0; }
+    .mermaid{ display:flex; justify-content:center; margin:20px 0; }
+    .diagram-fallback{
+        background:#fef2f2; border:1px solid #fecaca; color:#991b1b; border-radius:8px;
+        padding:12px 14px; margin:16px 0; font-family:'Inter', sans-serif; font-size:0.85rem;
+    }
+    .diagram-fallback pre{
+        background:#fff; border:1px solid #fecaca; margin-top:8px; font-size:0.78rem; color:#334155;
+    }
+
+    mark.name-highlight{ background:var(--hl-name); color:var(--hl-name-ink); padding:0 2px; border-radius:3px; font-weight:600; }
+    mark.key-highlight{ background:var(--hl-key); color:var(--hl-key-ink); padding:0 2px; border-radius:3px; font-weight:600; }
+    #preview.hide-key-highlights mark.key-highlight{ background:none; color:inherit; font-weight:700; padding:0; }
+
+    .bottom-bar{ background:var(--ink); padding:10px 20px; display:flex; justify-content:center; }
+    .btn-print-bottom{
+        background:var(--accent); color:#fff; border:none; padding:10px 30px; font-size:0.92rem;
+        font-weight:700; border-radius:7px; cursor:pointer; font-family:inherit;
+    }
+    .btn-print-bottom:hover{ background:var(--accent-dark); }
+
+    footer{
+        background:#fff; border-top:1px solid #cbd5e1; padding:9px 20px;
+        display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;
+        font-size:0.75rem; color:var(--muted-2);
+    }
+    footer a{ color:var(--accent); text-decoration:none; margin-left:10px; }
+    footer a:hover{ text-decoration:underline; }
+
+    /* ---------- Responsive ---------- */
+    @media (max-width: 880px){
+        .app{ flex-direction:column; height:auto; overflow:auto; }
+        body{ overflow:auto; height:auto; }
+        .sidebar{ width:100%; max-height:none; }
+        .topbar .view-tabs{ display:flex; }
+        .container{ flex-direction:column; padding:12px; }
+        .panel{ min-height:60vh; }
+        .panel.hidden-mobile{ display:none; }
+    }
+
+    /* Avoid awkward mid-element page breaks in the exported PDF */
+    #preview table, #preview .mermaid, #preview pre, #preview blockquote, .details-strip{
+        page-break-inside: avoid;
+        break-inside: avoid;
+    }
+    #preview h1, #preview h2, #preview h3{
+        page-break-after: avoid;
+        break-after: avoid;
+    }
+
+    /* ---------- Print ---------- */
+    @media print{
+        .sidebar, .topbar, .panel-title, textarea, .bottom-bar, footer{ display:none !important; }
+        body, .app, .main{ overflow:visible; height:auto; background:#fff; }
+        .container{ display:block; overflow:visible; padding:0; }
+        .panel{ min-height:0; }
+        #preview-wrap{ border:none; box-shadow:none; border-radius:0; }
+        #preview{ overflow:visible; }
+        .details-strip{ -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+        @page{ margin:20mm; }
+    }
+</style>
+</head>
+<body>
+<div class="app">
+
+    <aside class="sidebar">
+        <div class="brand">
+            <div class="mark">NS</div>
+            <h1>Answer Sheet Studio</h1>
+            <p>JNTUH-style detailed answers, diagrams &amp; export</p>
+            <p class="credit-line">Built with human intelligence by <span>NIKHIL CHARY SRIRAMOJU</span></p>
+        </div>
+
+        <div class="card">
+            <h2>🔑 Gemini API Key</h2>
+            <p style="font-size:0.7rem; color:var(--muted); margin-top:-4px;">Stored only in your browser (localStorage) — never saved in the code or sent anywhere except Google's API.</p>
+            <input id="gemini-key-input" type="password" placeholder="Paste your Gemini API key" autocomplete="off" />
+            <div class="row">
+                <button class="btn btn-ghost" id="save-key-btn" style="flex:1;">Save key</button>
+                <button class="btn btn-ghost" id="clear-key-btn" style="flex:0 0 auto;">Clear</button>
+            </div>
+            <div class="status" id="key-status"></div>
+            <a href="https://aistudio.google.com/apikey" target="_blank" rel="noopener" style="font-size:0.72rem; color:#93c5fd;">Get a free Gemini API key →</a>
+        </div>
+
+        <div class="card">
+            <h2>✨ Generate an answer</h2>
+            <textarea id="question-input" placeholder="Type the exam question, e.g. Explain 1NF, 2NF, 3NF and BCNF with examples"></textarea>
+            <div class="row">
+                <select id="marks-select">
+                    <option value="10">10 Marks</option>
+                    <option value="16">16 Marks</option>
+                    <option value="20" selected>20 Marks</option>
+                </select>
+                <select id="diagram-select">
+                    <option value="auto" selected>Auto diagram</option>
+                    <option value="flowchart">Flowchart</option>
+                    <option value="sequence">Sequence</option>
+                    <option value="er">ER diagram</option>
+                </select>
+            </div>
+            <div class="row">
+                <button class="btn btn-generate" id="generate-btn" style="flex:1;">Generate Detailed Answer</button>
+                <button class="btn btn-ghost" id="cancel-btn" style="display:none; flex:0 0 auto;">Cancel</button>
+            </div>
+            <div class="status" id="generator-status"></div>
+            <div class="status" id="char-count" style="text-align:right;"></div>
+        </div>
+
+        <div class="card">
+            <h2>🎓 Student Details</h2>
+            <p style="font-size:0.7rem; color:var(--muted); margin-top:-4px;">Shown on every answer sheet &amp; highlighted wherever they appear</p>
+            <div class="row">
+                <div style="flex:1;">
+                    <label class="field-label">Name</label>
+                    <input id="detail-name" type="text" value="Nikhil Chary Sriramoju" />
+                </div>
+                <div style="flex:1;">
+                    <label class="field-label">Roll No.</label>
+                    <input id="detail-roll" type="text" placeholder="e.g. 21A81A0501" />
+                </div>
+            </div>
+            <div class="row">
+                <div style="flex:1;">
+                    <label class="field-label">Class</label>
+                    <input id="detail-class" type="text" placeholder="e.g. B.Tech CSE" />
+                </div>
+                <div style="flex:1;">
+                    <label class="field-label">Year</label>
+                    <input id="detail-year" type="text" placeholder="e.g. Final Year" />
+                </div>
+            </div>
+            <div class="row">
+                <div style="flex:1;">
+                    <label class="field-label">Group</label>
+                    <input id="detail-group" type="text" placeholder="e.g. Group A" />
+                </div>
+                <div style="flex:1;">
+                    <label class="field-label">Section</label>
+                    <input id="detail-section" type="text" placeholder="e.g. Sec B" />
+                </div>
+            </div>
+            <div>
+                <label class="field-label">College Name</label>
+                <input id="detail-college" type="text" placeholder="e.g. JNTUH College of Engineering" />
+            </div>
+            <div>
+                <label class="field-label">Faculty Name</label>
+                <input id="detail-faculty" type="text" placeholder="e.g. Dr. Robert Vance" />
+            </div>
+            <div class="toggle-row">
+                <input type="checkbox" id="details-strip-toggle" checked />
+                <label for="details-strip-toggle">Show details strip on the sheet</label>
+            </div>
+            <div class="toggle-row">
+                <input type="checkbox" id="key-highlight-toggle" checked />
+                <label for="key-highlight-toggle">Highlight key points (==term==)</label>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>📄 Document tools</h2>
+            <button class="btn btn-ghost" id="copy-btn">Copy Markdown</button>
+            <button class="btn btn-ghost" id="download-btn">Download .md</button>
+        </div>
+
+        <div class="sidebar-footer">
+            <p>Built by Nikhil Chary Sriramoju</p>
+            <a href="mailto:sriramojunikhil66@gmail.com">✉ sriramojunikhil66@gmail.com</a>
+            <a href="tel:+916300556302">📞 +91 63005 56302</a>
+            <a href="https://github.com/Nikhil-creat" target="_blank" rel="noopener">🐙 GitHub</a>
+            <a href="https://in.linkedin.com/in/nikhil-chary-sriramoju-95041b38a" target="_blank" rel="noopener">💼 LinkedIn</a>
+            <a href="https://www.instagram.com/nikhil__sriramoju" target="_blank" rel="noopener">📷 Instagram</a>
+            <a href="https://www.facebook.com/profile.php?id=100079201124141" target="_blank" rel="noopener">👤 Facebook</a>
+        </div>
+    </aside>
+
+    <main class="main">
+        <div class="topbar">
+            <div class="view-tabs">
+                <button class="tab-btn active" data-view="edit">✏️ Edit</button>
+                <button class="tab-btn" data-view="preview">👁 Preview</button>
+            </div>
+            <div class="topbar-actions">
+                <button class="btn-small" id="copy-btn-top" style="display:none;">Copy</button>
+                <button class="btn-small btn-export" onclick="safePrint()">Export to PDF / Print</button>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="panel" id="edit-panel">
+                <div class="panel-title">Markdown Output</div>
+                <textarea id="markdown-input" placeholder="Paste or generate your assignment Markdown here..."></textarea>
+            </div>
+
+            <div class="panel" id="preview-panel">
+                <div class="panel-title">Answer Sheet Preview</div>
+                <div id="preview-wrap"><div id="preview"></div></div>
+            </div>
+        </div>
+
+        <div class="bottom-bar">
+            <button class="btn-print-bottom" onclick="safePrint()">⬇ Export to PDF</button>
+        </div>
+
+        <footer>
+            <span>Answer Sheet Studio — for JNTUH B.Tech CSE</span>
+            <span>
+                <a href="mailto:sriramojunikhil66@gmail.com">Email</a>
+                <a href="tel:+916300556302">Call</a>
+                <a href="https://github.com/Nikhil-creat" target="_blank" rel="noopener">GitHub</a>
+                <a href="https://in.linkedin.com/in/nikhil-chary-sriramoju-95041b38a" target="_blank" rel="noopener">LinkedIn</a>
+                <a href="https://www.instagram.com/nikhil__sriramoju" target="_blank" rel="noopener">Instagram</a>
+                <a href="https://www.facebook.com/profile.php?id=100079201124141" target="_blank" rel="noopener">Facebook</a>
+            </span>
+        </footer>
+    </main>
+</div>
+
+<script>
+    mermaid.initialize({ startOnLoad: false, theme: 'default' });
+
+    const input = document.getElementById('markdown-input');
+    const detailFields = {
+        name: document.getElementById('detail-name'),
+        roll: document.getElementById('detail-roll'),
+        class: document.getElementById('detail-class'),
+        year: document.getElementById('detail-year'),
+        group: document.getElementById('detail-group'),
+        section: document.getElementById('detail-section'),
+        college: document.getElementById('detail-college'),
+        faculty: document.getElementById('detail-faculty'),
+    };
+    const detailLabels = {
+        name: 'Name', roll: 'Roll No.', class: 'Class', year: 'Year',
+        group: 'Group', section: 'Section', college: 'College', faculty: 'Faculty'
+    };
+    const detailsStripToggle = document.getElementById('details-strip-toggle');
+    const keyHighlightToggle = document.getElementById('key-highlight-toggle');
+    const preview = document.getElementById('preview');
+
+    function getFilledDetails(){
+        return Object.entries(detailFields)
+            .map(([key, el]) => ({ key, label: detailLabels[key], value: el.value.trim() }))
+            .filter(d => d.value.length > 0);
+    }
+
+    const sampleAssignment = `\`\`\`text
+================================================================================
+                         ACADEMIC ASSIGNMENT SUBMISSION
+================================================================================
+  INSTITUTION   : Jawaharlal Nehru Technological University, Hyderabad (JNTUH)
+  DEPARTMENT    : Department of Computer Science & Engineering
+  REGULATION    : R18 / R22 Regulation - B.Tech CSE
+--------------------------------------------------------------------------------
+  STUDENT NAME  : Nikhil Chary Sriramoju    ROLL / REG NO : (Your Roll No.)
+  DEGREE / YEAR : B.Tech CSE / Final Year   SEMESTER / SEC: (Semester / Sec)
+  SUBJECT CODE  : (e.g. CS701PE)            SUBJECT TITLE : (Subject Title as per JNTUH syllabus)
+  INSTRUCTOR    : (Instructor Name)         SUBMISSION DATE: October 24, 2026
+================================================================================
+\`\`\`
+
+# Question 1: Database Normalization (16 Marks)
+
+*As per JNTUH R18/R22 CSE syllabus — Database Management Systems unit on Normalization.*
+
+Explain 1NF, 2NF, 3NF, and BCNF in detail. Provide dependency diagrams and a comparative matrix.
+
+## 1. Executive Overview
+Database normalization is a systematic approach of decomposing tables to eliminate data redundancy and undesirable characteristics like Insertion, Update, and Deletion Anomalies.
+
+Submitted by Nikhil Chary Sriramoju as part of the final year CSE coursework.
+
+## 2. Shortcut Tricks to Memorize (Exam Recall)
+
+> **Quick mnemonic — "A-P-T-B":** Atomic → Partial gone → Transitive gone → Boyce key only.
+> Say it as a chant while revising: *"Atomic values, Partial dependency removed, Transitive dependency removed, Boyce-Codd super key."*
+
+| Form | One-line trick | Ask yourself |
+| :--- | :--- | :--- |
+| **1NF** | "No repeating groups, no multi-value cells." | Is every cell a single, atomic value? |
+| **2NF** | "1NF + no partial dependency on part of a composite key." | Does every non-key column depend on the **whole** key? |
+| **3NF** | "2NF + no transitive dependency." | Does a non-key column depend on **another non-key** column instead of the key? |
+| **BCNF** | "3NF, but every determinant must itself be a candidate key." | Is there any determinant that is **not** a candidate key? |
+
+==Exam-answer shortcut: state the definition, draw the diagram, then map it to the matrix — examiners reward the diagram + matrix combo.==
+
+## 3. Normalization Process Flow
+
+\`\`\`mermaid
+flowchart TD
+    Unnorm[Unnormalized Table] -->|Remove Repeating Groups| NF1[1st Normal Form 1NF]
+    NF1 -->|Remove Partial Dependencies| NF2[2nd Normal Form 2NF]
+    NF2 -->|Remove Transitive Dependencies| NF3[3rd Normal Form 3NF]
+    NF3 -->|Remove Overlapping Candidate Keys| BCNF[Boyce-Codd Normal Form]
+\`\`\`
+
+*Figure 1.1: Sequential Lifecycle of Normal Forms.*
+
+## 4. Comparison Matrix
+
+| Normal Form | Key Target | Primary Condition Removed |
+| :--- | :--- | :--- |
+| **1NF** | Atomic Values | Multi-valued and composite attributes |
+| **2NF** | Full Functional Dependency | Partial dependencies on composite keys |
+| **3NF** | Non-Transitive Dependency | Transitive dependencies on non-prime attributes |
+| **BCNF** | Super Key Determinant | Anomalies caused by overlapping candidate keys |
+`;
+
+    input.value = sampleAssignment;
+
+    function escapeRegExp(str){ return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); }
+    function escapeHtml(str){
+        const div = document.createElement('div');
+        div.textContent = str;
+        return div.innerHTML;
+    }
+
+    function highlightName(root, name){
+        const trimmed = name.trim();
+        if (!trimmed) return;
+        const pattern = new RegExp(escapeRegExp(trimmed), 'gi');
+        const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
+            acceptNode(node){
+                const parentTag = node.parentElement && node.parentElement.tagName;
+                if (parentTag === 'SCRIPT' || parentTag === 'STYLE' || parentTag === 'MARK') return NodeFilter.FILTER_REJECT;
+                return pattern.test(node.textContent) ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_SKIP;
+            }
+        });
+        const targets = [];
+        let node;
+        while ((node = walker.nextNode())) targets.push(node);
+        targets.forEach((textNode) => {
+            const text = textNode.textContent;
+            pattern.lastIndex = 0;
+            const frag = document.createDocumentFragment();
+            let lastIndex = 0, match;
+            while ((match = pattern.exec(text)) !== null) {
+                if (match.index > lastIndex) frag.appendChild(document.createTextNode(text.slice(lastIndex, match.index)));
+                const mark = document.createElement('mark');
+                mark.className = 'name-highlight';
+                mark.textContent = match[0];
+                frag.appendChild(mark);
+                lastIndex = match.index + match[0].length;
+            }
+            frag.appendChild(document.createTextNode(text.slice(lastIndex)));
+            textNode.parentNode.replaceChild(frag, textNode);
+        });
+    }
+
+    let renderPromise = Promise.resolve();
+
+    async function renderDocument(){
+        const rawMarkdown = input.value;
+        const withKeyHighlights = rawMarkdown.replace(/==(.+?)==/g, '<mark class="key-highlight">$1</mark>');
+        preview.innerHTML = marked.parse(withKeyHighlights);
+        preview.classList.toggle('hide-key-highlights', !keyHighlightToggle.checked);
+
+        const details = getFilledDetails();
+
+        // Details strip — always visible on-screen and in the printed sheet, independent of the generated text
+        if (detailsStripToggle.checked && details.length > 0) {
+            const strip = document.createElement('div');
+            strip.className = 'details-strip';
+            strip.innerHTML = details
+                .map(d => `<span class="d-item"><span class="d-label">${d.label}:</span> ${escapeHtml(d.value)}</span>`)
+                .join('');
+            preview.insertBefore(strip, preview.firstChild);
+        }
+
+        const codeBlocks = preview.querySelectorAll('pre code.language-mermaid');
+        for (let i = 0; i < codeBlocks.length; i++) {
+            const codeBlock = codeBlocks[i];
+            const preElement = codeBlock.parentElement;
+            const mermaidDiv = document.createElement('div');
+            mermaidDiv.className = 'mermaid';
+            const graphDefinition = codeBlock.textContent;
+            try {
+                const id = `mermaid-svg-${Date.now()}-${i}`;
+                const { svg } = await mermaid.render(id, graphDefinition);
+                mermaidDiv.innerHTML = svg;
+                preElement.replaceWith(mermaidDiv);
+            } catch (error) {
+                console.error("Mermaid parsing issue:", error);
+                const fallback = document.createElement('div');
+                fallback.className = 'diagram-fallback';
+                fallback.innerHTML = '<strong>⚠ Diagram could not be rendered.</strong> Raw diagram code kept below so no content is lost:';
+                const codeBox = document.createElement('pre');
+                codeBox.textContent = graphDefinition;
+                fallback.appendChild(codeBox);
+                preElement.replaceWith(fallback);
+            }
+        }
+
+        // Highlight every filled student detail (name, roll no, college, etc.) wherever it appears in the body
+        details.forEach(d => highlightName(preview, d.value));
+    }
+
+    input.addEventListener('input', () => { renderPromise = renderDocument(); });
+    Object.values(detailFields).forEach(el => el.addEventListener('input', () => { renderPromise = renderDocument(); }));
+    detailsStripToggle.addEventListener('change', () => { renderPromise = renderDocument(); });
+    keyHighlightToggle.addEventListener('change', () => { renderPromise = renderDocument(); });
+    renderPromise = renderDocument();
+
+    async function safePrint(){
+        try { await renderPromise; } catch (e) { /* ignore, print whatever is ready */ }
+        window.print();
+    }
+    window.safePrint = safePrint;
+
+    // ---- Mobile tab switching ----
+    const tabBtns = document.querySelectorAll('.tab-btn');
+    const editPanel = document.getElementById('edit-panel');
+    const previewPanel = document.getElementById('preview-panel');
+    tabBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            tabBtns.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            if (btn.dataset.view === 'edit') {
+                editPanel.classList.remove('hidden-mobile');
+                previewPanel.classList.add('hidden-mobile');
+            } else {
+                previewPanel.classList.remove('hidden-mobile');
+                editPanel.classList.add('hidden-mobile');
+            }
+        });
+    });
+
+    // ---- Document tools: copy / download ----
+    async function copyMarkdown(){
+        try {
+            await navigator.clipboard.writeText(input.value);
+            statusEl.textContent = 'Markdown copied to clipboard.';
+            statusEl.className = 'status ok';
+        } catch (e) {
+            statusEl.textContent = 'Copy failed — select the text manually.';
+            statusEl.className = 'status error';
+        }
+    }
+    document.getElementById('copy-btn').addEventListener('click', copyMarkdown);
+    document.getElementById('copy-btn-top').addEventListener('click', copyMarkdown);
+
+    document.getElementById('download-btn').addEventListener('click', () => {
+        const blob = new Blob([input.value], { type: 'text/markdown' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'answer.md';
+        a.click();
+        URL.revokeObjectURL(url);
+    });
+
+    // ---- Gemini API key (stored only in this browser) ----
+    const KEY_STORAGE = 'gemini_api_key';
+    const keyInput = document.getElementById('gemini-key-input');
+    const keyStatus = document.getElementById('key-status');
+    const savedKey = localStorage.getItem(KEY_STORAGE);
+    if (savedKey) {
+        keyInput.value = savedKey;
+        keyStatus.textContent = 'Key loaded from this browser.';
+        keyStatus.className = 'status ok';
+    }
+    document.getElementById('save-key-btn').addEventListener('click', () => {
+        const val = keyInput.value.trim();
+        if (!val) {
+            keyStatus.textContent = 'Paste a key first.';
+            keyStatus.className = 'status error';
+            return;
+        }
+        localStorage.setItem(KEY_STORAGE, val);
+        keyStatus.textContent = 'Key saved in this browser.';
+        keyStatus.className = 'status ok';
+    });
+    document.getElementById('clear-key-btn').addEventListener('click', () => {
+        localStorage.removeItem(KEY_STORAGE);
+        keyInput.value = '';
+        keyStatus.textContent = 'Key cleared.';
+        keyStatus.className = 'status';
+    });
+
+    // ---- Detailed Answer Generator ----
+    const questionInput = document.getElementById('question-input');
+    const marksSelect = document.getElementById('marks-select');
+    const diagramSelect = document.getElementById('diagram-select');
+    const generateBtn = document.getElementById('generate-btn');
+    const cancelBtn = document.getElementById('cancel-btn');
+    const statusEl = document.getElementById('generator-status');
+    const charCountEl = document.getElementById('char-count');
+
+    const QUESTION_MAX = 400;
+    const REQUEST_TIMEOUT_MS = 45000;
+    let activeController = null;
+    let lastRequest = null; // remembers question/marks/diagram for a one-tap retry
+
+    function updateCharCount(){
+        const len = questionInput.value.length;
+        charCountEl.textContent = `${len} / ${QUESTION_MAX}`;
+        charCountEl.className = len > QUESTION_MAX ? 'status error' : 'status';
+    }
+    questionInput.addEventListener('input', updateCharCount);
+    updateCharCount();
+
+    const SYSTEM_PROMPT = `You write exam-ready and assignment-ready answers for JNTUH B.Tech CSE (R18/R22 regulation) students. Given a question, its mark weightage, and a diagram preference, first decide the question type, then follow the matching structure below. Output only Markdown — no preamble, no meta-commentary, no code fences around the whole answer (only around individual code/mermaid blocks).
+
+IF the question is a PROGRAMMING / CODING question (asks to write a program, implement an algorithm, solve a coding problem, or trace/debug code in any language — C, C++, Java, Python, SQL, etc.):
+- An H1 title restating the question, with the mark weightage noted.
+- "## Aim" — one line stating what the program does.
+- "## Algorithm" — clear numbered steps.
+- "## Program" — the COMPLETE, correct, compilable/runnable code in a fenced block with the right language tag (\`\`\`c, \`\`\`cpp, \`\`\`java, \`\`\`python, \`\`\`sql etc.). Include necessary headers/imports, proper main/entry point, and inline comments on non-obvious lines. The code must actually work, not be pseudocode.
+- "## Sample Input & Output" — at least one realistic run showing input and the exact expected output, formatted clearly.
+- "## Explanation / Dry Run" — briefly walk through what the code does and why, and time/space complexity if relevant (e.g. for algorithms/data structures).
+- Wrap the single most important phrase in a couple of key spots using ==double equals== so it renders as a highlighted key point.
+- A brief conclusion.
+
+OTHERWISE (theory questions), produce a comprehensive, full-marks answer in Markdown with this structure:
+- An H1 title restating the question, with the mark weightage noted.
+- A short 2-3 sentence overview.
+- Numbered H2 subsections covering every part of the question in depth (definitions, working, types, advantages/disadvantages, examples, use cases — whatever fits the question).
+- At least one Mermaid diagram in a fenced \`\`\`mermaid code block, matching the requested diagram style when one is given (flowchart / sequence / ER), otherwise whichever best represents the concept. Use simple, syntactically valid Mermaid v10 syntax.
+- A comparison or summary table where it helps (e.g. comparing types, pros/cons).
+- Wrap the single most important phrase in EVERY subsection using ==double equals== so it renders as a highlighted key point. Use this for the 3-6 most exam-critical statements only — don't overuse it.
+- A brief conclusion.`;
+
+    const GEMINI_MODEL = 'gemini-2.5-flash';
+
+    async function callModel(question, marks, diagram, signal){
+        const apiKey = localStorage.getItem(KEY_STORAGE);
+        if (!apiKey) throw new Error('NO_KEY');
+
+        const response = await fetch(
+            `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent`,
+            {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'x-goog-api-key': apiKey
+                },
+                signal,
+                body: JSON.stringify({
+                    systemInstruction: { parts: [{ text: SYSTEM_PROMPT }] },
+                    contents: [
+                        { role: 'user', parts: [{ text: `Question: ${question}\nMarks: ${marks}\nDiagram preference: ${diagram}` }] }
+                    ],
+                    generationConfig: { maxOutputTokens: 8192 }
+                })
+            }
+        );
+
+        if (!response.ok) {
+            let detail = '';
+            try { detail = (await response.text()).slice(0, 300); } catch (e) {}
+            if (response.status === 429) throw new Error('RATE_LIMITED: ' + detail);
+            if (response.status === 400 || response.status === 401 || response.status === 403) throw new Error('BAD_KEY: ' + detail);
+            if (response.status >= 500) throw new Error('SERVER_ERROR: ' + detail);
+            throw new Error(`API request failed with status ${response.status}: ${detail}`);
+        }
+
+        const data = await response.json();
+        const answerText = ((data.candidates || [])[0]?.content?.parts || [])
+            .map(part => part.text || '')
+            .filter(Boolean)
+            .join('\n');
+
+        if (!answerText) throw new Error('EMPTY_RESPONSE');
+        return answerText;
+    }
+
+    async function generateAnswer(isRetry){
+        const question = questionInput.value.trim();
+        if (!question) {
+            statusEl.textContent = 'Type a question first.';
+            statusEl.className = 'status error';
+            return;
+        }
+        if (question.length > QUESTION_MAX) {
+            statusEl.textContent = `Question is too long — keep it under ${QUESTION_MAX} characters.`;
+            statusEl.className = 'status error';
+            return;
+        }
+        if (typeof navigator !== 'undefined' && navigator.onLine === false) {
+            statusEl.textContent = 'You appear to be offline. Reconnect and try again.';
+            statusEl.className = 'status error';
+            return;
+        }
+
+        const marks = marksSelect.value;
+        const diagram = diagramSelect.value;
+        lastRequest = { question, marks, diagram };
+
+        generateBtn.disabled = true;
+        generateBtn.textContent = isRetry ? 'Retrying…' : 'Generating…';
+        cancelBtn.style.display = 'inline-block';
+        statusEl.textContent = 'Generating your detailed answer… this can take a bit for 20-mark answers.';
+        statusEl.className = 'status';
+
+        activeController = new AbortController();
+        const timeoutId = setTimeout(() => activeController.abort(), REQUEST_TIMEOUT_MS);
+
+        try {
+            const answerText = await callModel(question, marks, diagram, activeController.signal);
+            input.value = answerText;
+            renderPromise = renderDocument();
+            await renderPromise;
+            const words = answerText.trim().split(/\s+/).length;
+            statusEl.textContent = `Done — ~${words} words. Switch to Preview, or edit the Markdown directly.`;
+            statusEl.className = 'status ok';
+        } catch (error) {
+            console.error('Answer generation error:', error);
+
+            // One automatic retry for transient failures (rate limit / server error / timeout)
+            const transient = error.name === 'AbortError' || error.message === 'RATE_LIMITED' || error.message === 'SERVER_ERROR';
+            if (transient && !isRetry) {
+                clearTimeout(timeoutId);
+                generateBtn.disabled = false;
+                await generateAnswer(true);
+                return;
+            }
+
+            if (error.message === 'NO_KEY') {
+                statusEl.textContent = 'Add your Gemini API key above first (free at aistudio.google.com/apikey).';
+            } else if (error.message.startsWith('BAD_KEY')) {
+                statusEl.textContent = 'Key rejected: ' + error.message.replace('BAD_KEY: ', '');
+            } else if (error.name === 'AbortError') {
+                statusEl.textContent = 'Request timed out (or was cancelled). Tap Generate to try again.';
+            } else if (error.message.startsWith('RATE_LIMITED')) {
+                statusEl.textContent = 'Rate limited: ' + error.message.replace('RATE_LIMITED: ', '');
+            } else if (error.message.startsWith('SERVER_ERROR')) {
+                statusEl.textContent = 'Server issue: ' + error.message.replace('SERVER_ERROR: ', '');
+            } else if (error.message === 'EMPTY_RESPONSE') {
+                statusEl.textContent = 'Got an empty answer back — try rephrasing the question.';
+            } else {
+                statusEl.textContent = 'Error: ' + error.message;
+            }
+            statusEl.className = 'status error';
+        } finally {
+            clearTimeout(timeoutId);
+            activeController = null;
+            generateBtn.disabled = false;
+            generateBtn.textContent = 'Generate Detailed Answer';
+            cancelBtn.style.display = 'none';
+        }
+    }
+
+    generateBtn.addEventListener('click', () => generateAnswer(false));
+    cancelBtn.addEventListener('click', () => {
+        if (activeController) activeController.abort();
+    });
+    questionInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); generateAnswer(false); }
+    });
+    window.addEventListener('offline', () => {
+        statusEl.textContent = 'You just went offline — generation will fail until you reconnect.';
+        statusEl.className = 'status error';
+    });
+</script>
+</body>
+</html>
