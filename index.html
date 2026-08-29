@@ -1515,5 +1515,16 @@ IF the type resolves to THEORY:
         statusEl.className = 'status error';
     });
 </script>
+    <script>
+(function(){
+    const UPI_ID = 'anuasriramoju-2@okaxis';
+    const upiUri = `upi://pay?pa=${encodeURIComponent(UPI_ID)}&pn=${encodeURIComponent('NIKHIL CHARY SRIRAMOJU')}&cu=INR`;
+    document.getElementById('upi-qr-img').src = `https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${encodeURIComponent(upiUri)}`;
+    document.getElementById('copy-upi-btn').addEventListener('click', function(){
+        navigator.clipboard.writeText(UPI_ID);
+        alert('UPI ID copied!');
+    });
+})();
+    </script>
 </body>
 </html>
