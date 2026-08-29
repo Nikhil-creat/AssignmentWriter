@@ -1,0 +1,1507 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Answer Sheet — Nikhil Chary Sriramoju</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:wght@400;600;700&family=Inter:wght@400;500;600;700&family=Caveat:wght@500;600;700&family=Kalam:wght@400;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+<style>
+    :root{
+        --ink:#0f172a;
+        --slate:#1e293b;
+        --slate-2:#334155;
+        --canvas:#eef1f5;
+        --paper:#ffffff;
+        --rule-blue:#dbe3ee;
+        --margin-red:#dc2626;
+        --muted:#94a3b8;
+        --muted-2:#64748b;
+        --accent:#2563eb;
+        --accent-dark:#1d4ed8;
+        --generate:#16a34a;
+        --generate-dark:#15803d;
+        --hl-name:#fde68a;
+        --hl-name-ink:#78350f;
+        --hl-key:#bbf7d0;
+        --hl-key-ink:#14532d;
+        --hw-paper:#ffffff;
+        --hw-rule:#c7d6f5;
+        --hw-ink-1:#1d3a8a;
+        --hw-ink-2:#0f6e5c;
+    }
+    *{ box-sizing:border-box; margin:0; padding:0; }
+    body{
+        font-family:'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+        background:var(--canvas);
+        height:100vh;
+        overflow:hidden;
+    }
+    .app{ display:flex; height:100vh; }
+
+    /* ---------- Sidebar ---------- */
+    .sidebar{
+        width:320px;
+        flex-shrink:0;
+        background:var(--slate);
+        color:#e2e8f0;
+        display:flex;
+        flex-direction:column;
+        padding:20px;
+        gap:18px;
+        overflow-y:auto;
+    }
+    .brand{ display:flex; flex-direction:column; gap:2px; }
+    .brand .mark{
+        width:34px; height:34px; border-radius:8px;
+        background:linear-gradient(135deg, var(--margin-red), var(--accent));
+        display:flex; align-items:center; justify-content:center;
+        font-family:'Source Serif 4', serif; font-weight:700; color:#fff; font-size:1.05rem;
+        margin-bottom:8px;
+    }
+    .brand h1{ font-size:1.05rem; font-weight:700; color:#fff; }
+    .brand p{ font-size:0.75rem; color:var(--muted); margin-top:2px; }
+    .credit-line{
+        font-size:0.72rem; font-weight:700; color:#cbd5e1; margin-top:6px;
+        text-transform:uppercase; letter-spacing:0.03em; line-height:1.4;
+    }
+    .credit-line span{
+        background:linear-gradient(135deg, #fbbf24, #f87171, #60a5fa);
+        -webkit-background-clip:text; background-clip:text; color:transparent;
+        font-weight:800; letter-spacing:0.04em;
+    }
+
+    .card{
+        background:#152033;
+        border:1px solid #2d3d54;
+        border-left:3px solid #2d3d54;
+        border-radius:10px;
+        padding:14px;
+        display:flex;
+        flex-direction:column;
+        gap:10px;
+        transition:transform .15s ease, border-color .15s ease;
+    }
+    .card:hover{ transform:translateY(-1px); }
+    .card-key{ border-left-color:#f59e0b; }
+    .card-generate{ border-left-color:#16a34a; }
+    .card-student{ border-left-color:#2563eb; }
+    .card-tools{ border-left-color:#7c3aed; }
+    .card-draft{ border-left-color:#0891b2; }
+    .card-submit{ border-left-color:#db2777; }
+    .card h2{
+        font-size:0.7rem; font-weight:700; text-transform:uppercase; letter-spacing:0.06em;
+        color:var(--muted); display:flex; align-items:center; gap:6px;
+    }
+    textarea#question-input, textarea.q-text{
+        width:100%; min-height:64px; resize:vertical;
+        background:var(--ink); border:1px solid var(--slate-2); color:#fff;
+        padding:9px 10px; border-radius:7px; font-size:0.85rem; font-family:inherit; outline:none;
+        line-height:1.4;
+    }
+    textarea#question-input:focus, textarea.q-text:focus{ border-color:var(--accent); }
+    .question-row{
+        border:1px solid #334155; border-radius:8px; padding:10px; margin-bottom:10px; background:#0f1c30;
+    }
+    .q-number-label{ font-weight:700; color:#e2e8f0; }
+    .q-remove-btn{
+        border:1px solid #7f1d1d; background:transparent; color:#fca5a5; font-size:0.72rem;
+        padding:3px 9px; border-radius:5px; cursor:pointer; font-family:inherit;
+    }
+    .q-remove-btn:hover{ background:#7f1d1d; color:#fff; }
+    .row{ display:flex; gap:8px; }
+    .row > *{ flex:1; }
+    select, .card input[type="text"]{
+        background:var(--ink); border:1px solid var(--slate-2); color:#fff;
+        padding:8px 10px; border-radius:7px; font-size:0.82rem; outline:none; font-family:inherit;
+    }
+    select:focus, .card input[type="text"]:focus{ border-color:var(--accent); }
+    .field-label{ font-size:0.68rem; color:var(--muted); display:block; margin-bottom:3px; }
+    .card > .row{ gap:8px; }
+    .card input[type="text"]{ width:100%; margin-bottom:8px; }
+
+    .btn{
+        border:none; border-radius:7px; font-weight:700; cursor:pointer;
+        font-size:0.85rem; padding:10px 14px;
+        transition:background .15s ease, opacity .15s ease, transform .12s ease, box-shadow .12s ease;
+        font-family:inherit;
+    }
+    .btn:hover:not(:disabled){ transform:translateY(-1px); box-shadow:0 3px 10px rgba(0,0,0,.18); }
+    .btn:active:not(:disabled){ transform:translateY(0); box-shadow:none; }
+    .btn:disabled{ background:#475569 !important; cursor:not-allowed; opacity:.7; }
+    .btn-generate{ background:var(--generate); color:#fff; width:100%; }
+    .btn-generate:hover:not(:disabled){ background:var(--generate-dark); }
+    .btn-generate.is-working{ animation:pulseGenerate 1.4s ease-in-out infinite; }
+    @keyframes pulseGenerate{
+        0%, 100%{ background:var(--generate); }
+        50%{ background:var(--generate-dark); }
+    }
+    .btn-ghost{
+        background:transparent; border:1px solid #2d3d54; color:#cbd5e1;
+    }
+    .btn-ghost:hover{ background:#1e2c42; }
+
+    .status{ font-size:0.72rem; color:var(--muted); line-height:1.4; min-height:14px; }
+    .status.error{ color:#fca5a5; }
+    .status.ok{ color:#86efac; }
+
+    .toggle-row{ display:flex; align-items:center; gap:8px; font-size:0.78rem; color:#cbd5e1; }
+    .toggle-row input{ accent-color:var(--generate); }
+
+    .sidebar-footer{ margin-top:auto; padding-top:10px; border-top:1px solid #2d3d54; }
+    .sidebar-footer p{ font-size:0.7rem; color:var(--muted); margin-bottom:6px; }
+    .sidebar-footer a{
+        display:block; font-size:0.75rem; color:#93c5fd; text-decoration:none; margin-bottom:4px;
+    }
+    .sidebar-footer a:hover{ text-decoration:underline; }
+
+    /* ---------- Main ---------- */
+    .main{ flex:1; display:flex; flex-direction:column; min-width:0; }
+    .topbar{
+        background:var(--ink); color:#fff; padding:10px 20px;
+        display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap;
+    }
+    .topbar .view-tabs{ display:none; gap:6px; }
+    .tab-btn{
+        background:#1e293b; color:#cbd5e1; border:1px solid #334155; border-radius:6px;
+        padding:6px 12px; font-size:0.78rem; cursor:pointer; font-family:inherit;
+    }
+    .tab-btn.active{ background:var(--accent); color:#fff; border-color:var(--accent); }
+    .topbar-actions{ display:flex; gap:8px; align-items:center; flex-wrap:wrap; }
+    .btn-small{
+        background:#1e293b; color:#e2e8f0; border:1px solid #334155; border-radius:6px;
+        padding:7px 12px; font-size:0.78rem; cursor:pointer; font-family:inherit; font-weight:600;
+    }
+    .btn-small:hover{ background:#243244; }
+    .btn-export{ background:var(--accent); border-color:var(--accent); }
+    .btn-export:hover{ background:var(--accent-dark); }
+    .btn-chip{
+        background:#eef2ff; color:var(--accent-dark); border:1px solid #c7d2fe; border-radius:6px;
+        padding:4px 10px; font-size:0.72rem; cursor:pointer; font-family:inherit; font-weight:600;
+    }
+    .btn-chip:hover{ background:#e0e7ff; }
+
+    .container{ display:flex; flex:1; overflow:hidden; gap:14px; padding:14px; }
+    .panel{ flex:1; display:flex; flex-direction:column; min-width:0; }
+    .panel-title{
+        font-size:0.72rem; font-weight:700; color:var(--muted-2); margin-bottom:6px;
+        text-transform:uppercase; letter-spacing:0.06em;
+    }
+    textarea#markdown-input{
+        width:100%; height:100%; padding:16px; border:1px solid #cbd5e1; border-radius:10px;
+        font-family:"SFMono-Regular", Consolas, "Courier New", monospace; font-size:12.5px; line-height:1.55;
+        resize:none; outline:none; background:#fff;
+    }
+    textarea#markdown-input:focus{ border-color:var(--accent); }
+
+    /* Answer sheet preview */
+    #preview-wrap{
+        flex:1; border-radius:10px; overflow:hidden; border:1px solid #cbd5e1;
+        background:var(--paper); position:relative; box-shadow:0 1px 3px rgba(15,23,42,.06);
+    }
+    #preview{
+        width:100%; height:100%; overflow-y:auto;
+        padding:40px 44px;
+        position:relative;
+        line-height:1.85;
+        color:#1e293b;
+        font-family:'Source Serif 4', Georgia, serif;
+        background:#ffffff;
+    }
+    #preview.fade-in{ animation:previewFadeIn .35s ease; }
+    @keyframes previewFadeIn{
+        from{ opacity:.4; transform:translateY(4px); }
+        to{ opacity:1; transform:translateY(0); }
+    }
+    #preview h1, #preview h2, #preview h3{
+        font-family:'Source Serif 4', serif; margin-top:1.1em; margin-bottom:0.4em; color:var(--ink);
+    }
+    #preview h1{ font-size:1.35rem; border-bottom:2px solid var(--ink); padding-bottom:6px; }
+    #preview h2{ font-size:1.08rem; color:var(--accent-dark); }
+
+    .details-strip{
+        display:flex; flex-wrap:wrap; gap:6px 14px;
+        border:1px solid #cbd5e1; border-radius:8px;
+        background:#f8fafc; padding:10px 14px; margin-bottom:20px;
+        font-family:'Inter', sans-serif; font-size:0.78rem; color:#334155;
+    }
+    .details-strip .d-item{ white-space:nowrap; }
+    .details-strip .d-label{ font-weight:700; color:var(--ink); }
+    #preview p{ margin-bottom:0.9em; text-align:justify; font-size:0.96rem; }
+    #preview blockquote{
+        border-left:3px solid var(--accent); background:#f8fafc; padding:8px 14px;
+        margin:1em 0; font-size:0.9rem; color:#334155;
+    }
+    #preview table{ border-collapse:collapse; width:100%; margin:1.3em 0; font-size:0.88rem; font-family:'Inter',sans-serif; }
+    #preview th, #preview td{ border:1px solid #94a3b8; padding:8px 12px; text-align:left; }
+    #preview th{ background:#f1f5f9; font-weight:700; }
+    #preview pre{ background:#f8fafc; border:1px solid #e2e8f0; border-radius:6px; padding:12px; overflow-x:auto; margin-bottom:1.1em; font-family:"SFMono-Regular", Consolas, "Courier New", monospace; font-size:0.82rem; line-height:1.5; }
+    #preview pre:has(.mermaid){ background:transparent; border:none; padding:0; }
+    .mermaid{ display:flex; justify-content:center; margin:20px 0; }
+    .diagram-fallback{
+        background:#fef2f2; border:1px solid #fecaca; color:#991b1b; border-radius:8px;
+        padding:12px 14px; margin:16px 0; font-family:'Inter', sans-serif; font-size:0.85rem;
+    }
+    .diagram-fallback pre{
+        background:#fff; border:1px solid #fecaca; margin-top:8px; font-size:0.78rem; color:#334155;
+    }
+
+    mark.name-highlight{ background:var(--hl-name); color:var(--hl-name-ink); padding:0 2px; border-radius:3px; font-weight:600; }
+    mark.key-highlight{ background:var(--hl-key); color:var(--hl-key-ink); padding:0 2px; border-radius:3px; font-weight:600; }
+    #preview.hide-key-highlights mark.key-highlight{ background:none; color:inherit; font-weight:700; padding:0; }
+
+    /* ---------- Handwritten output mode ---------- */
+    .view-mode-row{ display:flex; gap:6px; }
+    .mode-btn{
+        border:1px solid #cbd5e1; background:#fff; color:#334155; padding:5px 12px; font-size:0.76rem;
+        border-radius:6px; cursor:pointer; font-family:inherit; font-weight:600;
+        transition:background .15s ease, transform .12s ease;
+    }
+    .mode-btn:hover{ transform:translateY(-1px); }
+    .mode-btn.active{
+        background:linear-gradient(135deg, var(--accent), #1e3a8a);
+        color:#fff; border-color:transparent;
+    }
+
+    #preview-wrap.handwritten-mode{ background:var(--hw-paper); }
+    #preview.handwritten-mode{
+        font-family:'Caveat', 'Segoe Script', cursive;
+        color:var(--hw-ink-1);
+        font-size:var(--hw-fsize, 1.32rem);
+        line-height:var(--hw-line, 2.15em);
+        background-color:var(--hw-paper);
+        background-image: repeating-linear-gradient(var(--hw-paper), var(--hw-paper) calc(var(--hw-line, 2.15em) - 1px), var(--hw-rule) calc(var(--hw-line, 2.15em) - 1px), var(--hw-rule) var(--hw-line, 2.15em));
+        background-position: 0 8px;
+        padding-left:64px;
+        padding-top:10px;
+        border-left:3px solid var(--margin-red);
+        margin-left:20px;
+        position:relative;
+    }
+    #preview.handwritten-mode h1, #preview.handwritten-mode h2, #preview.handwritten-mode h3{
+        font-family:'Caveat', cursive;
+    }
+    #preview.handwritten-mode h1{ font-size:1.95rem; color:#7c2d12; border-bottom-color:#7c2d12; }
+    #preview.handwritten-mode h2{ font-size:1.6rem; color:#0f6e5c; }
+    #preview.handwritten-mode h3{ font-size:1.4rem; color:#a21caf; }
+    #preview.handwritten-mode p{ text-align:left; font-size:1.28rem; }
+    #preview.handwritten-mode strong{ color:#9a3412; }
+    #preview.handwritten-mode em{ color:#0369a1; }
+    #preview.handwritten-mode table{ font-family:'Caveat', cursive; font-size:1.25rem; }
+    #preview.handwritten-mode th, #preview.handwritten-mode td{ border-color:#93a8d8; }
+    #preview.handwritten-mode th{ background:#fef3c7; color:#78350f; }
+    #preview.handwritten-mode tr:nth-child(even) td{ background:#f0fdf4; }
+    #preview.handwritten-mode pre{ font-family:'Caveat', cursive; font-size:1.15rem; background:#fdfdfd; border-color:var(--hw-rule); }
+    #preview.handwritten-mode blockquote{ background:#fff7ed; border-left-color:#ea580c; color:#7c2d12; }
+    #preview.handwritten-mode mark.name-highlight{
+        background:linear-gradient(180deg, transparent 55%, #fde68a 55%);
+        color:inherit; padding:0 2px; font-weight:700;
+    }
+    #preview.handwritten-mode mark.key-highlight{
+        background:linear-gradient(180deg, transparent 55%, #bbf7d0 55%);
+        text-decoration:underline wavy #16a34a; color:inherit; padding:0 2px;
+    }
+    #preview.handwritten-mode.hide-key-highlights mark.key-highlight{ background:none; text-decoration:none; font-weight:700; }
+
+    /* ---- Second handwriting "writer" — alternates in for later answers so the
+       page never looks like it ran out mid-way; feels like a friend filled the gaps ---- */
+    #preview.handwritten-mode .hw-writer-2{ font-family:'Kalam', cursive; color:var(--hw-ink-2); }
+    #preview.handwritten-mode .hw-writer-2 h1{ color:#9d174d; border-bottom-color:#9d174d; }
+    #preview.handwritten-mode .hw-writer-2 h2{ color:#1d4ed8; }
+    #preview.handwritten-mode .hw-writer-2 h3{ color:#b45309; }
+    #preview.handwritten-mode .hw-writer-2 strong{ color:#134e4a; }
+    #preview.handwritten-mode .hw-writer-2 em{ color:#7c2d12; }
+    #preview.handwritten-mode .hw-writer-2 table{ font-family:'Kalam', cursive; }
+    #preview.handwritten-mode .hw-writer-2 th{ background:#dbeafe; color:#1e3a8a; }
+    #preview.handwritten-mode .hw-writer-2 tr:nth-child(even) td{ background:#fdf2f8; }
+    #preview.handwritten-mode .hw-writer-2 pre{ font-family:'Kalam', cursive; }
+    #preview.handwritten-mode .hw-writer-2 blockquote{ background:#eff6ff; border-left-color:#1d4ed8; color:#1e3a8a; }
+    @media print{
+        #preview.handwritten-mode{ background-image: repeating-linear-gradient(#fff, #fff calc(2.15em - 1px), var(--hw-rule) calc(2.15em - 1px), var(--hw-rule) 2.15em); }
+        #preview-wrap.handwritten-mode{ background:#fff; }
+    }
+
+    .bottom-bar{ background:var(--ink); padding:10px 20px; display:flex; justify-content:center; }
+    .btn-print-bottom{
+        background:var(--accent); color:#fff; border:none; padding:10px 30px; font-size:0.92rem;
+        font-weight:700; border-radius:7px; cursor:pointer; font-family:inherit;
+    }
+    .btn-print-bottom:hover{ background:var(--accent-dark); }
+
+    footer{
+        background:#fff; border-top:1px solid #cbd5e1; padding:16px 20px 20px;
+        display:flex; flex-direction:column; align-items:center; gap:10px;
+        font-size:0.78rem; color:var(--muted-2); text-align:center;
+    }
+    footer .footer-brand{ font-weight:700; color:var(--ink); font-size:0.82rem; }
+    footer .footer-links{
+        display:flex; flex-direction:column; align-items:stretch; gap:6px;
+        width:100%; max-width:240px;
+    }
+    footer .footer-links a{
+        display:flex; align-items:center; justify-content:center; gap:6px;
+        padding:8px 14px; border-radius:20px; color:#fff; text-decoration:none;
+        font-weight:600; font-size:0.78rem; font-family:'Inter',sans-serif;
+        transition:opacity .15s ease, transform .15s ease;
+    }
+    footer .footer-links a:hover{ opacity:.87; transform:translateY(-1px); }
+    footer .footer-links a.f-email{ background:#dc2626; }
+    footer .footer-links a.f-call{ background:#16a34a; }
+    footer .footer-links a.f-github{ background:#0f172a; }
+    footer .footer-links a.f-linkedin{ background:#0a66c2; }
+    footer .footer-links a.f-instagram{ background:linear-gradient(135deg,#f58529,#dd2a7b,#8134af,#515bd4); }
+    footer .footer-links a.f-facebook{ background:#1877f2; }
+
+    /* ---------- Toast notifications ---------- */
+    .toast-stack{
+        position:fixed; bottom:20px; right:20px; z-index:9999;
+        display:flex; flex-direction:column; gap:8px; align-items:flex-end;
+        pointer-events:none;
+    }
+    .toast{
+        background:linear-gradient(135deg, var(--ink), #1e3a5f); color:#fff; padding:10px 16px 10px 12px;
+        border-radius:8px; border-left:4px solid var(--accent);
+        font-size:0.82rem; font-family:'Inter',sans-serif; box-shadow:0 4px 14px rgba(15,23,42,.25);
+        opacity:0; transform:translateY(8px); transition:opacity .25s ease, transform .25s ease;
+        max-width:280px;
+    }
+    .toast.show{ opacity:1; transform:translateY(0); }
+    .toast.ok{ background:linear-gradient(135deg, #15803d, #166534); border-left-color:#86efac; }
+    .toast.error{ background:linear-gradient(135deg, #b91c1c, #7f1d1d); border-left-color:#fca5a5; }
+
+    /* ---------- Sidebar collapse ---------- */
+    .sidebar{ position:relative; transition:width .18s ease, padding .18s ease; }
+    .sidebar.collapsed{ width:60px; padding:20px 10px; overflow:visible; }
+    .sidebar.collapsed .card, .sidebar.collapsed .sidebar-footer,
+    .sidebar.collapsed .brand h1, .sidebar.collapsed .brand p, .sidebar.collapsed .credit-line{ display:none; }
+    .sidebar-collapse-btn{
+        position:absolute; top:14px; right:10px;
+        background:transparent; border:1px solid #2d3d54; color:#cbd5e1; border-radius:6px;
+        padding:4px 9px; cursor:pointer; font-size:0.8rem; font-family:inherit;
+    }
+    .sidebar.collapsed .sidebar-collapse-btn{ right:auto; left:50%; transform:translateX(-50%); top:20px; }
+    .sidebar-collapse-btn:hover{ background:#1e2c42; }
+
+    /* ---------- Dark preview (system mode, screen only) ---------- */
+    #preview-wrap.dark-preview{ background:#111827; }
+    #preview.dark-preview{ background:#111827; color:#e2e8f0; }
+    #preview.dark-preview h1, #preview.dark-preview h2{ color:#f1f5f9; border-color:#334155; }
+    #preview.dark-preview .details-strip{ background:#1e293b; border-color:#334155; color:#cbd5e1; }
+    #preview.dark-preview .details-strip .d-label{ color:#f1f5f9; }
+    #preview.dark-preview table{ color:#e2e8f0; }
+    #preview.dark-preview th{ background:#1e293b; }
+    #preview.dark-preview th, #preview.dark-preview td{ border-color:#334155; }
+    #preview.dark-preview blockquote{ background:#1e293b; color:#cbd5e1; }
+    #preview.dark-preview pre{ background:#1e293b; border-color:#334155; color:#e2e8f0; }
+
+    /* ---------- Page-continuity labels around each page-break ---------- */
+    .page-break-label{
+        font-family:'Inter',sans-serif; font-size:0.7rem; font-weight:600; color:var(--muted-2);
+        text-align:center; margin:2px 0;
+    }
+
+    /* ---------- Left-margin question badges (handwritten mode) ---------- */
+    #preview.handwritten-mode .hw-qbadge{
+        display:inline-block; font-family:'Inter',sans-serif; font-size:0.7rem; font-weight:700;
+        color:#fff; background:var(--margin-red); border-radius:4px; padding:3px 0; width:44px;
+        text-align:center; margin:0 0 8px -64px;
+    }
+
+    /* ---------- Handwriting size control ---------- */
+    .hw-size-row{ display:none; align-items:center; gap:6px; color:#cbd5e1; font-size:0.72rem; }
+    .hw-size-row input[type="range"]{ accent-color:var(--accent); width:80px; }
+
+    /* ---------- Responsive ---------- */
+    @media (max-width: 880px){
+        .app{ flex-direction:column; height:auto; overflow:auto; }
+        body{ overflow:auto; height:auto; }
+        .sidebar{ width:100%; max-height:none; }
+        .topbar .view-tabs{ display:flex; }
+        .container{ flex-direction:column; padding:12px; }
+        .panel{ min-height:60vh; }
+        .panel.hidden-mobile{ display:none; }
+    }
+
+    /* Avoid awkward mid-element page breaks in the exported PDF */
+    #preview table, #preview .mermaid, #preview pre, #preview blockquote, .details-strip{
+        page-break-inside: avoid;
+        break-inside: avoid;
+    }
+    #preview h1, #preview h2, #preview h3{
+        page-break-after: avoid;
+        break-after: avoid;
+    }
+
+    /* ---------- Print ---------- */
+    .print-pagenum{ display:none; }
+    @media print{
+        .sidebar, .topbar, .panel-title, textarea, .bottom-bar, footer,
+        .toast-stack, .sidebar-collapse-btn, .hw-size-row, .page-break-label{ display:none !important; }
+        body, .app, .main{ overflow:visible; height:auto; background:#fff; }
+        .container{ display:block; overflow:visible; padding:0; }
+        .panel{ min-height:0; }
+        #preview-wrap, #preview-wrap.dark-preview{ border:none; box-shadow:none; border-radius:0; }
+        #preview-wrap.dark-preview{ background:#fff !important; }
+        #preview{ overflow:visible; }
+        #preview.dark-preview{ background:#fff !important; color:#1e293b !important; }
+        .details-strip{ -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+        @page{
+            margin:18mm 20mm 16mm 20mm;
+            /* Best-effort native page numbers — supported in some browsers, harmlessly ignored elsewhere */
+            @bottom-center{ content: "Page " counter(page) " of " counter(pages); font-family:'Inter', sans-serif; font-size:9px; color:#64748b; }
+        }
+        body{ counter-reset: page; }
+        /* Cross-browser fallback: a fixed element repeats on every printed page, and its counter
+           increments once per page — this works even where @page margin boxes above don't. */
+        .print-pagenum{
+            display:block; position:fixed; bottom:8mm; right:20mm; left:0; text-align:right;
+            font-family:'Inter', sans-serif; font-size:9px; color:#64748b;
+        }
+        .print-pagenum::after{ counter-increment: page; content: "Page " counter(page); }
+        .page-break{ page-break-before: always; break-before: page; }
+    }
+    .page-break{ display:block; height:1px; margin:26px 0; border-top:2px dashed #cbd5e1; }
+</style>
+</head>
+<body>
+<div class="print-pagenum"></div>
+<div class="app">
+
+    <aside class="sidebar" id="sidebar">
+        <button class="sidebar-collapse-btn" id="sidebar-collapse-btn" type="button" title="Collapse sidebar">⟨⟨</button>
+        <div class="brand">
+            <div class="mark">NS</div>
+            <h1>Answer Sheet Studio</h1>
+            <p>JNTUH-style detailed answers, diagrams &amp; export</p>
+            <p class="credit-line">Built with human intelligence by <span>NIKHIL CHARY SRIRAMOJU</span></p>
+        </div>
+
+        <div class="card card-key">
+            <h2>🔑 Gemini API Key</h2>
+            <p style="font-size:0.7rem; color:var(--muted); margin-top:-4px;">Stored only in your browser (localStorage) — never saved in the code or sent anywhere except Google's API.</p>
+            <input id="gemini-key-input" type="password" placeholder="Paste your Gemini API key" autocomplete="off" />
+            <div class="row">
+                <button class="btn btn-ghost" id="save-key-btn" style="flex:1;">Save key</button>
+                <button class="btn btn-ghost" id="clear-key-btn" style="flex:0 0 auto;">Clear</button>
+            </div>
+            <div class="status" id="key-status"></div>
+            <a href="https://aistudio.google.com/apikey" target="_blank" rel="noopener" style="font-size:0.72rem; color:#93c5fd;">Get a free Gemini API key →</a>
+        </div>
+
+        <div class="card card-generate">
+            <h2>✨ Generate answers</h2>
+            <p style="font-size:0.7rem; color:var(--muted); margin-top:-4px;">Add one or more questions — each gets its own numbered, full-length answer in one go.</p>
+            <div id="questions-list"></div>
+            <button class="btn btn-ghost" id="add-question-btn" type="button">+ Add another question</button>
+            <div class="row" style="margin-top:10px;">
+                <button class="btn btn-generate" id="generate-btn" style="flex:1;">Generate All Answers</button>
+                <button class="btn btn-ghost" id="cancel-btn" style="display:none; flex:0 0 auto;">Cancel</button>
+            </div>
+            <div class="status" id="generator-status"></div>
+        </div>
+
+        <template id="question-row-template">
+            <div class="question-row">
+                <div class="row" style="justify-content:space-between; align-items:center; margin-bottom:4px;">
+                    <label class="field-label q-number-label">Question 1</label>
+                    <button class="q-remove-btn" type="button" title="Remove this question">✕ Remove</button>
+                </div>
+                <textarea class="q-text" placeholder="Type the exam question, e.g. Explain 1NF, 2NF, 3NF and BCNF with examples"></textarea>
+                <div class="row">
+                    <select class="q-type">
+                        <option value="auto" selected>Auto-detect type</option>
+                        <option value="theory">Theory answer</option>
+                        <option value="program">Programming answer</option>
+                    </select>
+                </div>
+                <div class="row">
+                    <select class="q-marks">
+                        <option value="10">10 Marks</option>
+                        <option value="16">16 Marks</option>
+                        <option value="20" selected>20 Marks</option>
+                    </select>
+                    <select class="q-diagram">
+                        <option value="auto" selected>Auto diagram</option>
+                        <option value="flowchart">Flowchart</option>
+                        <option value="sequence">Sequence</option>
+                        <option value="er">ER diagram</option>
+                    </select>
+                </div>
+                <div class="status q-charcount" style="text-align:right;"></div>
+            </div>
+        </template>
+
+        <div class="card card-student">
+            <h2>🎓 Student Details</h2>
+            <p style="font-size:0.7rem; color:var(--muted); margin-top:-4px;">Shown on every answer sheet &amp; highlighted wherever they appear</p>
+            <div class="row">
+                <div style="flex:1;">
+                    <label class="field-label">Name</label>
+                    <input id="detail-name" type="text" value="Nikhil Chary Sriramoju" />
+                </div>
+                <div style="flex:1;">
+                    <label class="field-label">Roll No.</label>
+                    <input id="detail-roll" type="text" placeholder="e.g. 21A81A0501" />
+                </div>
+            </div>
+            <div class="row">
+                <div style="flex:1;">
+                    <label class="field-label">Class</label>
+                    <input id="detail-class" type="text" placeholder="e.g. B.Tech CSE" />
+                </div>
+                <div style="flex:1;">
+                    <label class="field-label">Year</label>
+                    <input id="detail-year" type="text" placeholder="e.g. Final Year" />
+                </div>
+            </div>
+            <div class="row">
+                <div style="flex:1;">
+                    <label class="field-label">Group</label>
+                    <input id="detail-group" type="text" placeholder="e.g. Group A" />
+                </div>
+                <div style="flex:1;">
+                    <label class="field-label">Section</label>
+                    <input id="detail-section" type="text" placeholder="e.g. Sec B" />
+                </div>
+            </div>
+            <div>
+                <label class="field-label">College Name</label>
+                <input id="detail-college" type="text" placeholder="e.g. JNTUH College of Engineering" />
+            </div>
+            <div>
+                <label class="field-label">Faculty Name</label>
+                <input id="detail-faculty" type="text" placeholder="e.g. Dr. Robert Vance" />
+            </div>
+            <div>
+                <label class="field-label">Faculty Email</label>
+                <input id="detail-faculty-email" type="email" placeholder="e.g. faculty@jntuh.ac.in" />
+            </div>
+            <div class="toggle-row">
+                <input type="checkbox" id="details-strip-toggle" checked />
+                <label for="details-strip-toggle">Show details strip on the sheet</label>
+            </div>
+            <div class="toggle-row">
+                <input type="checkbox" id="key-highlight-toggle" checked />
+                <label for="key-highlight-toggle">Highlight key points (==term==)</label>
+            </div>
+        </div>
+
+        <div class="card card-tools">
+            <h2>📄 Document tools</h2>
+            <button class="btn btn-ghost" id="copy-btn">Copy Markdown</button>
+            <button class="btn btn-ghost" id="download-btn">Download .md</button>
+        </div>
+
+        <div class="card card-draft">
+            <h2>💾 Draft</h2>
+            <p style="font-size:0.7rem; color:var(--muted); margin-top:-4px;">Autosaves as you type, in this browser only. Handy if you accidentally close the tab.</p>
+            <div class="row">
+                <button class="btn btn-ghost" id="save-draft-btn" style="flex:1;">Save now</button>
+                <button class="btn btn-ghost" id="load-draft-btn" style="flex:1;">Load saved</button>
+            </div>
+            <button class="btn btn-ghost" id="clear-draft-btn">Clear saved draft</button>
+            <div class="status" id="draft-status"></div>
+        </div>
+
+        <div class="card card-submit">
+            <h2>📤 Submit to Faculty</h2>
+            <p style="font-size:0.7rem; color:var(--muted); margin-top:-4px;">Shares the answer sheet straight to your faculty's email — no separate app needed on most phones.</p>
+            <button class="btn btn-generate" id="submit-faculty-btn" style="width:100%;">Send to Faculty</button>
+            <div class="status" id="submit-status"></div>
+        </div>
+
+        <div class="sidebar-footer">
+            <p>Built by Nikhil Chary Sriramoju</p>
+            <a href="mailto:sriramojunikhil66@gmail.com">✉ sriramojunikhil66@gmail.com</a>
+            <a href="tel:+916300556302">📞 +91 63005 56302</a>
+            <a href="https://github.com/Nikhil-creat" target="_blank" rel="noopener">🐙 GitHub</a>
+            <a href="https://in.linkedin.com/in/nikhil-chary-sriramoju-95041b38a" target="_blank" rel="noopener">💼 LinkedIn</a>
+            <a href="https://www.instagram.com/nikhil__sriramoju" target="_blank" rel="noopener">📷 Instagram</a>
+            <a href="https://www.facebook.com/profile.php?id=100079201124141" target="_blank" rel="noopener">👤 Facebook</a>
+        </div>
+    </aside>
+
+    <main class="main">
+        <div class="topbar">
+            <div class="view-tabs">
+                <button class="tab-btn active" data-view="edit">✏️ Edit</button>
+                <button class="tab-btn" data-view="preview">👁 Preview</button>
+            </div>
+            <div class="topbar-actions">
+                <div class="view-mode-row">
+                    <button class="mode-btn active" id="mode-system-btn" type="button">🖨 System</button>
+                    <button class="mode-btn" id="mode-handwritten-btn" type="button">✍️ Handwritten</button>
+                    <button class="mode-btn active" id="second-writer-btn" type="button" style="display:none;" title="Alternates in a second handwriting style for later answers, so the sheet never looks like it ran out mid-way">👥 2 Writers</button>
+                    <button class="mode-btn" id="dark-preview-btn" type="button" title="Dark preview (screen only, always prints white)">🌙 Dark</button>
+                </div>
+                <div class="hw-size-row" id="hw-size-row">
+                    <span>🔡 Size</span>
+                    <input type="range" id="hw-size-slider" min="0.85" max="1.3" step="0.05" value="1" />
+                </div>
+                <button class="btn-small" id="copy-btn-top" style="display:none;">Copy</button>
+                <button class="btn-small btn-export" onclick="safePrint()">Export to PDF / Print</button>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="panel" id="edit-panel">
+                <div class="panel-title" style="display:flex; align-items:center; justify-content:space-between;">
+                    <span>Markdown Output</span>
+                    <button class="btn-chip" id="insert-diagram-btn" type="button">➕ Insert Mermaid diagram</button>
+                </div>
+                <textarea id="markdown-input" placeholder="Paste or generate your assignment Markdown here..."></textarea>
+            </div>
+
+            <div class="panel" id="preview-panel">
+                <div class="panel-title" style="display:flex; align-items:center; justify-content:space-between;">
+                    <span>Answer Sheet Preview</span>
+                    <span id="preview-stats" style="font-weight:600; color:var(--muted-2); text-transform:none; letter-spacing:normal;"></span>
+                </div>
+                <div id="preview-wrap"><div id="preview"></div></div>
+            </div>
+        </div>
+
+        <div class="bottom-bar">
+            <button class="btn-print-bottom" onclick="safePrint()">⬇ Export to PDF</button>
+        </div>
+
+        <footer>
+            <span class="footer-brand">Answer Sheet Studio — for JNTUH B.Tech CSE</span>
+            <div class="footer-links">
+                <a class="f-email" href="mailto:sriramojunikhil66@gmail.com">✉ Email</a>
+                <a class="f-call" href="tel:+916300556302">📞 Call</a>
+                <a class="f-github" href="https://github.com/Nikhil-creat" target="_blank" rel="noopener">🐙 GitHub</a>
+                <a class="f-linkedin" href="https://in.linkedin.com/in/nikhil-chary-sriramoju-95041b38a" target="_blank" rel="noopener">💼 LinkedIn</a>
+                <a class="f-instagram" href="https://www.instagram.com/nikhil__sriramoju" target="_blank" rel="noopener">📷 Instagram</a>
+                <a class="f-facebook" href="https://www.facebook.com/profile.php?id=100079201124141" target="_blank" rel="noopener">👤 Facebook</a>
+            </div>
+        </footer>
+    </main>
+</div>
+
+<div class="toast-stack" id="toast-stack"></div>
+
+<script>
+    mermaid.initialize({ startOnLoad: false, theme: 'default' });
+
+    const input = document.getElementById('markdown-input');
+    const detailFields = {
+        name: document.getElementById('detail-name'),
+        roll: document.getElementById('detail-roll'),
+        class: document.getElementById('detail-class'),
+        year: document.getElementById('detail-year'),
+        group: document.getElementById('detail-group'),
+        section: document.getElementById('detail-section'),
+        college: document.getElementById('detail-college'),
+        faculty: document.getElementById('detail-faculty'),
+    };
+    const detailLabels = {
+        name: 'Name', roll: 'Roll No.', class: 'Class', year: 'Year',
+        group: 'Group', section: 'Section', college: 'College', faculty: 'Faculty'
+    };
+    const detailsStripToggle = document.getElementById('details-strip-toggle');
+    const keyHighlightToggle = document.getElementById('key-highlight-toggle');
+    const preview = document.getElementById('preview');
+    const previewWrapEl = document.getElementById('preview-wrap');
+
+    const modeSystemBtn = document.getElementById('mode-system-btn');
+    const modeHandwrittenBtn = document.getElementById('mode-handwritten-btn');
+    const secondWriterBtn = document.getElementById('second-writer-btn');
+    const darkPreviewBtn = document.getElementById('dark-preview-btn');
+    const hwSizeRow = document.getElementById('hw-size-row');
+    const hwSizeSlider = document.getElementById('hw-size-slider');
+    let useSecondWriterEnabled = true;
+
+    // ---- Toast notifications (small feedback for quick actions) ----
+    const toastStack = document.getElementById('toast-stack');
+    function showToast(message, type){
+        const toast = document.createElement('div');
+        toast.className = 'toast' + (type ? ' ' + type : '');
+        toast.textContent = message;
+        toastStack.appendChild(toast);
+        requestAnimationFrame(() => toast.classList.add('show'));
+        setTimeout(() => {
+            toast.classList.remove('show');
+            setTimeout(() => toast.remove(), 300);
+        }, 2600);
+    }
+
+    // ---- Sidebar collapse ----
+    const sidebarEl = document.getElementById('sidebar');
+    const sidebarCollapseBtn = document.getElementById('sidebar-collapse-btn');
+    sidebarCollapseBtn.addEventListener('click', () => {
+        const collapsed = sidebarEl.classList.toggle('collapsed');
+        sidebarCollapseBtn.textContent = collapsed ? '⟩⟩' : '⟨⟨';
+    });
+
+    // ---- Handwriting size slider ----
+    function setHandwritingScale(scale){
+        preview.style.setProperty('--hw-fsize', (1.32 * scale).toFixed(2) + 'rem');
+        preview.style.setProperty('--hw-line', (2.15 * scale).toFixed(2) + 'em');
+    }
+    hwSizeSlider.addEventListener('input', () => setHandwritingScale(parseFloat(hwSizeSlider.value)));
+
+    // ---- Dark preview (system mode only, screen-only — print always stays white) ----
+    darkPreviewBtn.addEventListener('click', () => {
+        const nowDark = !preview.classList.contains('dark-preview');
+        preview.classList.toggle('dark-preview', nowDark);
+        previewWrapEl.classList.toggle('dark-preview', nowDark);
+        darkPreviewBtn.classList.toggle('active', nowDark);
+    });
+
+    // Splits the rendered answers on their .page-break markers. For every group (answer) it adds:
+    //  - a left-margin "Q<n>" badge in handwritten mode, like a real answer booklet
+    //  - "...continued" labels across a page-break so nothing looks like it cuts off
+    //  - the second handwriting style on every other answer, so if one runs short the
+    //    next (in a visibly different hand) picks up and fills the sheet out
+    function applyPageLayout(){
+        preview.querySelectorAll(':scope > .hw-writer-2').forEach(wrapper => {
+            while (wrapper.firstChild) wrapper.parentNode.insertBefore(wrapper.firstChild, wrapper);
+            wrapper.remove();
+        });
+        preview.querySelectorAll(':scope > .hw-qbadge, :scope > .page-break-label').forEach(el => el.remove());
+
+        const isHandwritten = preview.classList.contains('handwritten-mode');
+        const children = Array.from(preview.children);
+        let currentGroup = [];
+        const groups = [];
+        children.forEach((child) => {
+            if (child.classList.contains('page-break')) {
+                if (currentGroup.length) { groups.push(currentGroup); currentGroup = []; }
+            } else {
+                currentGroup.push(child);
+            }
+        });
+        if (currentGroup.length) groups.push(currentGroup);
+
+        groups.forEach((group, idx) => {
+            if (!group.length) return;
+            const anchor = group[0];
+            const parent = anchor.parentNode;
+
+            if (idx > 0) {
+                const topLabel = document.createElement('div');
+                topLabel.className = 'page-break-label';
+                topLabel.textContent = '↑ ...continued from previous page';
+                parent.insertBefore(topLabel, anchor);
+            }
+            if (isHandwritten) {
+                const badge = document.createElement('div');
+                badge.className = 'hw-qbadge';
+                badge.textContent = `Q${idx + 1}`;
+                parent.insertBefore(badge, anchor);
+            }
+            if (idx < groups.length - 1) {
+                const lastEl = group[group.length - 1];
+                const bottomLabel = document.createElement('div');
+                bottomLabel.className = 'page-break-label';
+                bottomLabel.textContent = 'continued on next page... ↓';
+                lastEl.parentNode.insertBefore(bottomLabel, lastEl.nextSibling);
+            }
+            if (isHandwritten && useSecondWriterEnabled && idx % 2 === 1) {
+                const wrapper = document.createElement('div');
+                wrapper.className = 'hw-writer-2';
+                group[0].parentNode.insertBefore(wrapper, group[0]);
+                group.forEach(el => wrapper.appendChild(el));
+            }
+        });
+    }
+
+    // ---- Live word count / estimated page count ----
+    const previewStatsEl = document.getElementById('preview-stats');
+    function updatePreviewStats(){
+        const text = preview.textContent.trim();
+        if (!text) { previewStatsEl.textContent = ''; return; }
+        const words = text.split(/\s+/).filter(Boolean).length;
+        const perPage = preview.classList.contains('handwritten-mode') ? 230 : 500;
+        const pages = Math.max(1, Math.ceil(words / perPage));
+        previewStatsEl.textContent = `~${words} words · ~${pages} page${pages > 1 ? 's' : ''}`;
+    }
+
+    function setOutputMode(mode){
+        const isHandwritten = mode === 'handwritten';
+        preview.classList.toggle('handwritten-mode', isHandwritten);
+        previewWrapEl.classList.toggle('handwritten-mode', isHandwritten);
+        modeSystemBtn.classList.toggle('active', !isHandwritten);
+        modeHandwrittenBtn.classList.toggle('active', isHandwritten);
+        secondWriterBtn.style.display = isHandwritten ? 'inline-block' : 'none';
+        hwSizeRow.style.display = isHandwritten ? 'flex' : 'none';
+        darkPreviewBtn.style.display = isHandwritten ? 'none' : 'inline-block';
+        if (isHandwritten) {
+            preview.classList.remove('dark-preview');
+            previewWrapEl.classList.remove('dark-preview');
+            darkPreviewBtn.classList.remove('active');
+        }
+        applyPageLayout();
+        updatePreviewStats();
+    }
+    modeSystemBtn.addEventListener('click', () => setOutputMode('system'));
+    modeHandwrittenBtn.addEventListener('click', () => setOutputMode('handwritten'));
+    secondWriterBtn.addEventListener('click', () => {
+        useSecondWriterEnabled = !useSecondWriterEnabled;
+        secondWriterBtn.classList.toggle('active', useSecondWriterEnabled);
+        applyPageLayout();
+    });
+
+    // ---- Draft autosave / load / clear (this browser only) ----
+    const DRAFT_KEY = 'answer-sheet-draft-v1';
+    const draftStatusEl = document.getElementById('draft-status');
+    function collectDraftState(){
+        return {
+            markdown: input.value,
+            details: Object.fromEntries(Object.entries(detailFields).map(([k, el]) => [k, el.value])),
+            detailsStripOn: detailsStripToggle.checked,
+            keyHighlightOn: keyHighlightToggle.checked,
+            savedAt: new Date().toISOString()
+        };
+    }
+    function saveDraft(silent){
+        try {
+            localStorage.setItem(DRAFT_KEY, JSON.stringify(collectDraftState()));
+            if (!silent) {
+                showToast('Draft saved.', 'ok');
+                draftStatusEl.textContent = 'Saved just now.';
+                draftStatusEl.className = 'status ok';
+            }
+        } catch (e) {
+            if (!silent) {
+                showToast('Could not save draft.', 'error');
+                draftStatusEl.textContent = 'Save failed — browser storage may be full or disabled.';
+                draftStatusEl.className = 'status error';
+            }
+        }
+    }
+    function loadDraft(){
+        let raw;
+        try { raw = localStorage.getItem(DRAFT_KEY); } catch (e) { raw = null; }
+        if (!raw) { showToast('No saved draft found.', 'error'); return; }
+        try {
+            const data = JSON.parse(raw);
+            input.value = data.markdown || '';
+            Object.entries(data.details || {}).forEach(([k, v]) => { if (detailFields[k]) detailFields[k].value = v; });
+            if (typeof data.detailsStripOn === 'boolean') detailsStripToggle.checked = data.detailsStripOn;
+            if (typeof data.keyHighlightOn === 'boolean') keyHighlightToggle.checked = data.keyHighlightOn;
+            renderPromise = renderDocument();
+            showToast('Draft restored.', 'ok');
+        } catch (e) {
+            showToast('Saved draft was unreadable.', 'error');
+        }
+    }
+    function clearDraft(){
+        try {
+            localStorage.removeItem(DRAFT_KEY);
+            showToast('Saved draft cleared.', 'ok');
+            draftStatusEl.textContent = '';
+            draftStatusEl.className = 'status';
+        } catch (e) {
+            showToast('Could not clear draft.', 'error');
+        }
+    }
+    document.getElementById('save-draft-btn').addEventListener('click', () => saveDraft(false));
+    document.getElementById('load-draft-btn').addEventListener('click', loadDraft);
+    document.getElementById('clear-draft-btn').addEventListener('click', clearDraft);
+
+    let autosaveTimer = null;
+    function scheduleAutosave(){
+        clearTimeout(autosaveTimer);
+        autosaveTimer = setTimeout(() => saveDraft(true), 1500);
+    }
+    (function checkExistingDraft(){
+        try {
+            if (localStorage.getItem(DRAFT_KEY)) {
+                draftStatusEl.textContent = 'A previously saved draft is available — tap "Load saved" to restore it.';
+                draftStatusEl.className = 'status';
+            }
+        } catch (e) { /* localStorage unavailable — autosave/draft buttons simply won't persist */ }
+    })();
+
+    // ---- Insert a starter Mermaid diagram at the cursor ----
+    document.getElementById('insert-diagram-btn').addEventListener('click', () => {
+        const snippet = '\n```mermaid\nflowchart TD\n    A[Start] --> B[Step]\n    B --> C[End]\n```\n';
+        const start = input.selectionStart ?? input.value.length;
+        const end = input.selectionEnd ?? input.value.length;
+        input.value = input.value.slice(0, start) + snippet + input.value.slice(end);
+        input.focus();
+        const newPos = start + snippet.length;
+        input.setSelectionRange(newPos, newPos);
+        renderPromise = renderDocument();
+        scheduleAutosave();
+    });
+
+    // ---- Keyboard shortcut: Ctrl/Cmd + Enter triggers Generate All Answers ----
+    document.addEventListener('keydown', (e) => {
+        if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+            const btn = document.getElementById('generate-btn');
+            if (btn && !btn.disabled) {
+                e.preventDefault();
+                generateAnswer();
+            }
+        }
+    });
+
+    function getFilledDetails(){
+        return Object.entries(detailFields)
+            .map(([key, el]) => ({ key, label: detailLabels[key], value: el.value.trim() }))
+            .filter(d => d.value.length > 0);
+    }
+
+    const sampleAssignment = `\`\`\`text
+================================================================================
+                         ACADEMIC ASSIGNMENT SUBMISSION
+================================================================================
+  INSTITUTION   : Jawaharlal Nehru Technological University, Hyderabad (JNTUH)
+  DEPARTMENT    : Department of Computer Science & Engineering
+  REGULATION    : R18 / R22 Regulation - B.Tech CSE
+--------------------------------------------------------------------------------
+  STUDENT NAME  : Nikhil Chary Sriramoju    ROLL / REG NO : (Your Roll No.)
+  DEGREE / YEAR : B.Tech CSE / Final Year   SEMESTER / SEC: (Semester / Sec)
+  SUBJECT CODE  : (e.g. CS701PE)            SUBJECT TITLE : (Subject Title as per JNTUH syllabus)
+  INSTRUCTOR    : (Instructor Name)         SUBMISSION DATE: October 24, 2026
+================================================================================
+\`\`\`
+
+# Question 1: Database Normalization (16 Marks)
+
+*As per JNTUH R18/R22 CSE syllabus — Database Management Systems unit on Normalization.*
+
+Explain 1NF, 2NF, 3NF, and BCNF in detail. Provide dependency diagrams and a comparative matrix.
+
+## 1. Executive Overview
+Database normalization is a systematic approach of decomposing tables to eliminate data redundancy and undesirable characteristics like Insertion, Update, and Deletion Anomalies.
+
+Submitted by Nikhil Chary Sriramoju as part of the final year CSE coursework.
+
+## 2. Shortcut Tricks to Memorize (Exam Recall)
+
+> **Quick mnemonic — "A-P-T-B":** Atomic → Partial gone → Transitive gone → Boyce key only.
+> Say it as a chant while revising: *"Atomic values, Partial dependency removed, Transitive dependency removed, Boyce-Codd super key."*
+
+| Form | One-line trick | Ask yourself |
+| :--- | :--- | :--- |
+| **1NF** | "No repeating groups, no multi-value cells." | Is every cell a single, atomic value? |
+| **2NF** | "1NF + no partial dependency on part of a composite key." | Does every non-key column depend on the **whole** key? |
+| **3NF** | "2NF + no transitive dependency." | Does a non-key column depend on **another non-key** column instead of the key? |
+| **BCNF** | "3NF, but every determinant must itself be a candidate key." | Is there any determinant that is **not** a candidate key? |
+
+==Exam-answer shortcut: state the definition, draw the diagram, then map it to the matrix — examiners reward the diagram + matrix combo.==
+
+## 3. Normalization Process Flow
+
+\`\`\`mermaid
+flowchart TD
+    Unnorm[Unnormalized Table] -->|Remove Repeating Groups| NF1[1st Normal Form 1NF]
+    NF1 -->|Remove Partial Dependencies| NF2[2nd Normal Form 2NF]
+    NF2 -->|Remove Transitive Dependencies| NF3[3rd Normal Form 3NF]
+    NF3 -->|Remove Overlapping Candidate Keys| BCNF[Boyce-Codd Normal Form]
+\`\`\`
+
+*Figure 1.1: Sequential Lifecycle of Normal Forms.*
+
+## 4. Comparison Matrix
+
+| Normal Form | Key Target | Primary Condition Removed |
+| :--- | :--- | :--- |
+| **1NF** | Atomic Values | Multi-valued and composite attributes |
+| **2NF** | Full Functional Dependency | Partial dependencies on composite keys |
+| **3NF** | Non-Transitive Dependency | Transitive dependencies on non-prime attributes |
+| **BCNF** | Super Key Determinant | Anomalies caused by overlapping candidate keys |
+`;
+
+    input.value = sampleAssignment;
+
+    function escapeRegExp(str){ return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); }
+    function escapeHtml(str){
+        const div = document.createElement('div');
+        div.textContent = str;
+        return div.innerHTML;
+    }
+
+    function highlightName(root, name){
+        const trimmed = name.trim();
+        if (!trimmed) return;
+        const pattern = new RegExp(escapeRegExp(trimmed), 'gi');
+        const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
+            acceptNode(node){
+                const parentTag = node.parentElement && node.parentElement.tagName;
+                if (parentTag === 'SCRIPT' || parentTag === 'STYLE' || parentTag === 'MARK') return NodeFilter.FILTER_REJECT;
+                return pattern.test(node.textContent) ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_SKIP;
+            }
+        });
+        const targets = [];
+        let node;
+        while ((node = walker.nextNode())) targets.push(node);
+        targets.forEach((textNode) => {
+            const text = textNode.textContent;
+            pattern.lastIndex = 0;
+            const frag = document.createDocumentFragment();
+            let lastIndex = 0, match;
+            while ((match = pattern.exec(text)) !== null) {
+                if (match.index > lastIndex) frag.appendChild(document.createTextNode(text.slice(lastIndex, match.index)));
+                const mark = document.createElement('mark');
+                mark.className = 'name-highlight';
+                mark.textContent = match[0];
+                frag.appendChild(mark);
+                lastIndex = match.index + match[0].length;
+            }
+            frag.appendChild(document.createTextNode(text.slice(lastIndex)));
+            textNode.parentNode.replaceChild(frag, textNode);
+        });
+    }
+
+    let renderPromise = Promise.resolve();
+
+    async function renderDocument(){
+        const rawMarkdown = input.value;
+        const withKeyHighlights = rawMarkdown.replace(/==(.+?)==/g, '<mark class="key-highlight">$1</mark>');
+        preview.innerHTML = marked.parse(withKeyHighlights);
+        preview.classList.toggle('hide-key-highlights', !keyHighlightToggle.checked);
+
+        const details = getFilledDetails();
+
+        // Details strip — always visible on-screen and in the printed sheet, independent of the generated text
+        if (detailsStripToggle.checked && details.length > 0) {
+            const strip = document.createElement('div');
+            strip.className = 'details-strip';
+            strip.innerHTML = details
+                .map(d => `<span class="d-item"><span class="d-label">${d.label}:</span> ${escapeHtml(d.value)}</span>`)
+                .join('');
+            preview.insertBefore(strip, preview.firstChild);
+        }
+
+        const codeBlocks = preview.querySelectorAll('pre code.language-mermaid');
+        for (let i = 0; i < codeBlocks.length; i++) {
+            const codeBlock = codeBlocks[i];
+            const preElement = codeBlock.parentElement;
+            const mermaidDiv = document.createElement('div');
+            mermaidDiv.className = 'mermaid';
+            const graphDefinition = codeBlock.textContent;
+            try {
+                const id = `mermaid-svg-${Date.now()}-${i}`;
+                const { svg } = await mermaid.render(id, graphDefinition);
+                mermaidDiv.innerHTML = svg;
+                preElement.replaceWith(mermaidDiv);
+            } catch (error) {
+                console.error("Mermaid parsing issue:", error);
+                const fallback = document.createElement('div');
+                fallback.className = 'diagram-fallback';
+                fallback.innerHTML = '<strong>⚠ Diagram could not be rendered.</strong> Raw diagram code kept below so no content is lost:';
+                const codeBox = document.createElement('pre');
+                codeBox.textContent = graphDefinition;
+                fallback.appendChild(codeBox);
+                preElement.replaceWith(fallback);
+            }
+        }
+
+        // Highlight every filled student detail (name, roll no, college, etc.) wherever it appears in the body
+        details.forEach(d => highlightName(preview, d.value));
+
+        applyPageLayout();
+        updatePreviewStats();
+
+        // retrigger the fade-in animation on every render (forces a reflow so the class restarts)
+        preview.classList.remove('fade-in');
+        void preview.offsetWidth;
+        preview.classList.add('fade-in');
+    }
+
+    input.addEventListener('input', () => { renderPromise = renderDocument(); scheduleAutosave(); });
+    Object.values(detailFields).forEach(el => el.addEventListener('input', () => { renderPromise = renderDocument(); scheduleAutosave(); }));
+    detailsStripToggle.addEventListener('change', () => { renderPromise = renderDocument(); scheduleAutosave(); });
+    keyHighlightToggle.addEventListener('change', () => { renderPromise = renderDocument(); scheduleAutosave(); });
+    renderPromise = renderDocument();
+
+    async function safePrint(){
+        try { await renderPromise; } catch (e) { /* ignore, print whatever is ready */ }
+        window.print();
+    }
+    window.safePrint = safePrint;
+
+    // ---- Mobile tab switching ----
+    const tabBtns = document.querySelectorAll('.tab-btn');
+    const editPanel = document.getElementById('edit-panel');
+    const previewPanel = document.getElementById('preview-panel');
+    tabBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            tabBtns.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            if (btn.dataset.view === 'edit') {
+                editPanel.classList.remove('hidden-mobile');
+                previewPanel.classList.add('hidden-mobile');
+            } else {
+                previewPanel.classList.remove('hidden-mobile');
+                editPanel.classList.add('hidden-mobile');
+            }
+        });
+    });
+
+    // ---- Document tools: copy / download ----
+    async function copyMarkdown(){
+        try {
+            await navigator.clipboard.writeText(input.value);
+            showToast('Markdown copied to clipboard.', 'ok');
+        } catch (e) {
+            showToast('Copy failed — select the text manually.', 'error');
+        }
+    }
+    document.getElementById('copy-btn').addEventListener('click', copyMarkdown);
+    document.getElementById('copy-btn-top').addEventListener('click', copyMarkdown);
+
+    document.getElementById('download-btn').addEventListener('click', () => {
+        const blob = new Blob([input.value], { type: 'text/markdown' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'answer.md';
+        a.click();
+        URL.revokeObjectURL(url);
+        showToast('Downloaded answer.md', 'ok');
+    });
+
+    // ---- Submit to Faculty ----
+    const submitFacultyBtn = document.getElementById('submit-faculty-btn');
+    const submitStatusEl = document.getElementById('submit-status');
+
+    submitFacultyBtn.addEventListener('click', async () => {
+        if (!input.value.trim()) {
+            submitStatusEl.textContent = 'Generate or write an answer first.';
+            submitStatusEl.className = 'status error';
+            return;
+        }
+        const facultyEmail = document.getElementById('detail-faculty-email').value.trim();
+        const studentName = document.getElementById('detail-name').value.trim() || 'Student';
+        const roll = document.getElementById('detail-roll').value.trim();
+        const subject = `Assignment Submission — ${studentName}${roll ? ' (' + roll + ')' : ''}`;
+        const bodyText = `Dear Faculty,\n\nPlease find my assignment submission attached.\n\nName: ${studentName}\n${roll ? 'Roll No: ' + roll + '\n' : ''}\nRegards,\n${studentName}`;
+        const fileName = `${studentName.replace(/\s+/g, '_')}_assignment.md`;
+        const file = new File([input.value], fileName, { type: 'text/markdown' });
+
+        // Best path on mobile: native share sheet, file attached directly, faculty's email/WhatsApp/etc picked right there
+        if (navigator.canShare && navigator.canShare({ files: [file] })) {
+            try {
+                await navigator.share({
+                    files: [file],
+                    title: subject,
+                    text: facultyEmail ? `${bodyText}\n\nSending to: ${facultyEmail}` : bodyText
+                });
+                submitStatusEl.textContent = 'Share sheet opened — pick Gmail/Email to send it to your faculty.';
+                submitStatusEl.className = 'status ok';
+                showToast('Share sheet opened.', 'ok');
+                return;
+            } catch (err) {
+                if (err.name === 'AbortError') {
+                    submitStatusEl.textContent = 'Share cancelled.';
+                    submitStatusEl.className = 'status';
+                    return;
+                }
+                // fall through to mailto fallback below
+            }
+        }
+
+        // Fallback: mailto can't attach files, so download the file and open a prefilled email
+        if (!facultyEmail) {
+            submitStatusEl.textContent = 'Add the Faculty Email above, then tap Send again (your browser can\u2019t auto-attach, so the file downloads and an email opens).';
+            submitStatusEl.className = 'status error';
+            showToast('Add the Faculty Email first.', 'error');
+            return;
+        }
+        const blob = new Blob([input.value], { type: 'text/markdown' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = fileName;
+        a.click();
+        URL.revokeObjectURL(url);
+
+        const mailBody = `${bodyText}\n\n(Attach the file "${fileName}" that just downloaded — this browser can't attach it automatically.)`;
+        window.location.href = `mailto:${encodeURIComponent(facultyEmail)}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(mailBody)}`;
+        submitStatusEl.textContent = `Downloaded ${fileName} and opened your email app — attach the file before sending.`;
+        submitStatusEl.className = 'status ok';
+        showToast(`Downloaded ${fileName}`, 'ok');
+    });
+
+    // ---- Gemini API key (stored only in this browser) ----
+    const KEY_STORAGE = 'gemini_api_key';
+    const keyInput = document.getElementById('gemini-key-input');
+    const keyStatus = document.getElementById('key-status');
+    const savedKey = localStorage.getItem(KEY_STORAGE);
+    if (savedKey) {
+        keyInput.value = savedKey;
+        keyStatus.textContent = 'Key loaded from this browser.';
+        keyStatus.className = 'status ok';
+    }
+    document.getElementById('save-key-btn').addEventListener('click', () => {
+        const val = keyInput.value.trim();
+        if (!val) {
+            keyStatus.textContent = 'Paste a key first.';
+            keyStatus.className = 'status error';
+            return;
+        }
+        localStorage.setItem(KEY_STORAGE, val);
+        keyStatus.textContent = 'Key saved in this browser.';
+        keyStatus.className = 'status ok';
+        showToast('Gemini API key saved.', 'ok');
+    });
+    document.getElementById('clear-key-btn').addEventListener('click', () => {
+        localStorage.removeItem(KEY_STORAGE);
+        keyInput.value = '';
+        keyStatus.textContent = 'Key cleared.';
+        keyStatus.className = 'status';
+        showToast('API key cleared.', 'ok');
+    });
+
+    // ---- Detailed Answer Generator (multi-question) ----
+    const questionsList = document.getElementById('questions-list');
+    const questionRowTemplate = document.getElementById('question-row-template');
+    const addQuestionBtn = document.getElementById('add-question-btn');
+    const generateBtn = document.getElementById('generate-btn');
+    const cancelBtn = document.getElementById('cancel-btn');
+    const statusEl = document.getElementById('generator-status');
+
+    const QUESTION_MAX = 400;
+    const REQUEST_TIMEOUT_MS = 90000;
+    let activeController = null;
+    let cancelRequested = false;
+
+    function renumberQuestionRows(){
+        const rows = questionsList.querySelectorAll('.question-row');
+        rows.forEach((row, i) => {
+            row.querySelector('.q-number-label').textContent = `Question ${i + 1}`;
+            row.querySelector('.q-remove-btn').style.display = rows.length > 1 ? 'inline-block' : 'none';
+        });
+    }
+
+    function addQuestionRow(){
+        const node = questionRowTemplate.content.cloneNode(true);
+        const row = node.querySelector('.question-row');
+        const textarea = row.querySelector('.q-text');
+        const charCountEl = row.querySelector('.q-charcount');
+
+        function updateRowCharCount(){
+            const len = textarea.value.length;
+            charCountEl.textContent = `${len} / ${QUESTION_MAX}`;
+            charCountEl.className = 'status q-charcount' + (len > QUESTION_MAX ? ' error' : '');
+        }
+        textarea.addEventListener('input', updateRowCharCount);
+        updateRowCharCount();
+
+        row.querySelector('.q-remove-btn').addEventListener('click', () => {
+            row.remove();
+            renumberQuestionRows();
+        });
+
+        questionsList.appendChild(row);
+        renumberQuestionRows();
+        return row;
+    }
+
+    addQuestionBtn.addEventListener('click', () => {
+        const row = addQuestionRow();
+        row.querySelector('.q-text').focus();
+    });
+
+    addQuestionRow(); // start with one question
+
+    const SYSTEM_PROMPT = `You write exam-ready and assignment-ready answers for JNTUH B.Tech CSE (R18/R22 regulation) students. You will be given a question, its mark weightage, a diagram preference, and a question type ("theory", "program", or "auto"). If the question text starts with a label like "Q1)" or "Q2)", keep that exact label at the start of the H1 title so answer numbering is preserved. If the type is "auto", decide for yourself whether it is a theory question or a programming/coding question (asks to write a program, implement an algorithm, solve a coding problem, or trace/debug code). If the type is explicitly given as "theory" or "program", always follow that structure regardless of how the question is phrased. Output only Markdown — no preamble, no meta-commentary, no code fences around the whole answer (only around individual code/mermaid blocks).
+
+LENGTH TARGET — this is mandatory, not optional. Match the depth of a real handwritten JNTUH answer sheet:
+- 10 marks → roughly 900-1300 words, equivalent to 1-3 handwritten pages. Cover the core definitions, working/explanation, one diagram, and a short example — don't pad, but don't be thin either.
+- 16 marks → roughly 1600-2200 words, equivalent to 2-4 handwritten pages. Add more subsections: types/classification, advantages & disadvantages, comparisons, a table, and at least one diagram.
+- 20 marks → roughly 2200-3200 words, equivalent to 3-5 handwritten pages. Be exhaustive: multiple H2/H3 subsections covering every angle (definition, history/background if relevant, detailed working, types, architecture/steps, advantages, disadvantages, real-world applications, comparison table, and 1-2 diagrams). Go deep on each subsection rather than listing shallow bullet points.
+For PROGRAM-type answers, the length target is secondary to correctness — write as much explanation, dry-run detail, and edge-case discussion as needed to naturally reach a comparable depth for the given marks, but never pad the code itself with filler.
+
+IF the type resolves to PROGRAMMING / CODING:
+- An H1 title restating the question, with the mark weightage noted.
+- "## Aim" — one line stating what the program does.
+- "## Algorithm" — clear numbered steps.
+- "## Program" — the COMPLETE, correct, compilable/runnable code in a fenced block with the right language tag (\`\`\`c, \`\`\`cpp, \`\`\`java, \`\`\`python, \`\`\`sql etc.). Include necessary headers/imports, a proper main/entry point, and inline comments on non-obvious lines. The code must actually work, not be pseudocode. If the question doesn't specify a language, default to C for JNTUH-style programs unless Python/Java/SQL is clearly implied by context.
+- "## Sample Input & Output" — at least one realistic run showing input and the exact expected output, formatted clearly. For higher marks, include 2-3 test cases including an edge case.
+- "## Explanation / Dry Run" — walk through what the code does and why, line-by-line for key parts, and time/space complexity if relevant (e.g. for algorithms/data structures).
+- Wrap the single most important phrase in a couple of key spots using ==double equals== so it renders as a highlighted key point.
+- A brief conclusion.
+
+IF the type resolves to THEORY:
+- An H1 title restating the question, with the mark weightage noted.
+- A short 2-3 sentence overview.
+- Numbered H2 subsections covering every part of the question in depth (definitions, working, types, advantages/disadvantages, examples, real-world use cases — whatever fits the question and the mark-based depth required above).
+- At least one Mermaid diagram in a fenced \`\`\`mermaid code block, matching the requested diagram style when one is given (flowchart / sequence / ER), otherwise whichever best represents the concept. For 16-20 mark answers, include a second diagram if it genuinely helps (e.g. one flowchart plus one comparison/architecture diagram). Use simple, syntactically valid Mermaid v10 syntax.
+- At least one comparison or summary table (e.g. comparing types, pros/cons, before-vs-after) — tables are expected at every mark level, not optional.
+- Wrap the single most important phrase in EVERY subsection using ==double equals== so it renders as a highlighted key point. Use this for the most exam-critical statements only — don't overuse it.
+- A brief conclusion summarizing the key takeaways.`;
+
+    const GEMINI_MODEL = 'gemini-3.6-flash';
+
+    async function callModel(question, marks, diagram, qtype, signal){
+        const apiKey = localStorage.getItem(KEY_STORAGE);
+        if (!apiKey) throw new Error('NO_KEY');
+
+        const response = await fetch(
+            `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent`,
+            {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'x-goog-api-key': apiKey
+                },
+                signal,
+                body: JSON.stringify({
+                    systemInstruction: { parts: [{ text: SYSTEM_PROMPT }] },
+                    contents: [
+                        { role: 'user', parts: [{ text: `Question: ${question}\nMarks: ${marks}\nDiagram preference: ${diagram}\nQuestion type: ${qtype}` }] }
+                    ],
+                    generationConfig: { maxOutputTokens: 16384 }
+                })
+            }
+        );
+
+        if (!response.ok) {
+            let detail = '';
+            try { detail = (await response.text()).slice(0, 300); } catch (e) {}
+            if (response.status === 429) throw new Error('RATE_LIMITED: ' + detail);
+            if (response.status === 400 || response.status === 401 || response.status === 403) throw new Error('BAD_KEY: ' + detail);
+            if (response.status >= 500) throw new Error('SERVER_ERROR: ' + detail);
+            throw new Error(`API request failed with status ${response.status}: ${detail}`);
+        }
+
+        const data = await response.json();
+        const answerText = ((data.candidates || [])[0]?.content?.parts || [])
+            .map(part => part.text || '')
+            .filter(Boolean)
+            .join('\n');
+
+        if (!answerText) throw new Error('EMPTY_RESPONSE');
+        return answerText;
+    }
+
+    function collectQuestions(){
+        const rows = Array.from(questionsList.querySelectorAll('.question-row'));
+        return rows.map(row => ({
+            row,
+            question: row.querySelector('.q-text').value.trim(),
+            marks: row.querySelector('.q-marks').value,
+            diagram: row.querySelector('.q-diagram').value,
+            qtype: row.querySelector('.q-type').value
+        }));
+    }
+
+    async function generateAnswer(){
+        const allEntries = collectQuestions();
+        const entries = allEntries.filter(e => e.question.length > 0);
+
+        if (entries.length === 0) {
+            statusEl.textContent = 'Type at least one question first.';
+            statusEl.className = 'status error';
+            return;
+        }
+        const tooLong = entries.find(e => e.question.length > QUESTION_MAX);
+        if (tooLong) {
+            statusEl.textContent = `One of your questions is too long — keep each under ${QUESTION_MAX} characters.`;
+            statusEl.className = 'status error';
+            return;
+        }
+        if (typeof navigator !== 'undefined' && navigator.onLine === false) {
+            statusEl.textContent = 'You appear to be offline. Reconnect and try again.';
+            statusEl.className = 'status error';
+            return;
+        }
+
+        generateBtn.disabled = true;
+        generateBtn.classList.add('is-working');
+        cancelBtn.style.display = 'inline-block';
+        cancelRequested = false;
+        const multi = entries.length > 1;
+        const answers = [];
+
+        try {
+            for (let i = 0; i < entries.length; i++) {
+                if (cancelRequested) {
+                    statusEl.textContent = `Cancelled after ${i} of ${entries.length} question(s).`;
+                    statusEl.className = 'status error';
+                    break;
+                }
+                const entry = entries[i];
+                generateBtn.textContent = multi ? `Generating Q${i + 1} of ${entries.length}…` : 'Generating…';
+                statusEl.textContent = multi
+                    ? `Generating Q${i + 1} of ${entries.length}… this can take a bit for 20-mark answers.`
+                    : 'Generating your detailed answer… this can take a bit for 20-mark answers.';
+                statusEl.className = 'status';
+
+                const questionForModel = multi ? `Q${i + 1}) ${entry.question}` : entry.question;
+                const answerText = await generateOne(questionForModel, entry.marks, entry.diagram, entry.qtype);
+                answers.push(answerText);
+            }
+
+            if (answers.length > 0) {
+                input.value = answers.join('\n\n<div class="page-break"></div>\n\n');
+                renderPromise = renderDocument();
+                await renderPromise;
+                const totalWords = answers.join(' ').trim().split(/\s+/).length;
+                if (!cancelRequested) {
+                    statusEl.textContent = multi
+                        ? `Done — ${answers.length} answers, ~${totalWords} words total. Switch to Preview to check them.`
+                        : `Done — ~${totalWords} words. Switch to Preview, or edit the Markdown directly.`;
+                    statusEl.className = 'status ok';
+                    showToast(multi ? `Generated ${answers.length} answers.` : 'Answer generated.', 'ok');
+                    scheduleAutosave();
+                }
+            }
+        } catch (err) {
+            showToast('Generation failed — check the status message below for details.', 'error');
+        } finally {
+            activeController = null;
+            generateBtn.disabled = false;
+            generateBtn.classList.remove('is-working');
+            generateBtn.textContent = 'Generate All Answers';
+            cancelBtn.style.display = 'none';
+        }
+    }
+
+    // Generates one answer, with one automatic retry on transient failures (rate limit / server error / timeout)
+    async function generateOne(question, marks, diagram, qtype, isRetry){
+        activeController = new AbortController();
+        const timeoutId = setTimeout(() => activeController.abort(), REQUEST_TIMEOUT_MS);
+        try {
+            return await callModel(question, marks, diagram, qtype, activeController.signal);
+        } catch (error) {
+            console.error('Answer generation error:', error);
+            const transient = error.name === 'AbortError' || error.message === 'RATE_LIMITED' || error.message === 'SERVER_ERROR';
+            if (transient && !isRetry && !cancelRequested) {
+                clearTimeout(timeoutId);
+                return await generateOne(question, marks, diagram, qtype, true);
+            }
+
+            if (error.message === 'NO_KEY') {
+                statusEl.textContent = 'Add your Gemini API key above first (free at aistudio.google.com/apikey).';
+            } else if (error.message.startsWith('BAD_KEY')) {
+                statusEl.textContent = 'Key rejected: ' + error.message.replace('BAD_KEY: ', '');
+            } else if (error.name === 'AbortError') {
+                statusEl.textContent = 'Request timed out (or was cancelled).';
+            } else if (error.message.startsWith('RATE_LIMITED')) {
+                statusEl.textContent = 'Rate limited: ' + error.message.replace('RATE_LIMITED: ', '');
+            } else if (error.message.startsWith('SERVER_ERROR')) {
+                statusEl.textContent = 'Server issue: ' + error.message.replace('SERVER_ERROR: ', '');
+            } else if (error.message === 'EMPTY_RESPONSE') {
+                statusEl.textContent = 'Got an empty answer back for one question — try rephrasing it.';
+            } else {
+                statusEl.textContent = 'Error: ' + error.message;
+            }
+            statusEl.className = 'status error';
+            throw error;
+        } finally {
+            clearTimeout(timeoutId);
+        }
+    }
+
+    generateBtn.addEventListener('click', () => generateAnswer());
+    cancelBtn.addEventListener('click', () => {
+        cancelRequested = true;
+        if (activeController) activeController.abort();
+    });
+    window.addEventListener('offline', () => {
+        statusEl.textContent = 'You just went offline — generation will fail until you reconnect.';
+        statusEl.className = 'status error';
+    });
+</script>
+</body>
+</html>
