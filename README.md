@@ -46,9 +46,12 @@ Your Gemini API key and draft content are stored **only in your browser's `local
 
 No license specified — all rights reserved by the author unless stated otherwise.
 
-## 👤 Author
+## 👤 About the Builder
 
 **NIKHIL CHARY SRIRAMOJU**
-- GitHub: [@Nikhil-creat](https://github.com/Nikhil-creat)
-- LinkedIn: [nikhil-chary-sriramoju](https://in.linkedin.com/in/nikhil-chary-sriramoju-95041b38a)
-- Instagram: [@nikhil__sriramoju](https://www.instagram.com/nikhil__sriramoju?stkn=MTFxdDZobmJtb2RoaA==)
+B.Tech Final Year — Computer Science & Engineering
+
+- 🔗 LinkedIn: [nikhil-chary-sriramoju](https://in.linkedin.com/in/nikhil-chary-sriramoju-95041b38a)
+- 💻 GitHub: [Nikhil-creat](https://github.com/Nikhil-creat)
+- 📧 Email: sriramojunikhil66@gmail.com
+- 📸 Instagram: [nikhil__sriramoju](https://www.instagram.com/nikhil__sriramoju)
