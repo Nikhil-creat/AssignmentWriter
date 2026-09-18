@@ -23,7 +23,7 @@ No backend, no build step, no install. Just open `index.html`.
 
 1. Clone or download this repo.
 2. Open `index.html` in any modern browser (Chrome, Edge, Firefox, Safari).
-3. Get a free [Gemini API key](https://aistudio.google.com/apikey) and paste it into the **Gemini API Key** field in the sidebar (it's stored only in your browser's `localStorage` — never sent anywhere except Google's API).
+3. Get a free [GROQ API KEYS:  https://console.groq.com/keys) and paste it into the **Groq API Key** field in the sidebar (it's stored only in your browser's `localStorage` — never sent anywhere except Google's API).
 4. Fill in your student details.
 5. Add your exam question(s), choose marks and diagram type, and click **Generate All Answers**.
 6. Switch between **System** and **Handwritten** preview modes, then **Export to PDF / Print**.
