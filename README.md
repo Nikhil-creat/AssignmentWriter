@@ -40,7 +40,7 @@ No server or installation required — it's a static HTML file that can also be 
 
 ## 🔒 Privacy
 
-Your Gemini API key and draft content are stored **only in your browser's `localStorage`**. Nothing is sent to any server other than Google's Gemini API when generating answers.
+Your Groi API key and draft content are stored **only in your browser's `localStorage`**. Nothing is sent to any server other than Google's Gemini API when generating answers.
 
 ## 📄 License
 
