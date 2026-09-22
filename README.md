@@ -1,8 +1,17 @@
 # 📝 Answer Sheet Studio (AssignmentWriter)
 
-A single-file, browser-based tool that generates **JNTUH-style B.Tech CSE exam answers** — complete with Mermaid diagrams, a printable "answer sheet" layout, and even a realistic **handwritten mode** — powered by the Google Gemini API.
-
+A single-file, browser-based tool that generates **JNTUH-style B.Tech CSE exam answers** — complete with Mermaid diagrams, a printable "answer sheet" layout, and even a realistic **handwritten mode** — powered by free Groq API key
 No backend, no build step, no install. Just open `index.html`.
+
+## 👤 About the Builder
+
+# **NIKHIL CHARY SRIRAMOJU**
+B.Tech Final Year — Computer Science & Engineering
+
+- 🔗 LinkedIn: [nikhil-chary-sriramoju](https://in.linkedin.com/in/nikhil-chary-sriramoju-95041b38a)
+- 💻 GitHub: [Nikhil-creat](https://github.com/Nikhil-creat)
+- 📧 Email: sriramojunikhil66@gmail.com
+- 📸 Instagram: [nikhil__sriramoju](https://www.instagram.com/nikhil__sriramoju)
 
 ## ✨ Features
 
@@ -46,12 +55,4 @@ Your Groi API key and draft content are stored **only in your browser's `localSt
 
 No license specified — all rights reserved by the author unless stated otherwise.
 
-## 👤 About the Builder
 
-**NIKHIL CHARY SRIRAMOJU**
-B.Tech Final Year — Computer Science & Engineering
-
-- 🔗 LinkedIn: [nikhil-chary-sriramoju](https://in.linkedin.com/in/nikhil-chary-sriramoju-95041b38a)
-- 💻 GitHub: [Nikhil-creat](https://github.com/Nikhil-creat)
-- 📧 Email: sriramojunikhil66@gmail.com
-- 📸 Instagram: [nikhil__sriramoju](https://www.instagram.com/nikhil__sriramoju)
