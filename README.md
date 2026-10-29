@@ -12,3 +12,7 @@ Import the GitHub repo at vercel.com/new, then Settings → Environment Variable
 
 ## Limits
 Rate limiting is in-memory per serverless instance (best effort). RAG uses keyword retrieval over `data/syllabus.json`; add your own syllabus chunks. The CNN needs training data and `weights.pt` before it returns labels.
+
+
+## GitHub Pages layout (current)
+`index.html` = animated landing page, `studio.html` = the original tool (renamed). Keys are pasted in the browser (Groq `gsk_` or Gemini `AIza`); provider and best model are auto-detected. The `api/` folder is only for an optional Vercel server mode.

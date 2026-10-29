@@ -13,3 +13,5 @@
 .wm-layer.footer span{font-size:1rem;font-weight:600}
 .wm-layer.footer img{max-height:36px}
 @media print{.wm-layer{position:fixed;z-index:9999}.wm-layer.on{display:flex}}
+.pro-card input[type=password]{width:100%;background:#0f172a;border:1px solid #334155;color:#fff;padding:8px 10px;border-radius:7px;font-size:.82rem;outline:none}
+.pro-card input[type=password]:focus{border-color:#14b8a6}

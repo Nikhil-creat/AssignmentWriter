@@ -7,4 +7,6 @@ app.post('/api/generate', require('./api/generate'));
 app.post('/api/classify', require('./api/classify'));
 app.use('/assets', express.static('assets'));
 app.get('/', (_, res) => res.sendFile(__dirname + '/index.html'));
+app.get('/:p.html', (req, res) => res.sendFile(__dirname + '/' + req.params.p + '.html'));
+app.use('/data', express.static('data'));
 app.listen(3000, () => console.log('http://localhost:3000'));
