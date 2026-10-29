@@ -1,63 +1,64 @@
 <!DOCTYPE html>
 <html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Studio — Sheetstudio</title><link rel="icon" href="favicon.svg" type="image/svg+xml"><meta name="theme-color" content="#0f1626">
-<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700&family=Source+Serif+4:wght@400;600;700&family=Caveat:wght@500;700&display=swap" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/marked@12.0.2/marked.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/dompurify@3.1.6/dist/purify.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js"></script>
+<title>Studio — Sheetstudio</title><link rel="icon" href="favicon.svg" type="image/svg+xml"><link rel="manifest" href="manifest.webmanifest"><link rel="apple-touch-icon" href="icon-192.png"><meta name="theme-color" content="#0f1626">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600&family=Source+Serif+4:wght@400;600;700&family=Caveat:wght@500;700&display=swap" rel="stylesheet" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/marked@12.0.2/marked.min.js" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/dompurify@3.1.6/dist/purify.min.js" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js" crossorigin="anonymous"></script>
 <link rel="stylesheet" href="assets/pro.css">
-<style>
-:root{--n:#0f1626;--ink:#f4f6fa;--i72:rgba(244,246,250,.72);--i46:rgba(244,246,250,.46);--lime:#c6ff2e;--cy:#3fd8ff;--hair:rgba(255,255,255,.22);--card:rgba(255,255,255,.04)}
+<style>:root{--bg:#F6F4FC;--ink:#1B133C;--mut:rgba(27,19,60,.62);--hair:rgba(27,19,60,.13);--or:#f97316}
 *{box-sizing:border-box;margin:0}
-html,body{background:var(--n);color:var(--ink);font:400 15px/1.45 'Inter Tight',system-ui,sans-serif;height:100%}
+html,body{background:var(--bg);color:var(--ink);font:400 15px/1.45 'Inter',system-ui,sans-serif;height:100%}
 a{color:inherit;text-decoration:none}
-nav{position:fixed;inset:0 0 auto;height:58px;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;padding:0 24px;z-index:20;background:rgba(15,22,38,.92);backdrop-filter:blur(8px);border-bottom:1px solid rgba(255,255,255,.08)}
-nav .l,nav .r{display:flex;align-items:center;gap:10px;font:500 11.5px 'Inter Tight';text-transform:uppercase;letter-spacing:.06em}nav .r{justify-content:flex-end}
-.logo{font-weight:700;font-size:19px;letter-spacing:.06em}
-.pill,.btn{height:40px;padding:0 18px;border-radius:99px;border:0;display:inline-flex;align-items:center;justify-content:center;background:#2a3245;color:var(--ink);font:600 11.5px 'Inter Tight';letter-spacing:.05em;text-transform:uppercase;cursor:pointer;transition:transform .2s,opacity .2s}
-.pill.lime,.btn-generate{background:var(--lime);color:var(--n)}.btn-ghost{background:transparent;border:1px solid var(--hair)}
-.pill:hover,.btn:hover:not(:disabled){transform:translateY(-1px)}.btn:disabled{opacity:.5;cursor:wait}
-.app{display:grid;grid-template-columns:350px 1fr;height:100vh;padding-top:58px}
-#sidebar{overflow:auto;padding:18px;display:flex;flex-direction:column;gap:14px;border-right:1px solid rgba(255,255,255,.08)}
-.brand h1{font-size:22px;font-weight:600;letter-spacing:-.03em}.brand p{color:var(--i46);font-size:13px}
-.card{background:var(--card);border:1px solid var(--hair);border-radius:16px;padding:14px;display:flex;flex-direction:column;gap:10px}
-.card h2{font:600 11px 'Inter Tight';letter-spacing:.06em;text-transform:uppercase;color:var(--i46)}
+nav{position:fixed;top:0;left:0;right:0;z-index:30;display:flex;justify-content:center;padding:14px 12px 0}
+.pillnav{display:flex;align-items:center;gap:18px;background:rgba(255,255,255,.75);backdrop-filter:blur(10px);border-radius:12px;padding:9px 16px;box-shadow:0 1px 3px rgba(0,0,0,.08)}
+.lk{font-size:14px;font-weight:500;color:rgba(27,19,60,.8)}.lk:hover{color:var(--ink)}
+.pill{height:34px;padding:0 16px;border-radius:10px;border:0;background:var(--ink);color:#fff;font:600 13px 'Inter';cursor:pointer;display:inline-flex;align-items:center}
+.btn{height:40px;padding:0 16px;border-radius:10px;border:1px solid var(--hair);background:#fff;color:var(--ink);font:600 13px 'Inter';cursor:pointer;display:inline-flex;align-items:center;justify-content:center;transition:.2s}
+.btn:hover:not(:disabled){box-shadow:0 4px 12px rgba(0,0,0,.12)}.btn:disabled{opacity:.5;cursor:wait}.btn.sm{height:30px;padding:0 10px;font-size:12px}
+.btn-generate{background:var(--ink);color:#fff;border-color:var(--ink)}.btn-ghost{background:transparent}
+.app{display:grid;grid-template-columns:350px 1fr;height:100vh;padding-top:74px}
+#sidebar{overflow:auto;padding:14px 16px 24px;display:flex;flex-direction:column;gap:14px}
+.brand h1{font:400 38px/1 'Instrument Serif',serif;letter-spacing:-.02em}.brand p{color:var(--mut);font-size:13px;margin-top:4px}
+.card{background:#fff;border:1px solid var(--hair);border-radius:16px;padding:14px;display:flex;flex-direction:column;gap:10px;box-shadow:0 1px 2px rgba(27,19,60,.04)}
+.card h2{font:600 11px 'Inter';letter-spacing:.06em;text-transform:uppercase;color:var(--mut)}
 .row{display:flex;gap:8px}.row>*{flex:1;min-width:0}
-input,select,textarea{width:100%;background:#0b1220;border:1px solid var(--hair);color:var(--ink);border-radius:10px;padding:9px 11px;font:400 14px 'Inter Tight',sans-serif;outline:none}
-input:focus,select:focus,textarea:focus{border-color:var(--cy)}
-input[type=checkbox],input[type=range]{width:auto;accent-color:var(--lime)}
+input,select,textarea{width:100%;background:#fff;border:1px solid var(--hair);color:var(--ink);border-radius:10px;padding:9px 11px;font:400 14px 'Inter',sans-serif;outline:none}
+input:focus,select:focus,textarea:focus{border-color:var(--ink)}
+input[type=checkbox],input[type=range]{width:auto;accent-color:var(--or)}
 textarea.q-text{min-height:78px;resize:vertical}
-.field-label{font-size:11px;color:var(--i46);display:block;margin-bottom:3px}
-.toggle-row{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--i72)}
-.status{font-size:12px;color:var(--i46);min-height:14px;line-height:1.4}.status.ok{color:var(--lime)}.status.error{color:#ff8a8a}
-main{display:flex;flex-direction:column;min-width:0;padding:14px;gap:10px;height:100%}
+.field-label{font-size:11px;color:var(--mut);display:block;margin-bottom:3px}
+.toggle-row{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--mut)}
+.status{font-size:12px;color:var(--mut);min-height:14px;line-height:1.4}.status.ok{color:#15803d}.status.error{color:#b91c1c}
+.lib-i{display:flex;gap:6px;align-items:center}.lib-i span{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:13px}
+main{display:flex;flex-direction:column;min-width:0;padding:6px 16px 14px 0;gap:10px;height:100%}
 .bar{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
-.seg{height:34px;padding:0 14px;border-radius:99px;border:1px solid var(--hair);background:transparent;color:var(--i72);font:600 11.5px 'Inter Tight';cursor:pointer}.seg.on{background:#fff;color:var(--n);border-color:#fff}
-.stats{margin-left:auto;color:var(--i46);font-size:12px}.tabs{display:none}
+.seg{height:34px;padding:0 14px;border-radius:10px;border:1px solid var(--hair);background:#fff;color:var(--mut);font:600 12px 'Inter';cursor:pointer}.seg.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+.stats{margin-left:auto;color:var(--mut);font-size:12px}.tabs{display:none}
 .panels{flex:1;display:flex;gap:12px;min-height:0}.panel{flex:1;min-width:0;display:flex;flex-direction:column;gap:6px}
-.pt{font:600 11px 'Inter Tight';letter-spacing:.06em;text-transform:uppercase;color:var(--i46);display:flex;justify-content:space-between;align-items:center}
+.pt{font:600 11px 'Inter';letter-spacing:.06em;text-transform:uppercase;color:var(--mut)}
 #markdown-input{flex:1;resize:none;font:12.5px/1.55 ui-monospace,Consolas,monospace;border-radius:14px;padding:14px}
-#preview-wrap{flex:1;position:relative;border-radius:14px;overflow:hidden;background:#fff}
+#preview-wrap{flex:1;position:relative;border-radius:14px;overflow:hidden;background:#fff;border:1px solid var(--hair);box-shadow:0 6px 24px rgba(27,19,60,.08)}
 #preview{height:100%;overflow:auto;padding:36px 42px;background:#fff;color:#1e293b;font:400 15.5px/1.8 'Source Serif 4',Georgia,serif}
-#preview h1{font-size:1.35rem;border-bottom:2px solid #0f1626;padding-bottom:6px;margin:1em 0 .4em;color:#0f1626}#preview h2{font-size:1.08rem;color:#1d4ed8;margin:1em 0 .3em}#preview h3{font-size:1rem;margin:.8em 0 .2em}
+#preview h1{font:400 1.8rem/1.1 'Instrument Serif',serif;border-bottom:2px solid var(--ink);padding-bottom:6px;margin:1em 0 .4em;color:var(--ink)}#preview h2{font-size:1.08rem;color:#1d4ed8;margin:1em 0 .3em}#preview h3{font-size:1rem;margin:.8em 0 .2em}
 #preview p{margin-bottom:.9em;text-align:justify}#preview ul,#preview ol{margin:0 0 .9em 1.4em}
-#preview table{border-collapse:collapse;width:100%;margin:1.2em 0;font:.88rem 'Inter Tight',sans-serif}#preview th,#preview td{border:1px solid #94a3b8;padding:7px 10px;text-align:left}#preview th{background:#f1f5f9}
-#preview blockquote{border-left:3px solid #2563eb;background:#f8fafc;padding:8px 14px;margin:1em 0;font-size:.92rem}
+#preview table{border-collapse:collapse;width:100%;margin:1.2em 0;font:.88rem 'Inter',sans-serif}#preview th,#preview td{border:1px solid #94a3b8;padding:7px 10px;text-align:left}#preview th{background:#f1f5f9}
+#preview blockquote{border-left:3px solid var(--or);background:#fff7ed;padding:8px 14px;margin:1em 0;font-size:.92rem}
 #preview pre{background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:12px;overflow:auto;margin-bottom:1em;font:.82rem/1.5 ui-monospace,Consolas,monospace}
-.mermaid{display:flex;justify-content:center;margin:18px 0}.fb{background:#fef2f2;border:1px solid #fecaca;color:#991b1b;border-radius:8px;padding:10px 12px;margin:14px 0;font:.85rem 'Inter Tight',sans-serif}
+.mermaid{display:flex;justify-content:center;margin:18px 0}.fb{background:#fef2f2;border:1px solid #fecaca;color:#991b1b;border-radius:8px;padding:10px 12px;margin:14px 0;font:.85rem 'Inter',sans-serif}
 mark.name{background:#fde68a;color:#78350f;padding:0 2px;border-radius:3px;font-weight:600}mark.key{background:#bbf7d0;color:#14532d;padding:0 2px;border-radius:3px;font-weight:600}
 #preview.nokey mark.key{background:none;color:inherit;font-weight:700}
-.strip{display:flex;flex-wrap:wrap;gap:4px 16px;border:1px solid #cbd5e1;border-radius:8px;background:#f8fafc;padding:9px 13px;margin-bottom:18px;font:.78rem 'Inter Tight',sans-serif}.strip b{color:#0f1626}
+.strip{display:flex;flex-wrap:wrap;gap:4px 16px;border:1px solid #cbd5e1;border-radius:8px;background:#f8fafc;padding:9px 13px;margin-bottom:18px;font:.78rem 'Inter',sans-serif}.strip b{color:var(--ink)}
 .page-break{height:1px;margin:24px 0;border-top:2px dashed #cbd5e1}
 #preview.hw{font:500 calc(1.32rem*var(--hw,1))/calc(2.15em) 'Caveat',cursive;color:#1d3a8a;padding-left:60px;border-left:3px solid #dc2626;margin-left:18px;background:repeating-linear-gradient(#fff,#fff calc(2.15em - 1px),#c7d6f5 calc(2.15em - 1px),#c7d6f5 2.15em) 0 8px}
 #preview.hw p{text-align:left;font-size:1.2em}#preview.hw h1,#preview.hw h2,#preview.hw h3{font-family:'Caveat',cursive;color:#7c2d12}#preview.hw table,#preview.hw .strip{font-family:'Caveat',cursive}
-#toast{position:fixed;bottom:18px;right:18px;background:#fff;color:var(--n);padding:10px 16px;border-radius:99px;font-weight:600;font-size:13px;opacity:0;transform:translateY(8px);transition:.25s;z-index:60;pointer-events:none}#toast.show{opacity:1;transform:none}
+#toast{position:fixed;bottom:18px;right:18px;background:var(--ink);color:#fff;padding:10px 16px;border-radius:10px;font-weight:600;font-size:13px;opacity:0;transform:translateY(8px);transition:.25s;z-index:60;pointer-events:none}#toast.show{opacity:1;transform:none}
 #preview table,#preview .mermaid,#preview pre,#preview blockquote,.strip{break-inside:avoid}#preview h1,#preview h2,#preview h3{break-after:avoid}
-@media(max-width:900px){body{height:auto}.app{display:block;height:auto}#sidebar{border:0;overflow:visible}main{height:auto;min-height:100vh}.tabs{display:flex;gap:8px}.panels{display:block}.panel{display:none;height:78vh}.panels[data-v=edit] #edit,.panels[data-v=prev] #prevp{display:flex}nav{grid-template-columns:1fr auto}nav .l{display:none}.pill{height:34px;padding:0 12px}#preview{padding:22px 18px}}
-@media print{nav,#sidebar,.bar,.tabs,#toast,.pt{display:none!important}html,body,.app,main{display:block;height:auto;overflow:visible;background:#fff;padding:0}.panels{display:block}#edit{display:none!important}#prevp{display:block!important}#preview-wrap{overflow:visible;border-radius:0}#preview{overflow:visible;height:auto;padding:0}@page{margin:18mm 20mm 16mm}.page-break{break-before:page;border:0;margin:0;height:0}#preview.hw{background-attachment:local}}
+@media(max-width:900px){body{height:auto}.app{display:block;height:auto}main{height:auto;min-height:100vh;padding:6px 16px 20px}.tabs{display:flex;gap:8px}.panels{display:block}.panel{display:none;height:78vh}.panels[data-v=edit] #edit,.panels[data-v=prev] #prevp{display:flex}#preview{padding:22px 18px}}
+@media print{nav,#sidebar,.bar,.tabs,#toast,.pt{display:none!important}html,body,.app,main{display:block;height:auto;overflow:visible;background:#fff;padding:0}.panels{display:block}#edit{display:none!important}#prevp{display:block!important}#preview-wrap{overflow:visible;border:0;box-shadow:none;border-radius:0}#preview{overflow:visible;height:auto;padding:0}@page{margin:18mm 20mm 16mm}.page-break{break-before:page;border:0;margin:0;height:0}#preview.hw{background-attachment:local}}
 </style></head><body>
-<nav><div class="l"><a href="./">← Home</a></div><a class="logo" href="./">SHEETSTUDIO</a>
-<div class="r"><a class="pill" href="https://console.groq.com/keys" target="_blank" rel="noopener">Free key</a><button class="pill lime" id="b-print" type="button">Export PDF</button></div></nav>
+<nav><div class="pillnav"><a href="./" aria-label="Home"><svg width="24" height="24" viewBox="0 0 256 256" fill="#1B133C" aria-hidden="true"><path d="M 256 256 L 128 256 L 0 128 L 128 128 Z"/><path d="M 256 128 L 128 128 L 0 0 L 128 0 Z"/></svg></a>
+<a class="lk" href="./">Home</a><a class="lk" href="https://console.groq.com/keys" target="_blank" rel="noopener">Free key</a><button class="pill" id="b-print" type="button">Export PDF</button></div></nav>
 <div class="app"><aside id="sidebar">
 <div class="brand"><h1>Studio</h1><p>JNTUH-style answers, diagrams and print-ready sheets.</p></div>
 <div class="card"><h2>Student details</h2>
@@ -73,6 +74,9 @@ mark.name{background:#fde68a;color:#78350f;padding:0 2px;border-radius:3px;font-
 <div class="row"><button class="btn btn-ghost" id="b-copy" type="button">Copy .md</button><button class="btn btn-ghost" id="b-dl" type="button">Download .md</button></div>
 <div class="row"><button class="btn btn-ghost" id="b-sample" type="button">Load sample</button><button class="btn btn-ghost" id="b-clear" type="button">Clear all</button></div>
 <div class="status">Drafts autosave in this browser.</div></div>
+<div class="card"><h2>My library</h2><input id="lib-title" maxlength="80" placeholder="Title (optional)">
+<button class="btn btn-ghost" id="lib-save" type="button">Save current answer</button><div id="lib-list" style="display:flex;flex-direction:column;gap:6px"></div>
+<div class="row"><button class="btn btn-ghost sm" id="lib-exp" type="button">Export backup</button><label class="btn btn-ghost sm">Import<input id="lib-imp" type="file" accept="application/json" hidden></label></div></div>
 <div class="card"><h2>Submit to faculty</h2><button class="btn btn-generate" id="b-send" type="button">Send to faculty</button><div class="status" id="send-s">Shares the .md file, or opens your email app. Attach the exported PDF for the best result.</div></div>
 </aside>
 <main><div class="bar"><button class="seg on" id="m-sys" type="button">System</button><button class="seg" id="m-hw" type="button">Handwritten</button>
@@ -123,6 +127,18 @@ $('b-print').onclick=()=>{const t=document.title;document.title='Answer Sheet - 
 $('b-send').onclick=async()=>{const n=D.name.value.trim()||'Student',f=new File([md.value],'answer-sheet.md',{type:'text/markdown'});
 if(navigator.canShare&&navigator.canShare({files:[f]})){try{await navigator.share({files:[f],title:'Answer sheet - '+n,text:'Answer sheet by '+n});return}catch{}}
 const q=encodeURIComponent;location.href='mailto:'+D.femail.value.trim()+'?subject='+q('Answer sheet - '+n)+'&body='+q('Respected sir/madam,\n\nPlease find my answer sheet attached.\n\nRegards,\n'+n+(D.roll.value?'\nRoll No: '+D.roll.value:''))};
+const LK='asw-lib-v1',lib=()=>{try{return JSON.parse(localStorage.getItem(LK)||'[]')}catch{return[]}},putLib=a=>{try{localStorage.setItem(LK,JSON.stringify(a.slice(0,50)))}catch{toast('Storage full. Export a backup and delete old items.')}};
+function drawLib(){const box=$('lib-list');box.replaceChildren();const a=lib();if(!a.length){const p=document.createElement('div');p.className='status';p.textContent='Nothing saved yet.';box.append(p);return}
+a.forEach(it=>{const r=document.createElement('div');r.className='lib-i';const t=document.createElement('span');t.textContent=it.title;t.title=new Date(it.t).toLocaleString();
+const o=document.createElement('button');o.className='btn btn-ghost sm';o.textContent='Open';o.onclick=()=>{md.value=it.md;queue();toast('Opened')};
+const d=document.createElement('button');d.className='btn btn-ghost sm';d.textContent='Delete';d.onclick=()=>{putLib(lib().filter(x=>x.id!==it.id));drawLib()};r.append(t,o,d);box.append(r)})}
+$('lib-save').onclick=()=>{if(!md.value.trim())return toast('Nothing to save yet');const h=(md.value.match(/^#+\s*(.+)$/m)||[])[1]||'Untitled answer',a=lib();
+a.unshift({id:Date.now(),title:($('lib-title').value.trim()||h).slice(0,80),md:md.value.slice(0,200000),t:Date.now()});putLib(a);$('lib-title').value='';drawLib();toast('Saved to library')};
+$('lib-exp').onclick=()=>{const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify(lib())],{type:'application/json'}));a.download='sheetstudio-library.json';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1e3)};
+$('lib-imp').onchange=async e=>{const f=e.target.files[0];if(!f)return;try{const j=JSON.parse(await f.text());if(!Array.isArray(j))throw 0;
+const ok=j.filter(x=>x&&typeof x.md==='string'&&typeof x.title==='string').map((x,i)=>({id:Date.now()+i,title:x.title.slice(0,80),md:x.md.slice(0,200000),t:+x.t||Date.now()}));putLib([...ok,...lib()]);drawLib();toast('Imported '+ok.length)}catch{toast('Invalid backup file')}e.target.value=''};
+drawLib();
+if('serviceWorker' in navigator&&location.protocol==='https:')navigator.serviceWorker.register('sw.js').catch(()=>{});
 window.addEventListener('beforeunload',save);render();
 </script>
 <script src="assets/pro.js"></script><script src="assets/watermark.js"></script>

@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://nikhil-creat.github.io/AssignmentWriter/sitemap.xml

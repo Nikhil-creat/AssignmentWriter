@@ -1,89 +1,134 @@
 <!DOCTYPE html>
-<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<link rel="icon" href="favicon.svg" type="image/svg+xml"><meta name="theme-color" content="#0f1626"><meta property="og:title" content="Sheetstudio"><meta property="og:description" content="AI exam-answer studio for JNTUH B.Tech CSE."><title>Sheetstudio — Exam answers, written to standard</title>
-<meta name="description" content="AI exam-answer studio for JNTUH B.Tech CSE with RAG, diagrams, handwriting mode and print-ready sheets.">
-<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700&display=swap" rel="stylesheet">
-<style>
-:root{--u:clamp(.72px,min(100vw/1440,100vh/960),1.5px);--n:#0f1626;--ink:#f4f6fa;--i72:rgba(244,246,250,.72);--i46:rgba(244,246,250,.46);--lime:#c6ff2e;--cy:#3fd8ff;--hair:rgba(255,255,255,.22)}
-*{box-sizing:border-box;margin:0}
-html,body{background:var(--n);color:var(--ink);font:400 calc(18*var(--u))/1.4 'Inter Tight',system-ui,sans-serif;overflow-x:hidden}
-a{color:inherit;text-decoration:none}
-nav{position:fixed;inset:0 0 auto;height:calc(58*var(--u));display:grid;grid-template-columns:1fr auto 1fr;align-items:center;padding:0 calc(28*var(--u));z-index:20}
-nav .l,nav .r{display:flex;align-items:center;gap:calc(22*var(--u));font:500 calc(11.5*var(--u)) 'Inter Tight';text-transform:uppercase;letter-spacing:.06em}
-nav .r{justify-content:flex-end;gap:calc(10*var(--u))}
-.logo{font-weight:700;font-size:calc(19*var(--u));letter-spacing:.06em}
-.pill{height:calc(40*var(--u));padding:0 calc(20*var(--u));border-radius:99px;display:inline-flex;align-items:center;background:#2a3245;font:600 calc(11.5*var(--u)) 'Inter Tight';letter-spacing:.05em;text-transform:uppercase;transition:transform .2s}
-.pill.lime{background:var(--lime);color:var(--n)}.pill:hover{transform:translateY(-1px)}
-.track{height:420vh;position:relative}
-.scene{position:sticky;top:0;height:100vh;overflow:hidden}
-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
-.shade{position:absolute;inset:0;background:linear-gradient(rgba(15,22,38,.55),transparent 34%),linear-gradient(0deg,rgba(15,22,38,.5),transparent 30%)}
-.stage{position:absolute;top:calc(92*var(--u));left:0;right:0;text-align:center;perspective:calc(900*var(--u))}
-.head{transform-origin:50% 100%;will-change:transform,opacity}
-h1{font-weight:600;font-size:calc(84*var(--u));line-height:.96;letter-spacing:-.045em}
-.head p{margin:calc(24*var(--u)) auto 0;color:var(--i72)}
-.cue{position:absolute;bottom:calc(36*var(--u));left:50%;transform:translateX(-50%);font:600 calc(11*var(--u)) 'Inter Tight';letter-spacing:.06em;text-transform:uppercase;white-space:nowrap;padding-bottom:4px}
-.cue::after{content:"";position:absolute;inset:auto 0 0;height:1px;background:currentColor;transform-origin:left;transform:scaleX(var(--d,1))}
-.steps{position:absolute;left:calc(36*var(--u));bottom:calc(28*var(--u));width:calc(430*var(--u));opacity:0}
-.row{display:grid;grid-template-columns:calc(36*var(--u)) 1fr;align-items:start;padding:calc(6*var(--u)) 0;color:var(--i72)}
-.n{width:calc(26*var(--u));height:calc(26*var(--u));display:grid;place-items:center;font:600 calc(11.5*var(--u)) 'Inter Tight';border-radius:calc(7*var(--u));transition:.3s}
-.t{font:500 calc(12.5*var(--u))/calc(26*var(--u)) 'Inter Tight';transition:font-size .3s,color .3s}
-.b{display:grid;grid-template-rows:0fr;transition:grid-template-rows .45s}.b>div{overflow:hidden;min-height:0}
-.b p{border-left:1px solid var(--hair);padding-left:calc(12*var(--u));margin-top:calc(8*var(--u));font-size:calc(14*var(--u));color:var(--i72)}
-.row.on .n{background:#fff;color:var(--n)}.row.on .t{font-size:calc(18*var(--u));color:#fff}.row.on .b{grid-template-rows:1fr}
-.about{background:var(--n);padding:calc(90*var(--u)) calc(36*var(--u)) calc(60*var(--u));display:grid;gap:calc(14*var(--u));max-width:calc(900*var(--u));margin:auto}
-.about h2{font-weight:600;font-size:calc(40*var(--u));letter-spacing:-.04em;line-height:1}
-.about p{color:var(--i72);font-size:calc(16*var(--u))}
-.chips{display:flex;flex-wrap:wrap;gap:calc(8*var(--u))}.chips span,.chips a{border:1px solid var(--hair);border-radius:99px;padding:calc(6*var(--u)) calc(14*var(--u));font-size:calc(13*var(--u));color:var(--i72)}
-.chips a:hover{color:#fff;border-color:#fff}
-.ld{position:fixed;inset:0;background:var(--n);z-index:50;display:grid;place-items:center;transition:opacity .6s}.ld.off{opacity:0;pointer-events:none}
-.ld .e{position:absolute;border:2px dotted rgba(255,255,255,.2);border-radius:50%}
-.e1{width:calc(520*var(--u));height:calc(210*var(--u))}.e2{width:calc(300*var(--u));height:calc(300*var(--u))}
-.mark{position:relative;width:calc(60*var(--u));height:calc(60*var(--u));animation:sp 1.6s cubic-bezier(.65,0,.35,1) infinite}
-.mark i{position:absolute;left:50%;top:50%;width:calc(9*var(--u));height:calc(9*var(--u));margin:calc(-4.5*var(--u));background:var(--cy);transform:rotate(calc(var(--k)*60deg)) translateY(calc(-24*var(--u)))}
-.mark b{position:absolute;left:50%;top:50%;width:calc(14*var(--u));height:calc(14*var(--u));margin:calc(-7*var(--u));border:calc(4*var(--u)) solid var(--lime);border-left:0;border-bottom:0;transform:rotate(45deg)}
-@keyframes sp{to{transform:rotate(360deg)}}
-@media(max-width:760px){:root{--u:1px}
-nav{grid-template-columns:1fr auto}nav .l{display:none}nav .logo{grid-column:1;grid-row:1}.pill{height:34px;padding:0 14px}
-.stage{top:96px;padding:0 18px}h1{font-size:clamp(38px,11vw,48px)}.head p{font-size:15px;max-width:34ch}.head br{display:none}
-.steps{left:18px;right:18px;width:auto;bottom:22px}.cue{display:none}}
-@media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
-</style></head><body>
-<div class="ld" id="ld"><div class="e e1"></div><div class="e e2"></div><div class="mark" id="mark"><b></b></div></div>
-<nav><div class="l"><a href="#about">About the builder</a><a href="https://github.com/Nikhil-creat/AssignmentWriter" target="_blank" rel="noopener">Source</a></div>
-<a class="logo" href="./">SHEETSTUDIO</a>
-<div class="r"><a class="pill" href="https://console.groq.com/keys" target="_blank" rel="noopener">Get free key</a><a class="pill lime" href="studio.html">Open studio</a></div></nav>
-<main class="track" id="track"><div class="scene">
-<video id="v" muted playsinline preload="auto" poster="https://d2ol7oe51mr4n9.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/33150b94-09f7-47da-a7c9-3ae76c2dd7eb.jpg"></video>
-<div class="shade"></div>
-<div class="stage"><div class="head" id="head"><h1>Exam Answers<br>Written to Standard</h1>
-<p>AI driven speed. Syllabus grounded retrieval. Groq and Gemini, auto-detected.<br>Diagrams, handwriting mode and print-ready sheets<br>for JNTUH B.Tech students who need it right the first time.</p></div></div>
-<div class="cue" id="cue">Scroll to discover how it works</div>
-<div class="steps" id="steps">
-<div class="row on"><div class="n">1</div><div><div class="t">Ask once</div><div class="b"><div><p>Paste a question, pick the marks and type. Your key is detected as Groq or Gemini and the best free model is chosen for you.</p></div></div></div></div>
-<div class="row"><div class="n">2</div><div><div class="t">Grounded in syllabus</div><div class="b"><div><p>Retrieval matches your question to syllabus notes first, then a planner, writer and strict examiner shape the answer.</p></div></div></div></div>
-<div class="row"><div class="n">3</div><div><div class="t">Diagrams that render</div><div class="b"><div></div></div></div></div>
-<div class="row"><div class="n">4</div><div><div class="t">Print-ready sheet</div><div class="b"><div></div></div></div></div>
-</div></div></main>
-<section class="about" id="about"><h2>Built by Nikhil Chary Sriramoju</h2>
-<p>Final-year B.Tech CSE at Vaagdevi College of Engineering. ML Engineer Intern at Yuva Intern (NSDC) and Data Analytics Intern at Thiranex.</p>
-<div class="chips"><span>NASSCOM / Skill India: AI-Data Engineering &amp; Cloud</span><span>IBM SkillsBuild: AI Fundamentals</span><span>Reliance Foundation: AI/ML Engineer</span></div>
-<div class="chips"><a href="mailto:sriramojunikhil66@gmail.com">Email</a><a href="https://github.com/Nikhil-creat" target="_blank" rel="noopener">GitHub</a><a href="https://in.linkedin.com/in/nikhil-chary-sriramoju-95041b38a" target="_blank" rel="noopener">LinkedIn</a><a href="https://www.instagram.com/nikhil__sriramoju" target="_blank" rel="noopener">Instagram</a></div></section>
+<html lang="en" style="scroll-behavior:smooth">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sheetstudio — AI Exam Answer Writer for JNTUH B.Tech</title>
+<meta name="description" content="Plan, retrieve, write and critique full exam answers with diagrams. Print typeset or handwritten sheets. Free with your own Groq or Gemini key.">
+<meta property="og:title" content="Sheetstudio — AI Exam Answer Writer"><meta property="og:description" content="Full-length JNTUH-style answers with diagrams, handwriting mode and print-ready sheets.">
+<meta name="theme-color" content="#1B133C"><link rel="icon" href="favicon.svg" type="image/svg+xml"><link rel="manifest" href="manifest.webmanifest"><link rel="apple-touch-icon" href="icon-192.png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com/3.4.17"></script>
+<style>body{font-family:'Inter',sans-serif;color:#1B133C}section[id]{scroll-margin-top:90px}summary::-webkit-details-marker{display:none}details[open] .plus{transform:rotate(45deg)}</style>
+</head>
+<body>
+<nav class="fixed top-0 inset-x-0 z-50 flex justify-center pt-4 md:pt-6 px-4">
+  <div class="relative flex items-center gap-6 md:gap-8 bg-white/70 backdrop-blur-md rounded-xl px-4 md:px-6 py-3 shadow-sm">
+    <a href="#top" aria-label="Sheetstudio home"><svg width="24" height="24" viewBox="0 0 256 256" fill="#1B133C" aria-hidden="true"><path d="M 256 256 L 128 256 L 0 128 L 128 128 Z"/><path d="M 256 128 L 128 128 L 0 0 L 128 0 Z"/></svg></a>
+    <div class="hidden sm:flex items-center gap-6">
+      <a href="#features" class="text-sm font-medium text-[#1B133C]/80 hover:text-[#1B133C] transition-colors">Features</a>
+      <a href="#process" class="text-sm font-medium text-[#1B133C]/80 hover:text-[#1B133C] transition-colors">Process</a>
+      <a href="#privacy" class="text-sm font-medium text-[#1B133C]/80 hover:text-[#1B133C] transition-colors">Privacy</a>
+      <a href="#faq" class="text-sm font-medium text-[#1B133C]/80 hover:text-[#1B133C] transition-colors">FAQ</a>
+      <a href="#about" class="text-sm font-medium text-[#1B133C]/80 hover:text-[#1B133C] transition-colors">About</a>
+      <a href="studio.html" class="rounded-lg bg-[#1B133C] px-3 py-1.5 text-sm font-semibold text-white hover:opacity-90 transition-opacity">Studio</a>
+    </div>
+    <details class="sm:hidden">
+      <summary class="list-none cursor-pointer text-sm font-medium text-[#1B133C]/80">Menu</summary>
+      <div class="absolute right-0 top-full mt-2 w-44 rounded-xl bg-white/95 backdrop-blur-md shadow-md p-2 flex flex-col text-sm font-medium">
+        <a class="px-3 py-2 rounded-lg hover:bg-[#1B133C]/5" href="#features">Features</a><a class="px-3 py-2 rounded-lg hover:bg-[#1B133C]/5" href="#process">Process</a>
+        <a class="px-3 py-2 rounded-lg hover:bg-[#1B133C]/5" href="#privacy">Privacy</a><a class="px-3 py-2 rounded-lg hover:bg-[#1B133C]/5" href="#faq">FAQ</a>
+        <a class="px-3 py-2 rounded-lg hover:bg-[#1B133C]/5" href="#about">About</a><a class="px-3 py-2 rounded-lg bg-[#1B133C] text-white mt-1" href="studio.html">Open Studio</a>
+      </div>
+    </details>
+  </div>
+</nav>
+
+<section id="top" class="relative h-screen w-full overflow-hidden flex flex-col bg-[#E9E4F7]">
+  <video id="bgv" class="absolute inset-0 z-0 w-full h-[130%] object-cover object-top" src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260714_113715_c7e0daa0-8bdd-4486-a2da-040901f8f0ea.mp4" autoplay muted loop playsinline preload="auto" aria-hidden="true"></video>
+  <div class="relative z-10 mt-8 md:mt-16 pt-16 md:pt-[72px] flex flex-col items-center text-center px-4">
+    <div class="mb-6 inline-flex items-center gap-2 rounded-xl border border-[#1B133C]/10 bg-white/70 backdrop-blur-sm px-4 py-2 text-sm font-medium">
+      <span class="bg-orange-500 rounded w-5 h-5 inline-flex items-center justify-center text-white text-xs font-bold">AI</span>Free with Groq and Gemini keys</div>
+    <h1 class="font-['Instrument_Serif'] text-4xl sm:text-5xl md:text-7xl lg:text-8xl leading-[0.95] tracking-tight text-[#1B133C] max-w-4xl">Full exam answers<br>in minutes, not hours</h1>
+    <p class="mt-5 sm:mt-6 max-w-3xl text-xs sm:text-sm md:text-base leading-relaxed text-[#1B133C]/70">An AI agent plans, retrieves from syllabus notes, writes and critiques every JNTUH-style answer, with diagrams, then prints it typeset or in handwriting. No sign-up, no server, your key stays in your browser.</p>
+    <div class="mt-7 sm:mt-8 flex flex-col sm:flex-row gap-3">
+      <a href="studio.html" class="rounded-xl bg-[#FEFEFE] px-6 sm:px-8 py-3 sm:py-3.5 text-sm font-semibold text-[#1B133C] shadow-[0px_4px_12px_rgba(0,0,0,0.15)] hover:shadow-[0px_6px_16px_rgba(0,0,0,0.2)] transition-all duration-300">Open the Studio</a>
+      <a href="#process" class="rounded-xl border border-[#1B133C]/15 bg-white/50 backdrop-blur-sm px-6 sm:px-8 py-3 sm:py-3.5 text-sm font-semibold hover:bg-white/80 transition-all duration-300">See how it works</a>
+    </div>
+  </div>
+</section>
+
+<section id="features" class="bg-white px-5 py-20 md:py-28"><div class="mx-auto max-w-6xl">
+  <h2 class="font-['Instrument_Serif'] text-4xl md:text-6xl leading-[1] tracking-tight max-w-3xl">Everything an answer sheet needs.</h2>
+  <p class="mt-4 max-w-2xl text-[#1B133C]/70">One studio takes you from a question to a print-ready page.</p>
+  <div class="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+    <div class="rounded-2xl border border-[#1B133C]/10 p-6"><h3 class="font-semibold">Agentic writing pipeline</h3><p class="mt-2 text-sm text-[#1B133C]/70">Plan, retrieve, write and examiner review in four steps, tuned to the marks you pick.</p></div>
+    <div class="rounded-2xl border border-[#1B133C]/10 p-6"><h3 class="font-semibold">Syllabus-grounded RAG</h3><p class="mt-2 text-sm text-[#1B133C]/70">Answers draw on notes from DBMS, OS, networks, cryptography, ML and more. Add your own units.</p></div>
+    <div class="rounded-2xl border border-[#1B133C]/10 p-6"><h3 class="font-semibold">Auto-detected AI model</h3><p class="mt-2 text-sm text-[#1B133C]/70">Paste a Groq or Gemini key. The provider and best free model are found for you, with automatic fallback.</p></div>
+    <div class="rounded-2xl border border-[#1B133C]/10 p-6"><h3 class="font-semibold">Diagrams that render</h3><p class="mt-2 text-sm text-[#1B133C]/70">Flowcharts, sequence and ER diagrams are drawn inline with Mermaid.</p></div>
+    <div class="rounded-2xl border border-[#1B133C]/10 p-6"><h3 class="font-semibold">Typeset or handwritten</h3><p class="mt-2 text-sm text-[#1B133C]/70">Switch between a clean printed sheet and a ruled-notebook handwriting look.</p></div>
+    <div class="rounded-2xl border border-[#1B133C]/10 p-6"><h3 class="font-semibold">Watermark, details, library</h3><p class="mt-2 text-sm text-[#1B133C]/70">Text or logo watermark, student details strip, and a saved library with backup and restore.</p></div>
+  </div></div></section>
+
+<section id="process" class="bg-[#F6F4FC] px-5 py-20 md:py-28"><div class="mx-auto max-w-6xl">
+  <h2 class="font-['Instrument_Serif'] text-4xl md:text-6xl leading-[1] tracking-tight">From question to sheet in four steps.</h2>
+  <ol class="mt-12 grid gap-6 md:grid-cols-4">
+    <li class="border-t border-[#1B133C]/20 pt-4"><span class="text-sm font-semibold text-orange-600">Step 1</span><h3 class="mt-1 font-['Instrument_Serif'] text-3xl">Add a key</h3><p class="mt-2 text-sm text-[#1B133C]/70">Create a free key at Groq or Google AI Studio and paste it once.</p></li>
+    <li class="border-t border-[#1B133C]/20 pt-4"><span class="text-sm font-semibold text-orange-600">Step 2</span><h3 class="mt-1 font-['Instrument_Serif'] text-3xl">Ask</h3><p class="mt-2 text-sm text-[#1B133C]/70">Type the question, choose 10, 16 or 20 marks, and run the agent.</p></li>
+    <li class="border-t border-[#1B133C]/20 pt-4"><span class="text-sm font-semibold text-orange-600">Step 3</span><h3 class="mt-1 font-['Instrument_Serif'] text-3xl">Refine</h3><p class="mt-2 text-sm text-[#1B133C]/70">Edit the Markdown, add your details, pick a mode and a watermark.</p></li>
+    <li class="border-t border-[#1B133C]/20 pt-4"><span class="text-sm font-semibold text-orange-600">Step 4</span><h3 class="mt-1 font-['Instrument_Serif'] text-3xl">Export</h3><p class="mt-2 text-sm text-[#1B133C]/70">Print or save as PDF, or send the file to your faculty.</p></li>
+  </ol>
+  <div class="mt-12"><a href="studio.html" class="inline-block rounded-xl bg-[#1B133C] px-8 py-3.5 text-sm font-semibold text-white shadow-[0px_4px_12px_rgba(0,0,0,0.15)] hover:shadow-[0px_6px_16px_rgba(0,0,0,0.25)] transition-all duration-300">Open the Studio</a></div>
+</div></section>
+
+<section id="privacy" class="bg-[#1B133C] px-5 py-20 md:py-28 text-white"><div class="mx-auto max-w-6xl">
+  <h2 class="font-['Instrument_Serif'] text-4xl md:text-6xl leading-[1] tracking-tight max-w-3xl">Private by design.</h2>
+  <div class="mt-12 grid gap-8 sm:grid-cols-2">
+    <div><h3 class="font-semibold">Your key stays with you</h3><p class="mt-2 text-sm text-white/70">Keys are stored only in your browser and sent only to Groq or Google. There is no server in between.</p></div>
+    <div><h3 class="font-semibold">No account, no tracking</h3><p class="mt-2 text-sm text-white/70">Drafts and your library live in this browser. Export a backup any time.</p></div>
+    <div><h3 class="font-semibold">Sanitised output</h3><p class="mt-2 text-sm text-white/70">AI text is cleaned before display, and questions are treated as data, not instructions.</p></div>
+    <div><h3 class="font-semibold">Sensible limits</h3><p class="mt-2 text-sm text-white/70">Question length, daily runs and a cooldown protect your free quota.</p></div>
+  </div></div></section>
+
+<section id="faq" class="bg-white px-5 py-20 md:py-28"><div class="mx-auto max-w-3xl">
+  <h2 class="font-['Instrument_Serif'] text-4xl md:text-6xl leading-[1] tracking-tight">Questions, answered.</h2>
+  <div class="mt-10 divide-y divide-[#1B133C]/10 border-y border-[#1B133C]/10">
+    <details class="group py-4"><summary class="flex cursor-pointer list-none items-center justify-between font-semibold">Is it really free?<span class="plus text-xl transition-transform">+</span></summary><p class="mt-3 text-sm text-[#1B133C]/70">The site is free. You use your own free Groq or Gemini key, which have their own usage limits.</p></details>
+    <details class="group py-4"><summary class="flex cursor-pointer list-none items-center justify-between font-semibold">Where do I get a key?<span class="plus text-xl transition-transform">+</span></summary><p class="mt-3 text-sm text-[#1B133C]/70">Groq keys start with gsk_ and come from console.groq.com/keys. Gemini keys start with AIza and come from aistudio.google.com/apikey.</p></details>
+    <details class="group py-4"><summary class="flex cursor-pointer list-none items-center justify-between font-semibold">Can I trust the answers?<span class="plus text-xl transition-transform">+</span></summary><p class="mt-3 text-sm text-[#1B133C]/70">Treat them as a strong draft. AI can make mistakes, so check facts, formulas and code against your textbook.</p></details>
+    <details class="group py-4"><summary class="flex cursor-pointer list-none items-center justify-between font-semibold">Can I submit AI-written work?<span class="plus text-xl transition-transform">+</span></summary><p class="mt-3 text-sm text-[#1B133C]/70">Check your college's rules on AI-assisted work first. Sheetstudio is best used to learn, revise and prepare.</p></details>
+    <details class="group py-4"><summary class="flex cursor-pointer list-none items-center justify-between font-semibold">Does it work on my phone?<span class="plus text-xl transition-transform">+</span></summary><p class="mt-3 text-sm text-[#1B133C]/70">Yes. The studio has Edit and Preview tabs on small screens, and PDF export uses your browser's print dialog.</p></details>
+    <details class="group py-4"><summary class="flex cursor-pointer list-none items-center justify-between font-semibold">Does it work offline?<span class="plus text-xl transition-transform">+</span></summary><p class="mt-3 text-sm text-[#1B133C]/70">After your first visit the studio opens offline and you can edit, preview and print. Generating answers needs internet. On Android, use your browser menu to install it as an app.</p></details>
+    <details class="group py-4"><summary class="flex cursor-pointer list-none items-center justify-between font-semibold">My key is rejected. What now?<span class="plus text-xl transition-transform">+</span></summary><p class="mt-3 text-sm text-[#1B133C]/70">Create a fresh key, paste it without spaces, and tap Verify and save. The studio tells you right away if it is invalid.</p></details>
+  </div></div></section>
+
+<section id="about" class="bg-[#F6F4FC] px-5 py-20 md:py-28"><div class="mx-auto max-w-3xl text-center">
+  <h2 class="font-['Instrument_Serif'] text-4xl md:text-6xl leading-[1] tracking-tight">Built by Nikhil Chary Sriramoju</h2>
+  <p class="mt-5 text-[#1B133C]/70 leading-relaxed">Final-year B.Tech CSE student at Vaagdevi College of Engineering (2023–2027). ML Engineer Intern at Yuva Intern (NSDC) and Data Analytics Intern at Thiranex.</p>
+  <div class="mt-6 flex flex-wrap justify-center gap-2 text-xs sm:text-sm">
+    <span class="rounded-full border border-[#1B133C]/15 bg-white px-3 py-1.5">NASSCOM / Skill India: AI-Data Engineering &amp; Cloud</span>
+    <span class="rounded-full border border-[#1B133C]/15 bg-white px-3 py-1.5">IBM SkillsBuild: AI Fundamentals</span>
+    <span class="rounded-full border border-[#1B133C]/15 bg-white px-3 py-1.5">Reliance Foundation: AI/ML Engineer</span></div>
+  <div class="mt-6 flex flex-wrap justify-center gap-4 text-sm font-medium">
+    <a class="underline underline-offset-4 hover:opacity-70" href="https://github.com/Nikhil-creat" target="_blank" rel="noopener">GitHub</a>
+    <a class="underline underline-offset-4 hover:opacity-70" href="https://in.linkedin.com/in/nikhil-chary-sriramoju-95041b38a" target="_blank" rel="noopener">LinkedIn</a>
+    <a class="underline underline-offset-4 hover:opacity-70" href="https://www.instagram.com/nikhil__sriramoju" target="_blank" rel="noopener">Instagram</a>
+    <a class="underline underline-offset-4 hover:opacity-70" href="mailto:sriramojunikhil66@gmail.com">Email</a></div>
+</div></section>
+
+<section id="contact" class="bg-white px-5 py-20 md:py-24"><div class="mx-auto max-w-xl text-center">
+  <h2 class="font-['Instrument_Serif'] text-4xl md:text-5xl leading-[1] tracking-tight">Send feedback</h2>
+  <p class="mt-3 text-sm text-[#1B133C]/70">Found a bug or want a feature? Tell me.</p>
+  <form id="f" class="mt-7 flex flex-col gap-3 text-left" novalidate>
+    <label for="fn" class="sr-only">Your name</label><input id="fn" maxlength="60" placeholder="Your name" class="rounded-xl border border-[#1B133C]/15 px-4 py-3 text-sm outline-none focus:border-[#1B133C]">
+    <label for="fm" class="sr-only">Message</label><textarea id="fm" maxlength="800" rows="4" placeholder="Your message" class="rounded-xl border border-[#1B133C]/15 px-4 py-3 text-sm outline-none focus:border-[#1B133C]"></textarea>
+    <button class="rounded-xl bg-[#1B133C] px-6 py-3 text-sm font-semibold text-white hover:opacity-90 transition-opacity">Send by email</button>
+    <p id="msg" class="text-sm min-h-[20px] text-center" role="status"></p></form>
+</div></section>
+
+<footer class="bg-[#F6F4FC] px-5 py-10 border-t border-[#1B133C]/10"><div class="mx-auto max-w-6xl flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-[#1B133C]/70">
+  <div class="flex items-center gap-2"><svg width="20" height="20" viewBox="0 0 256 256" fill="#1B133C" aria-hidden="true"><path d="M 256 256 L 128 256 L 0 128 L 128 128 Z"/><path d="M 256 128 L 128 128 L 0 0 L 128 0 Z"/></svg><span>© 2026 Sheetstudio · Built by Nikhil Chary Sriramoju</span></div>
+  <div class="flex gap-5"><a href="#features" class="hover:text-[#1B133C]">Features</a><a href="#privacy" class="hover:text-[#1B133C]">Privacy</a><a href="#faq" class="hover:text-[#1B133C]">FAQ</a><a href="studio.html" class="font-semibold text-[#1B133C]">Studio</a>
+  <a href="https://github.com/Nikhil-creat/AssignmentWriter" target="_blank" rel="noopener" class="hover:text-[#1B133C]">Source</a></div></div></footer>
+
 <script>
-const D='https://d2ol7oe51mr4n9.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/65fdef53-5686-4659-8761-52d61bf1a4f7.mp4',
-M='https://d2ol7oe51mr4n9.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/9a30e5e9-9f03-4755-9bc1-7bcf1510aab3.mp4';
-const $=id=>document.getElementById(id),v=$('v'),track=$('track'),head=$('head'),steps=$('steps'),cue=$('cue'),rows=[...document.querySelectorAll('.row')];
-const reduce=matchMedia('(prefers-reduced-motion:reduce)').matches;
-v.src=matchMedia('(max-width:900px)').matches?M:D;
-for(let k=0;k<6;k++){const i=document.createElement('i');i.style.setProperty('--k',k);$('mark').prepend(i)}
-let cur=0,p=0;const clamp=(x,a=0,b=1)=>Math.min(b,Math.max(a,x)),seg=(x,a,b)=>clamp((x-a)/(b-a)),ease=t=>t<.5?2*t*t:1-Math.pow(-2*t+2,2)/2;
-let hid=false;const hide=()=>{if(hid)return;hid=true;setTimeout(()=>$('ld').classList.add('off'),350)};
-v.addEventListener('loadeddata',hide);setTimeout(hide,3500);
-function ui(){const h=ease(clamp(p/.38));head.style.transform=`translateY(${-34*h}vh) rotateX(${62*h}deg) scale(${1-.12*h})`;head.style.opacity=1-seg(p,.10,.24);
-const s=seg(p,.08,.24);steps.style.opacity=s;steps.style.transform=`translateY(${40*(1-s)}px)`;
-cue.style.opacity=1-seg(p,.04,.12);cue.style.setProperty('--d',1-seg(p,0,.1));rows.forEach((r,i)=>r.classList.toggle('on',i===(p<.62?0:1)))}
-function loop(){const r=track.getBoundingClientRect();p=clamp(-r.top/(r.height-innerHeight));ui();
-if(v.duration){const t=p*(v.duration-1/48);cur=reduce?t:cur+(t-cur)*.2;if(!v.seeking&&Math.abs(v.currentTime-cur)>1/60)v.currentTime=cur}
-requestAnimationFrame(loop)}
-loop();
-</script></body></html>
+const CONTACT_EMAIL='sriramojunikhil66@gmail.com';
+if('serviceWorker' in navigator&&location.protocol==='https:')navigator.serviceWorker.register('sw.js').catch(()=>{});
+const v=document.getElementById('bgv');if(matchMedia('(prefers-reduced-motion: reduce)').matches)v.pause();
+document.querySelectorAll('details a').forEach(a=>a.addEventListener('click',()=>a.closest('details').open=false));
+document.getElementById('f').addEventListener('submit',e=>{e.preventDefault();const n=fn.value.trim(),t=fm.value.trim(),m=document.getElementById('msg');
+if(t.length<5){m.className='text-sm text-center text-red-600';m.textContent='Please write a short message.';return}
+m.className='text-sm text-center text-green-700';m.textContent='Opening your email app…';
+location.href='mailto:'+CONTACT_EMAIL+'?subject='+encodeURIComponent('Sheetstudio feedback'+(n?' from '+n:''))+'&body='+encodeURIComponent(t)});
+</script>
+</body></html>
