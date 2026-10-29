@@ -1,0 +1,9 @@
+services:
+  web:
+    build: .
+    ports: ["3000:3000"]
+    env_file: .env
+    environment: { ML_URL: "http://ml:8000" }
+    depends_on: [ml]
+  ml:
+    build: ./ml-service

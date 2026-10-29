@@ -1,0 +1,8 @@
+[
+{"title":"DBMS Normalization","text":"1NF atomic values; 2NF removes partial dependency on a composite key; 3NF removes transitive dependency; BCNF requires every determinant to be a candidate key. Anomalies: insertion, update, deletion."},
+{"title":"OS CPU Scheduling","text":"FCFS, SJF, Round Robin with time quantum, Priority scheduling. Metrics: turnaround time, waiting time, response time, throughput. Convoy effect in FCFS; starvation solved by aging."},
+{"title":"Computer Networks OSI and TCP/IP","text":"OSI has seven layers: physical, data link, network, transport, session, presentation, application. TCP/IP has four layers. TCP gives reliable ordered delivery with three-way handshake; UDP is connectionless."},
+{"title":"Cryptography DES and AES","text":"DES is a 64-bit block Feistel cipher with 56-bit key and 16 rounds. AES is a substitution-permutation network with 128-bit blocks and 128/192/256-bit keys using SubBytes, ShiftRows, MixColumns, AddRoundKey."},
+{"title":"RPA UiPath","text":"UiPath Studio builds workflows as sequences, flowcharts and state machines. Orchestrator manages robots, queues and assets. REFramework handles transactions with init, get transaction data, process, end states."},
+{"title":"Machine Learning Basics","text":"Supervised learning uses labelled data (regression, classification); unsupervised finds structure (clustering). Overfitting is controlled with regularization, cross-validation and more data. CNNs use convolution and pooling for images."}
+]
