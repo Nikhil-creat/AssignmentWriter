@@ -15,3 +15,6 @@ Practice question bank (`data/questions.json`), up to 5 questions per run (one p
 
 ## v5 additions
 Marks profiles (2 to 20) with automatic word, diagram and table verification, Mermaid validation and auto-repair, 10 diagram types, answer types, extras toggles, step tracker, Refine tool, dark mode, collapsible cards, Marks guide on the landing page.
+
+## v6 additions
+Multiple question fields (each with its own marks), auto-detected marks, answer type and diagram per question, dual-provider mode, topic-relevance check with automatic rewrite, numbered question headings, `assets/lib.js` helpers.

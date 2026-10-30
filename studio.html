@@ -143,7 +143,7 @@ drawLib();
 if('serviceWorker' in navigator&&location.protocol==='https:')navigator.serviceWorker.register('sw.js').catch(()=>{});
 window.addEventListener('beforeunload',save);render();
 </script>
-<script src="assets/pro.js"></script><script src="assets/watermark.js"></script>
+<script src="assets/lib.js"></script><script src="assets/pro.js"></script><script src="assets/watermark.js"></script>
 <script>
 document.getElementById('b-theme').onclick=()=>{const d=document.documentElement,n=d.dataset.theme==='dark'?'':'dark';d.dataset.theme=n;try{localStorage.setItem('asw-theme',n)}catch{}};
 document.getElementById('sidebar').addEventListener('click',e=>{const h=e.target.closest('.card>h2');if(h)h.parentElement.classList.toggle('collapsed')});
