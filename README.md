@@ -12,3 +12,6 @@ Settings → Pages → Deploy from branch → main → / (root). Never commit AP
 
 ## v4 additions
 Practice question bank (`data/questions.json`), up to 5 questions per run (one per line, Ctrl+Enter), installable offline-capable PWA (`manifest.webmanifest`, `sw.js`, icons). Bump `V` in `sw.js` on every deploy.
+
+## v5 additions
+Marks profiles (2 to 20) with automatic word, diagram and table verification, Mermaid validation and auto-repair, 10 diagram types, answer types, extras toggles, step tracker, Refine tool, dark mode, collapsible cards, Marks guide on the landing page.

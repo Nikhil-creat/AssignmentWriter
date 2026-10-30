@@ -1,10 +1,10 @@
 .pro-card{border-color:rgba(249,115,22,.4)!important}
 .pro-card .chips{display:flex;flex-wrap:wrap;gap:6px}
-.pro-card .chip{font-size:11px;border:1px solid rgba(27,19,60,.15);border-radius:99px;padding:3px 10px;color:rgba(27,19,60,.7);background:#faf9fd}
-.pro-card ul{list-style:none;font-size:12px;color:rgba(27,19,60,.7);line-height:1.6}
+.pro-card .chip{font-size:11px;border:1px solid var(--hair);border-radius:99px;padding:3px 10px;color:var(--mut);background:var(--card)}
+.pro-card ul{list-style:none;font-size:12px;color:var(--mut);line-height:1.6}
 .pro-card li::before{content:"✓ ";color:#15803d}
-.pro-card .pro-h{font-size:16px;font-weight:600;color:#1B133C}
-.pro-card p{color:rgba(27,19,60,.7)}
+.pro-card .pro-h{font-size:16px;font-weight:600;color:var(--ink)}
+.pro-card p{color:var(--mut)}
 .wm-layer{position:absolute;inset:0;pointer-events:none;z-index:5;overflow:hidden;display:none;align-items:center;justify-content:center;opacity:var(--wm-op,.12);-webkit-print-color-adjust:exact;print-color-adjust:exact}
 .wm-layer.on{display:flex}
 .wm-layer span{font:800 clamp(2rem,6vw,4.2rem)/1 'Inter',sans-serif;color:#1e293b;white-space:nowrap;letter-spacing:.05em}
@@ -14,3 +14,10 @@
 .wm-layer.footer span{font-size:1rem;font-weight:600}
 .wm-layer.footer img{max-height:36px}
 @media print{.wm-layer{position:fixed;z-index:9999}.wm-layer.on{display:flex}}
+
+.xrow{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:12.5px;color:var(--mut)}.xrow label{display:flex;align-items:center;gap:5px;cursor:pointer}
+.spec{font-size:12px;font-weight:600;background:var(--bg);border:1px dashed var(--hair);border-radius:10px;padding:7px 10px;color:var(--ink)}
+.stp{display:flex;gap:4px;list-style:none;padding:0}.stp li{flex:1;font-size:10px;text-align:center;color:var(--mut);border-top:3px solid var(--hair);padding-top:4px;transition:.3s}
+.stp li.on{border-color:#f97316;color:var(--ink);font-weight:600}.stp li.done{border-color:#15803d;color:var(--ink)}
+.rep{display:flex;flex-wrap:wrap;gap:6px}.rp{font-size:11px;font-weight:600;border-radius:99px;padding:3px 10px}.rp.ok{background:#dcfce7;color:#166534}.rp.bad{background:#fee2e2;color:#991b1b}
+.card h2{cursor:pointer;display:flex;justify-content:space-between}.card h2::after{content:"▾";font-size:10px}.card.collapsed h2::after{content:"▸"}.card.collapsed>*:not(h2){display:none}

@@ -1,29 +1,31 @@
 <!DOCTYPE html>
-<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<html lang="en"><head><meta charset="UTF-8"><script>try{document.documentElement.dataset.theme=localStorage.getItem("asw-theme")||""}catch{}</script><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Studio — Sheetstudio</title><link rel="icon" href="favicon.svg" type="image/svg+xml"><link rel="manifest" href="manifest.webmanifest"><link rel="apple-touch-icon" href="icon-192.png"><meta name="theme-color" content="#0f1626">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600&family=Source+Serif+4:wght@400;600;700&family=Caveat:wght@500;700&display=swap" rel="stylesheet" crossorigin="anonymous">
 <script src="https://cdn.jsdelivr.net/npm/marked@12.0.2/marked.min.js" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/dompurify@3.1.6/dist/purify.min.js" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js" crossorigin="anonymous"></script>
 <link rel="stylesheet" href="assets/pro.css">
-<style>:root{--bg:#F6F4FC;--ink:#1B133C;--mut:rgba(27,19,60,.62);--hair:rgba(27,19,60,.13);--or:#f97316}
+<style>:root{--bg:#F6F4FC;--ink:#1B133C;--mut:rgba(27,19,60,.62);--hair:rgba(27,19,60,.13);--or:#f97316;--card:#fff;--glass:rgba(255,255,255,.75);--on:#fff}
+[data-theme=dark]{--bg:#0f1626;--ink:#f4f6fa;--mut:rgba(244,246,250,.62);--hair:rgba(255,255,255,.16);--card:#172036;--glass:rgba(23,32,54,.8);--on:#0f1626}
+[data-theme=dark] .status.ok{color:#86efac}[data-theme=dark] .status.error{color:#fca5a5}
 *{box-sizing:border-box;margin:0}
 html,body{background:var(--bg);color:var(--ink);font:400 15px/1.45 'Inter',system-ui,sans-serif;height:100%}
 a{color:inherit;text-decoration:none}
 nav{position:fixed;top:0;left:0;right:0;z-index:30;display:flex;justify-content:center;padding:14px 12px 0}
-.pillnav{display:flex;align-items:center;gap:18px;background:rgba(255,255,255,.75);backdrop-filter:blur(10px);border-radius:12px;padding:9px 16px;box-shadow:0 1px 3px rgba(0,0,0,.08)}
+.pillnav{display:flex;align-items:center;gap:18px;background:var(--glass);backdrop-filter:blur(10px);border-radius:12px;padding:9px 16px;box-shadow:0 1px 3px rgba(0,0,0,.08)}
 .lk{font-size:14px;font-weight:500;color:rgba(27,19,60,.8)}.lk:hover{color:var(--ink)}
-.pill{height:34px;padding:0 16px;border-radius:10px;border:0;background:var(--ink);color:#fff;font:600 13px 'Inter';cursor:pointer;display:inline-flex;align-items:center}
-.btn{height:40px;padding:0 16px;border-radius:10px;border:1px solid var(--hair);background:#fff;color:var(--ink);font:600 13px 'Inter';cursor:pointer;display:inline-flex;align-items:center;justify-content:center;transition:.2s}
+.pill{height:34px;padding:0 16px;border-radius:10px;border:0;background:var(--ink);color:var(--on);font:600 13px 'Inter';cursor:pointer;display:inline-flex;align-items:center}
+.btn{height:40px;padding:0 16px;border-radius:10px;border:1px solid var(--hair);background:var(--card);color:var(--ink);font:600 13px 'Inter';cursor:pointer;display:inline-flex;align-items:center;justify-content:center;transition:.2s}
 .btn:hover:not(:disabled){box-shadow:0 4px 12px rgba(0,0,0,.12)}.btn:disabled{opacity:.5;cursor:wait}.btn.sm{height:30px;padding:0 10px;font-size:12px}
-.btn-generate{background:var(--ink);color:#fff;border-color:var(--ink)}.btn-ghost{background:transparent}
+.btn-generate{background:var(--ink);color:var(--on);border-color:var(--ink)}.btn-ghost{background:transparent}
 .app{display:grid;grid-template-columns:350px 1fr;height:100vh;padding-top:74px}
 #sidebar{overflow:auto;padding:14px 16px 24px;display:flex;flex-direction:column;gap:14px}
 .brand h1{font:400 38px/1 'Instrument Serif',serif;letter-spacing:-.02em}.brand p{color:var(--mut);font-size:13px;margin-top:4px}
-.card{background:#fff;border:1px solid var(--hair);border-radius:16px;padding:14px;display:flex;flex-direction:column;gap:10px;box-shadow:0 1px 2px rgba(27,19,60,.04)}
+.card{background:var(--card);border:1px solid var(--hair);border-radius:16px;padding:14px;display:flex;flex-direction:column;gap:10px;box-shadow:0 1px 2px rgba(27,19,60,.04)}
 .card h2{font:600 11px 'Inter';letter-spacing:.06em;text-transform:uppercase;color:var(--mut)}
 .row{display:flex;gap:8px}.row>*{flex:1;min-width:0}
-input,select,textarea{width:100%;background:#fff;border:1px solid var(--hair);color:var(--ink);border-radius:10px;padding:9px 11px;font:400 14px 'Inter',sans-serif;outline:none}
+input,select,textarea{width:100%;background:var(--card);border:1px solid var(--hair);color:var(--ink);border-radius:10px;padding:9px 11px;font:400 14px 'Inter',sans-serif;outline:none}
 input:focus,select:focus,textarea:focus{border-color:var(--ink)}
 input[type=checkbox],input[type=range]{width:auto;accent-color:var(--or)}
 textarea.q-text{min-height:78px;resize:vertical}
@@ -33,7 +35,7 @@ textarea.q-text{min-height:78px;resize:vertical}
 .lib-i{display:flex;gap:6px;align-items:center}.lib-i span{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:13px}
 main{display:flex;flex-direction:column;min-width:0;padding:6px 16px 14px 0;gap:10px;height:100%}
 .bar{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
-.seg{height:34px;padding:0 14px;border-radius:10px;border:1px solid var(--hair);background:#fff;color:var(--mut);font:600 12px 'Inter';cursor:pointer}.seg.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+.seg{height:34px;padding:0 14px;border-radius:10px;border:1px solid var(--hair);background:var(--card);color:var(--mut);font:600 12px 'Inter';cursor:pointer}.seg.on{background:var(--ink);color:var(--on);border-color:var(--ink)}
 .stats{margin-left:auto;color:var(--mut);font-size:12px}.tabs{display:none}
 .panels{flex:1;display:flex;gap:12px;min-height:0}.panel{flex:1;min-width:0;display:flex;flex-direction:column;gap:6px}
 .pt{font:600 11px 'Inter';letter-spacing:.06em;text-transform:uppercase;color:var(--mut)}
@@ -52,13 +54,13 @@ mark.name{background:#fde68a;color:#78350f;padding:0 2px;border-radius:3px;font-
 .page-break{height:1px;margin:24px 0;border-top:2px dashed #cbd5e1}
 #preview.hw{font:500 calc(1.32rem*var(--hw,1))/calc(2.15em) 'Caveat',cursive;color:#1d3a8a;padding-left:60px;border-left:3px solid #dc2626;margin-left:18px;background:repeating-linear-gradient(#fff,#fff calc(2.15em - 1px),#c7d6f5 calc(2.15em - 1px),#c7d6f5 2.15em) 0 8px}
 #preview.hw p{text-align:left;font-size:1.2em}#preview.hw h1,#preview.hw h2,#preview.hw h3{font-family:'Caveat',cursive;color:#7c2d12}#preview.hw table,#preview.hw .strip{font-family:'Caveat',cursive}
-#toast{position:fixed;bottom:18px;right:18px;background:var(--ink);color:#fff;padding:10px 16px;border-radius:10px;font-weight:600;font-size:13px;opacity:0;transform:translateY(8px);transition:.25s;z-index:60;pointer-events:none}#toast.show{opacity:1;transform:none}
+#toast{position:fixed;bottom:18px;right:18px;background:var(--ink);color:var(--on);padding:10px 16px;border-radius:10px;font-weight:600;font-size:13px;opacity:0;transform:translateY(8px);transition:.25s;z-index:60;pointer-events:none}#toast.show{opacity:1;transform:none}
 #preview table,#preview .mermaid,#preview pre,#preview blockquote,.strip{break-inside:avoid}#preview h1,#preview h2,#preview h3{break-after:avoid}
 @media(max-width:900px){body{height:auto}.app{display:block;height:auto}main{height:auto;min-height:100vh;padding:6px 16px 20px}.tabs{display:flex;gap:8px}.panels{display:block}.panel{display:none;height:78vh}.panels[data-v=edit] #edit,.panels[data-v=prev] #prevp{display:flex}#preview{padding:22px 18px}}
 @media print{nav,#sidebar,.bar,.tabs,#toast,.pt{display:none!important}html,body,.app,main{display:block;height:auto;overflow:visible;background:#fff;padding:0}.panels{display:block}#edit{display:none!important}#prevp{display:block!important}#preview-wrap{overflow:visible;border:0;box-shadow:none;border-radius:0}#preview{overflow:visible;height:auto;padding:0}@page{margin:18mm 20mm 16mm}.page-break{break-before:page;border:0;margin:0;height:0}#preview.hw{background-attachment:local}}
 </style></head><body>
-<nav><div class="pillnav"><a href="./" aria-label="Home"><svg width="24" height="24" viewBox="0 0 256 256" fill="#1B133C" aria-hidden="true"><path d="M 256 256 L 128 256 L 0 128 L 128 128 Z"/><path d="M 256 128 L 128 128 L 0 0 L 128 0 Z"/></svg></a>
-<a class="lk" href="./">Home</a><a class="lk" href="https://console.groq.com/keys" target="_blank" rel="noopener">Free key</a><button class="pill" id="b-print" type="button">Export PDF</button></div></nav>
+<nav><div class="pillnav"><a href="./" aria-label="Home"><svg width="24" height="24" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M 256 256 L 128 256 L 0 128 L 128 128 Z"/><path d="M 256 128 L 128 128 L 0 0 L 128 0 Z"/></svg></a>
+<a class="lk" href="./">Home</a><a class="lk" href="https://console.groq.com/keys" target="_blank" rel="noopener">Free key</a><button class="btn btn-ghost sm" id="b-theme" type="button" aria-label="Toggle dark mode">◐</button><button class="pill" id="b-print" type="button">Export PDF</button></div></nav>
 <div class="app"><aside id="sidebar">
 <div class="brand"><h1>Studio</h1><p>JNTUH-style answers, diagrams and print-ready sheets.</p></div>
 <div class="card"><h2>Student details</h2>
@@ -142,4 +144,8 @@ if('serviceWorker' in navigator&&location.protocol==='https:')navigator.serviceW
 window.addEventListener('beforeunload',save);render();
 </script>
 <script src="assets/pro.js"></script><script src="assets/watermark.js"></script>
-</body></html>
+<script>
+document.getElementById('b-theme').onclick=()=>{const d=document.documentElement,n=d.dataset.theme==='dark'?'':'dark';d.dataset.theme=n;try{localStorage.setItem('asw-theme',n)}catch{}};
+document.getElementById('sidebar').addEventListener('click',e=>{const h=e.target.closest('.card>h2');if(h)h.parentElement.classList.toggle('collapsed')});
+if(innerWidth<=900)document.querySelectorAll('#sidebar .card').forEach(c=>{if(!c.querySelector('#pro-go'))c.classList.add('collapsed')});
+</script></body></html>
