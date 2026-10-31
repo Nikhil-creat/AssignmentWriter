@@ -5,7 +5,7 @@ Static site, no build step. Built by Nikhil Chary Sriramoju.
 - `studio.html` the app: agent, editor, live sheet, diagrams, modes, watermark, details strip, library, PDF, send to faculty
 - `assets/pro.js` agent: Groq (gsk_) or Gemini (AIza) key, provider and model auto-detected with fallback
 - `assets/watermark.js`, `data/syllabus.json` (RAG notes; add your own), `404.html`, `sitemap.xml`, `robots.txt`
-- `extras/` optional Vercel/Docker/CNN server mode (see its README)
+
 
 ## GitHub Pages
 Settings → Pages → Deploy from branch → main → / (root). Never commit API keys.
@@ -18,3 +18,6 @@ Marks profiles (2 to 20) with automatic word, diagram and table verification, Me
 
 ## v6 additions
 Multiple question fields (each with its own marks), auto-detected marks, answer type and diagram per question, dual-provider mode, topic-relevance check with automatic rewrite, numbered question headings, `assets/lib.js` helpers.
+
+## v7
+Answers now come from one tightly specified write step, an independent correctness check (second model if you add both keys), then verification of topic, length, diagrams and tables. Truncated outputs are continued automatically. Added subject, assignment and date fields, an optional cover page, and page numbers with your name and roll number in the printed footer. Removed the question bank, CNN button, builder/security cards and the optional server files (shipped separately in AssignmentWriter-Extras.zip).

@@ -25,8 +25,21 @@
       return 'auto';
     },
     keyTerms: q => [...new Set((q.toLowerCase().match(/[a-z][a-z0-9+#]{3,}/g) || []).filter(w => !STOP.has(w)))].slice(0, 8),
-    relevant(q, t) { const ks = L.keyTerms(q); if (!ks.length) return true; const low = t.toLowerCase();
-      return ks.filter(k => low.includes(k.slice(0, Math.max(4, k.length - 2)))).length / ks.length >= 0.5; },
+    relevant(q, t) { const ks = L.keyTerms(q); if (!ks.length) return true; const low = t.toLowerCase(), head = low.slice(0, 500), st = k => k.slice(0, Math.max(4, k.length - 2));
+      return ks.filter(k => low.includes(st(k))).length / ks.length >= 0.5 && ks.some(k => head.includes(st(k))); },
+    detectLang(q) {
+      if (/c\+\+|\bcpp\b/i.test(q)) return { name: 'C++', tag: 'cpp' };
+      if (/\bjava\b(?!\s*script)/i.test(q)) return { name: 'Java', tag: 'java' };
+      if (/\bpython\b/i.test(q)) return { name: 'Python', tag: 'python' };
+      if (/javascript|\bjs\b|node\.?js/i.test(q)) return { name: 'JavaScript', tag: 'javascript' };
+      if (/\bsql\b|\bquery\b|\bqueries\b/i.test(q)) return { name: 'SQL', tag: 'sql' };
+      if (/\bc (program|language|code)\b|\b(in|using) c\b/i.test(q)) return { name: 'C', tag: 'c' };
+      return null;
+    },
+    polish(t) { let code = false;
+      return String(t).split('\n').filter(l => { if (/^\s*```/.test(l)) { code = !code; return true; } if (code) return true;
+        return !/(would|will|can|could)\s+(fetch|secure|score|earn|get)\b.*\bmarks?\b|full\s+\d+\s*marks?|jntuh|exam answer|answer sheet|\bmermaid\b/i.test(l); }).join('\n').replace(/\n{3,}/g, '\n\n').trim(); },
+    parseVerdict(t) { try { return JSON.parse(String(t).match(/\{[\s\S]*\}/)[0]); } catch { return null; } },
     count: t => ({ w: (t.replace(/```[\s\S]*?```/g, ' ').replace(/[#>*_|=`\-:]+/g, ' ').match(/\S+/g) || []).length,
       d: (t.match(/```mermaid/g) || []).length, t: (t.match(/^\|.*\|[ \t]*\n\|[ \t:|-]+\|/gm) || []).length })
   };

@@ -51,14 +51,16 @@ main{display:flex;flex-direction:column;min-width:0;padding:6px 16px 14px 0;gap:
 mark.name{background:#fde68a;color:#78350f;padding:0 2px;border-radius:3px;font-weight:600}mark.key{background:#bbf7d0;color:#14532d;padding:0 2px;border-radius:3px;font-weight:600}
 #preview.nokey mark.key{background:none;color:inherit;font-weight:700}
 .strip{display:flex;flex-wrap:wrap;gap:4px 16px;border:1px solid #cbd5e1;border-radius:8px;background:#f8fafc;padding:9px 13px;margin-bottom:18px;font:.78rem 'Inter',sans-serif}.strip b{color:var(--ink)}
-.page-break{height:1px;margin:24px 0;border-top:2px dashed #cbd5e1}
+.page-break{display:none}#preview .pb{border-top:2px dashed #cbd5e1;padding-top:18px;margin-top:30px}
+#preview .cover{text-align:center;padding:50px 10px 30px;color:#1B133C}.cv-c{font:700 1.15rem Inter,sans-serif;letter-spacing:.08em}.cv-t{font:400 3.2rem/1 'Instrument Serif',serif;margin:44px 0 10px}.cv-s{font:600 1.35rem Inter,sans-serif}.cv-a{font:1.05rem Inter,sans-serif;color:#475569;margin-top:4px}
+#preview .cv-tb{margin:42px auto 0;width:auto;font:.95rem Inter,sans-serif}#preview .cv-tb td{border:0;padding:6px 16px;text-align:left}#preview .cv-tb td:first-child{color:#64748b}
 #preview.hw{font:500 calc(1.32rem*var(--hw,1))/calc(2.15em) 'Caveat',cursive;color:#1d3a8a;padding-left:60px;border-left:3px solid #dc2626;margin-left:18px;background:repeating-linear-gradient(#fff,#fff calc(2.15em - 1px),#c7d6f5 calc(2.15em - 1px),#c7d6f5 2.15em) 0 8px}
 #preview.hw p{text-align:left;font-size:1.2em}#preview.hw h1,#preview.hw h2,#preview.hw h3{font-family:'Caveat',cursive;color:#7c2d12}#preview.hw table,#preview.hw .strip{font-family:'Caveat',cursive}
 #toast{position:fixed;bottom:18px;right:18px;background:var(--ink);color:var(--on);padding:10px 16px;border-radius:10px;font-weight:600;font-size:13px;opacity:0;transform:translateY(8px);transition:.25s;z-index:60;pointer-events:none}#toast.show{opacity:1;transform:none}
 #preview table,#preview .mermaid,#preview pre,#preview blockquote,.strip{break-inside:avoid}#preview h1,#preview h2,#preview h3{break-after:avoid}
 @media(max-width:900px){body{height:auto}.app{display:block;height:auto}main{height:auto;min-height:100vh;padding:6px 16px 20px}.tabs{display:flex;gap:8px}.panels{display:block}.panel{display:none;height:78vh}.panels[data-v=edit] #edit,.panels[data-v=prev] #prevp{display:flex}#preview{padding:22px 18px}}
-@media print{nav,#sidebar,.bar,.tabs,#toast,.pt{display:none!important}html,body,.app,main{display:block;height:auto;overflow:visible;background:#fff;padding:0}.panels{display:block}#edit{display:none!important}#prevp{display:block!important}#preview-wrap{overflow:visible;border:0;box-shadow:none;border-radius:0}#preview{overflow:visible;height:auto;padding:0}@page{margin:18mm 20mm 16mm}.page-break{break-before:page;border:0;margin:0;height:0}#preview.hw{background-attachment:local}}
-</style></head><body>
+@media print{nav,#sidebar,.bar,.tabs,#toast,.pt{display:none!important}html,body,.app,main{display:block;height:auto;overflow:visible;background:#fff;padding:0}.panels{display:block}#edit{display:none!important}#prevp{display:block!important}#preview-wrap{overflow:visible;border:0;box-shadow:none;border-radius:0}#preview{overflow:visible;height:auto;padding:0}@page{margin:18mm 20mm 16mm}#preview .pb{break-before:page;border:0;padding-top:0;margin-top:0}#preview .cover{break-after:page;min-height:75vh}#preview .cover+.pb,#preview>.pb:first-child{break-before:auto}#preview.hw{background-attachment:local}}
+</style><style id="pgs"></style></head><body>
 <nav><div class="pillnav"><a href="./" aria-label="Home"><svg width="24" height="24" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M 256 256 L 128 256 L 0 128 L 128 128 Z"/><path d="M 256 128 L 128 128 L 0 0 L 128 0 Z"/></svg></a>
 <a class="lk" href="./">Home</a><a class="lk" href="https://console.groq.com/keys" target="_blank" rel="noopener">Free key</a><button class="btn btn-ghost sm" id="b-theme" type="button" aria-label="Toggle dark mode">◐</button><button class="pill" id="b-print" type="button">Export PDF</button></div></nav>
 <div class="app"><aside id="sidebar">
@@ -68,8 +70,11 @@ mark.name{background:#fde68a;color:#78350f;padding:0 2px;border-radius:3px;font-
 <div class="row"><div><label class="field-label">Class</label><input id="d-class" value="B.Tech CSE"></div><div><label class="field-label">Year</label><input id="d-year" value="Final Year"></div></div>
 <div class="row"><div><label class="field-label">Group</label><input id="d-group" placeholder="e.g. CSE"></div><div><label class="field-label">Section</label><input id="d-section" placeholder="e.g. D"></div></div>
 <div><label class="field-label">College</label><input id="d-college" value="Vaagdevi College of Engineering"></div>
+<div class="row"><div><label class="field-label">Subject</label><input id="d-subject" placeholder="e.g. Programming in C"></div><div><label class="field-label">Assignment</label><input id="d-assign" placeholder="e.g. Assignment 1"></div></div>
+<div><label class="field-label">Date</label><input id="d-date"></div>
 <div><label class="field-label">Faculty name</label><input id="d-faculty" placeholder="Faculty name"></div>
 <div><label class="field-label">Faculty email</label><input id="d-femail" type="email" placeholder="faculty@college.edu"></div>
+<div class="toggle-row"><input type="checkbox" id="t-cover"><label for="t-cover">Add a cover page</label></div>
 <div class="toggle-row"><input type="checkbox" id="t-strip" checked><label for="t-strip">Show details strip on the sheet</label></div>
 <div class="toggle-row"><input type="checkbox" id="t-key" checked><label for="t-key">Highlight key points (==term==)</label></div></div>
 <div class="card"><h2>Document tools</h2>
@@ -90,7 +95,7 @@ mark.name{background:#fde68a;color:#78350f;padding:0 2px;border-radius:3px;font-
 <div id="toast"></div>
 <script>
 const $=id=>document.getElementById(id),md=$('markdown-input'),pv=$('preview'),wrap=$('preview-wrap');
-const F=['name','roll','class','year','group','section','college','faculty','femail'],LB={name:'Name',roll:'Roll No.',class:'Class',year:'Year',group:'Group',section:'Section',college:'College',faculty:'Faculty'};
+const F=['name','roll','class','year','group','section','college','subject','assign','date','faculty','femail'],LB={name:'Name',roll:'Roll No.',class:'Class',year:'Year',group:'Group',section:'Section',college:'College',subject:'Subject',assign:'Assignment',date:'Date',faculty:'Faculty'};
 const D=Object.fromEntries(F.map(k=>[k,$('d-'+k)])),KEY='asw-draft-v2';let seq=0,mode='sys',tm;
 const toast=m=>{const t=$('toast');t.textContent=m;t.classList.add('show');clearTimeout(tm);tm=setTimeout(()=>t.classList.remove('show'),2200)};
 try{mermaid.initialize({startOnLoad:false,theme:'default',securityLevel:'strict'})}catch{}
@@ -99,6 +104,9 @@ function hl(root,names){const src='('+names.map(esc).join('|')+')',re=new RegExp
 while(w.nextNode())ns.push(w.currentNode);
 ns.forEach(n=>{if(n.parentNode.closest('pre,code,mark')||!t1.test(n.nodeValue))return;const f=document.createDocumentFragment();
 n.nodeValue.split(re).forEach((s,i)=>{if(i%2){const m=document.createElement('mark');m.className='name';m.textContent=s;f.append(m)}else f.append(s)});n.replaceWith(f)})}
+function cover(){const c=document.createElement('div');c.className='cover';const add=(cl,t)=>{if(!t)return;const e=document.createElement('div');e.className=cl;e.textContent=t;c.append(e)};
+add('cv-c',D.college.value.trim().toUpperCase());add('cv-t','Assignment');add('cv-s',D.subject.value.trim());add('cv-a',D.assign.value.trim());
+const tb=document.createElement('table');tb.className='cv-tb';[['Name',D.name],['Roll No.',D.roll],['Class',D.class],['Year',D.year],['Group',D.group],['Section',D.section],['Submitted to',D.faculty],['Date',D.date]].forEach(([l,el])=>{const v=el.value.trim();if(!v)return;const r=tb.insertRow();r.insertCell().textContent=l;r.insertCell().textContent=v});c.append(tb);return c}
 async function render(){const id=++seq;
 if(!window.marked||!window.DOMPurify){pv.textContent='Libraries failed to load. Check your connection and reload.';return}
 const root=document.createElement('div');
@@ -108,15 +116,19 @@ const nodes=[...root.querySelectorAll('pre>code.language-mermaid')].map(c=>{cons
 for(const [i,n] of nodes.entries()){try{n.innerHTML=(await mermaid.render('mm'+id+'_'+i,n.dataset.src)).svg}
 catch{document.getElementById('dmm'+id+'_'+i)?.remove();n.className='fb';n.textContent='Diagram could not be drawn. Fix the Mermaid code in the editor.'}
 if(id!==seq)return}
-const items=[];const filled=F.slice(0,8).filter(k=>D[k].value.trim());
-if($('t-strip').checked&&filled.length){const s=document.createElement('div');s.className='strip';
+const items=[];const filled=F.filter(k=>k!=='femail'&&D[k].value.trim());
+root.querySelectorAll('.page-break').forEach(b=>{const n=b.nextElementSibling;if(n)n.classList.add('pb');b.remove()});
+const nm=(D.name.value.trim()+(D.roll.value.trim()?' · '+D.roll.value.trim():'')).replace(/["\\]/g,'');
+$('pgs').textContent='@page{@bottom-left{content:"'+nm+'";font:8pt Inter,sans-serif;color:#64748b}@bottom-right{content:"Page " counter(page);font:8pt Inter,sans-serif;color:#64748b}}';
+if($('t-cover').checked&&filled.length)items.push(cover());
+else if($('t-strip').checked&&filled.length){const s=document.createElement('div');s.className='strip';
 filled.forEach(k=>{const sp=document.createElement('span'),b=document.createElement('b');b.textContent=LB[k]+': ';sp.append(b,D[k].value.trim());s.append(sp)});items.push(s)}
 pv.replaceChildren(...items,...root.childNodes);pv.classList.toggle('nokey',!$('t-key').checked);
 const w=(pv.textContent.match(/\S+/g)||[]).length;$('stats').textContent=w?`~${w} words · ~${Math.max(1,Math.ceil(w/(mode==='hw'?230:500)))} pages`:''}
 let rt;const queue=()=>{clearTimeout(rt);rt=setTimeout(()=>{render();save()},250)};
-function save(){try{localStorage.setItem(KEY,JSON.stringify({md:md.value,d:Object.fromEntries(F.map(k=>[k,D[k].value])),s:$('t-strip').checked,k:$('t-key').checked}))}catch{}}
-try{const s=JSON.parse(localStorage.getItem(KEY)||'null');if(s){md.value=s.md||'';F.forEach(k=>{if(s.d&&k in s.d)D[k].value=s.d[k]});$('t-strip').checked=s.s!==false;$('t-key').checked=s.k!==false}}catch{}
-md.addEventListener('input',queue);F.forEach(k=>D[k].addEventListener('input',queue));['t-strip','t-key'].forEach(i=>$(i).addEventListener('change',queue));
+function save(){try{localStorage.setItem(KEY,JSON.stringify({md:md.value,d:Object.fromEntries(F.map(k=>[k,D[k].value])),s:$('t-strip').checked,k:$('t-key').checked,c:$('t-cover').checked}))}catch{}}
+try{const s=JSON.parse(localStorage.getItem(KEY)||'null');if(s){md.value=s.md||'';F.forEach(k=>{if(s.d&&k in s.d)D[k].value=s.d[k]});$('t-strip').checked=s.s!==false;$('t-key').checked=s.k!==false;$('t-cover').checked=!!s.c}}catch{}
+md.addEventListener('input',queue);F.forEach(k=>D[k].addEventListener('input',queue));['t-strip','t-key','t-cover'].forEach(i=>$(i).addEventListener('change',queue));
 function setMode(m){mode=m;pv.classList.toggle('hw',m==='hw');$('m-sys').classList.toggle('on',m==='sys');$('m-hw').classList.toggle('on',m==='hw');$('hw-size').style.display=m==='hw'?'flex':'none';render()}
 $('m-sys').onclick=()=>setMode('sys');$('m-hw').onclick=()=>setMode('hw');$('hw-r').oninput=e=>pv.style.setProperty('--hw',e.target.value);
 document.querySelectorAll('.tabs .seg').forEach(b=>b.onclick=()=>{$('panels').dataset.v=b.dataset.v;document.querySelectorAll('.tabs .seg').forEach(x=>x.classList.toggle('on',x===b))});
@@ -141,6 +153,7 @@ $('lib-imp').onchange=async e=>{const f=e.target.files[0];if(!f)return;try{const
 const ok=j.filter(x=>x&&typeof x.md==='string'&&typeof x.title==='string').map((x,i)=>({id:Date.now()+i,title:x.title.slice(0,80),md:x.md.slice(0,200000),t:+x.t||Date.now()}));putLib([...ok,...lib()]);drawLib();toast('Imported '+ok.length)}catch{toast('Invalid backup file')}e.target.value=''};
 drawLib();
 if('serviceWorker' in navigator&&location.protocol==='https:')navigator.serviceWorker.register('sw.js').catch(()=>{});
+if(!D.date.value)D.date.value=new Date().toLocaleDateString('en-GB');
 window.addEventListener('beforeunload',save);render();
 </script>
 <script src="assets/lib.js"></script><script src="assets/pro.js"></script><script src="assets/watermark.js"></script>

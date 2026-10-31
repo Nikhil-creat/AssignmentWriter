@@ -1,6 +1,6 @@
 // Bump V on every deploy so visitors get fresh files.
-const V = 'sheetstudio-v6';
-const SHELL = ['./', 'index.html', 'studio.html', 'assets/lib.js', 'assets/pro.js', 'assets/pro.css', 'assets/watermark.js', 'data/syllabus.json', 'data/questions.json', 'favicon.svg', 'manifest.webmanifest'];
+const V = 'sheetstudio-v7';
+const SHELL = ['./', 'index.html', 'studio.html', 'assets/lib.js', 'assets/pro.js', 'assets/pro.css', 'assets/watermark.js', 'data/syllabus.json', 'favicon.svg', 'manifest.webmanifest'];
 const CDN = ['cdn.jsdelivr.net', 'fonts.googleapis.com', 'fonts.gstatic.com'];
 self.addEventListener('install', e => e.waitUntil(caches.open(V).then(c => c.addAll(SHELL)).then(() => self.skipWaiting())));
 self.addEventListener('activate', e => e.waitUntil(caches.keys().then(k => Promise.all(k.filter(x => x !== V).map(x => caches.delete(x)))).then(() => self.clients.claim())));
