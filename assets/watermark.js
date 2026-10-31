@@ -2,7 +2,7 @@
   const wrap = document.getElementById('preview-wrap'), side = document.getElementById('sidebar');
   if (!wrap || !side) return;
   const KEY = 'asw-watermark';
-  let s = { mode: 'off', text: 'NIKHIL CHARY SRIRAMOJU', opacity: 12, img: '' };
+  let s = { mode: 'off', text: '', opacity: 12, img: '' };
   try { s = { ...s, ...JSON.parse(localStorage.getItem(KEY) || '{}') }; } catch {}
 
   const layer = document.createElement('div'); layer.className = 'wm-layer'; wrap.appendChild(layer);
@@ -10,7 +10,7 @@
   card.innerHTML = `<h2>💧 Watermark (your choice)</h2>
     <select id="wm-mode"><option value="off">Off</option><option value="diag">Diagonal text</option>
     <option value="center">Centre text</option><option value="footer">Footer text</option></select>
-    <input id="wm-text" type="text" maxlength="40" placeholder="Watermark text">
+    <input id="wm-text" type="text" maxlength="40" placeholder="Watermark text (blank = your name)">
     <label class="field-label">Opacity <span id="wm-op-v"></span>%</label>
     <input id="wm-op" type="range" min="4" max="40" step="2" style="width:100%;accent-color:#14b8a6">
     <label class="btn btn-ghost" style="text-align:center">🖼 Use a logo image instead<input id="wm-img" type="file" accept="image/png,image/jpeg,image/svg+xml" hidden></label>
@@ -24,7 +24,7 @@
     layer.style.setProperty('--wm-op', s.opacity / 100);
     layer.textContent = '';
     if (s.img) { const i = document.createElement('img'); i.src = s.img; i.alt = ''; layer.appendChild(i); }
-    else { const t = document.createElement('span'); t.textContent = s.text; layer.appendChild(t); }
+    else { const t = document.createElement('span'); t.textContent = s.text || (document.getElementById('d-name') || {}).value || ''; layer.appendChild(t); }
     $('wm-op-v').textContent = s.opacity;
     try { localStorage.setItem(KEY, JSON.stringify(s)); } catch {}
   }
@@ -40,5 +40,6 @@
     rd.onload = () => { s.img = rd.result; if (s.mode === 'off') { s.mode = 'center'; $('wm-mode').value = 'center'; } paint(); };
     rd.readAsDataURL(f);
   };
+  const dn = document.getElementById('d-name'); if (dn) dn.addEventListener('input', paint);
   paint();
 })();

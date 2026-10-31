@@ -54,22 +54,40 @@ mark.name{background:#fde68a;color:#78350f;padding:0 2px;border-radius:3px;font-
 .page-break{display:none}#preview .pb{border-top:2px dashed #cbd5e1;padding-top:18px;margin-top:30px}
 #preview .cover{text-align:center;padding:50px 10px 30px;color:#1B133C}.cv-c{font:700 1.15rem Inter,sans-serif;letter-spacing:.08em}.cv-t{font:400 3.2rem/1 'Instrument Serif',serif;margin:44px 0 10px}.cv-s{font:600 1.35rem Inter,sans-serif}.cv-a{font:1.05rem Inter,sans-serif;color:#475569;margin-top:4px}
 #preview .cv-tb{margin:42px auto 0;width:auto;font:.95rem Inter,sans-serif}#preview .cv-tb td{border:0;padding:6px 16px;text-align:left}#preview .cv-tb td:first-child{color:#64748b}
-#preview.hw{font:500 calc(1.32rem*var(--hw,1))/calc(2.15em) 'Caveat',cursive;color:#1d3a8a;padding-left:60px;border-left:3px solid #dc2626;margin-left:18px;background:repeating-linear-gradient(#fff,#fff calc(2.15em - 1px),#c7d6f5 calc(2.15em - 1px),#c7d6f5 2.15em) 0 8px}
-#preview.hw p{text-align:left;font-size:1.2em}#preview.hw h1,#preview.hw h2,#preview.hw h3{font-family:'Caveat',cursive;color:#7c2d12}#preview.hw table,#preview.hw .strip{font-family:'Caveat',cursive}
+#preview{--hwfont:'Caveat',cursive;--ink-h:#1d3a8a;--ls:1.8em;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+#preview.hw{--ls:2.1em;font-family:var(--hwfont);font-weight:500;font-size:calc(var(--hwsz,1.3rem)*var(--hw,1));line-height:var(--ls);color:var(--ink-h)}
+#preview.hw p{text-align:left;margin-bottom:0}#preview.hw ul,#preview.hw ol{margin-bottom:0}
+#preview.hw h1,#preview.hw h2,#preview.hw h3{font-family:var(--hwfont);color:var(--ink-h);border-color:var(--ink-h);line-height:var(--ls);margin:.3em 0 0}
+#preview.hw h1{font-size:1.5em;padding-bottom:0}#preview.hw h2{font-size:1.2em}#preview.hw h3{font-size:1.05em}
+#preview.hw table,#preview.hw .strip,#preview.hw .cover,#preview.hw pre,#preview.hw code{font-family:var(--hwfont);font-size:1em}
+#preview.hw th{background:transparent}#preview.hw td,#preview.hw th{border-color:var(--ink-h)}
+#preview.hw pre{background:transparent;border:0;line-height:var(--ls);padding:0;margin:0}#preview.hw .strip{background:transparent;border-color:var(--ink-h)}#preview.hw .cv-t,#preview.hw .cv-c{font-family:var(--hwfont)}
+#preview.pp-ruled{line-height:var(--ls);background:repeating-linear-gradient(#fff,#fff calc(var(--ls) - 1px),#c7d6f5 calc(var(--ls) - 1px),#c7d6f5 var(--ls)) 0 .45em;border-left:3px solid #dc2626;padding-left:54px;margin-left:16px}
+#preview.pp-grid{background:linear-gradient(#d5deec 1px,transparent 1px) 0 0/1.6rem 1.6rem,linear-gradient(90deg,#d5deec 1px,transparent 1px) 0 0/1.6rem 1.6rem,#fff}
+#preview.pp-dots{background:radial-gradient(#9aa8bd 1.1px,transparent 1.4px) 0 0/1.6rem 1.6rem,#fff}
+.pgb{position:absolute;inset:8px;border:1.5px solid #334155;pointer-events:none;display:none;z-index:4}.pgb.on{display:block}
 #toast{position:fixed;bottom:18px;right:18px;background:var(--ink);color:var(--on);padding:10px 16px;border-radius:10px;font-weight:600;font-size:13px;opacity:0;transform:translateY(8px);transition:.25s;z-index:60;pointer-events:none}#toast.show{opacity:1;transform:none}
 #preview table,#preview .mermaid,#preview pre,#preview blockquote,.strip{break-inside:avoid}#preview h1,#preview h2,#preview h3{break-after:avoid}
 @media(max-width:900px){body{height:auto}.app{display:block;height:auto}main{height:auto;min-height:100vh;padding:6px 16px 20px}.tabs{display:flex;gap:8px}.panels{display:block}.panel{display:none;height:78vh}.panels[data-v=edit] #edit,.panels[data-v=prev] #prevp{display:flex}#preview{padding:22px 18px}}
 @media print{nav,#sidebar,.bar,.tabs,#toast,.pt{display:none!important}html,body,.app,main{display:block;height:auto;overflow:visible;background:#fff;padding:0}.panels{display:block}#edit{display:none!important}#prevp{display:block!important}#preview-wrap{overflow:visible;border:0;box-shadow:none;border-radius:0}#preview{overflow:visible;height:auto;padding:0}@page{margin:18mm 20mm 16mm}#preview pre{white-space:pre-wrap;word-break:break-word;overflow:visible}#preview .pb{break-before:page;border:0;padding-top:0;margin-top:0}#preview .cover{break-after:page;min-height:75vh}#preview .cover+.pb,#preview>.pb:first-child{break-before:auto}#preview.hw{background-attachment:local}}
-</style><style id="pgs"></style></head><body>
+@media print{.pgb{position:fixed;inset:8mm}}</style><style id="pgs"></style></head><body>
 <nav><div class="pillnav"><a href="./" aria-label="Home"><svg width="24" height="24" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M 256 256 L 128 256 L 0 128 L 128 128 Z"/><path d="M 256 128 L 128 128 L 0 0 L 128 0 Z"/></svg></a>
 <a class="lk" href="./">Home</a><a class="lk" href="https://console.groq.com/keys" target="_blank" rel="noopener">Free key</a><button class="btn btn-ghost sm" id="b-theme" type="button" aria-label="Toggle dark mode">◐</button><button class="pill" id="b-print" type="button">Export PDF</button></div></nav>
 <div class="app"><aside id="sidebar">
 <div class="brand"><h1>Studio</h1><p>JNTUH-style answers, diagrams and print-ready sheets.</p></div>
+<div class="card"><h2>Paper &amp; handwriting</h2>
+<div class="row"><div><label class="field-label">Paper</label><select id="s-paper"><option value="plain">Plain white</option><option value="ruled">Ruled (lined)</option><option value="grid">Squared (checked)</option><option value="dots">Dotted</option></select></div>
+<div><label class="field-label">Page size</label><select id="s-size"><option value="A4">A4</option><option value="Letter">Letter</option></select></div></div>
+<div class="row"><div><label class="field-label">Handwriting</label><select id="s-font"><option value="caveat">Neat (Caveat)</option><option value="kalam">Natural (Kalam)</option><option value="patrick">Clean print (Patrick Hand)</option><option value="indie">Round (Indie Flower)</option><option value="shadows">Slim (Shadows Into Light)</option><option value="nanum">Fast pen (Nanum Pen)</option><option value="apple">Cursive (Homemade Apple)</option><option value="dancing">Joined (Dancing Script)</option></select></div>
+<div><label class="field-label">Ink</label><select id="s-ink"><option value="blue">Blue</option><option value="black">Black</option><option value="navy">Navy</option><option value="violet">Violet</option></select></div></div>
+<div class="toggle-row"><input type="checkbox" id="s-nat" checked><label for="s-nat">Natural variation (slight tilt)</label></div>
+<div class="toggle-row"><input type="checkbox" id="s-border"><label for="s-border">Page border</label></div>
+<div class="status">Handwriting applies when the Handwritten button is on. Paper applies to both modes.</div></div>
 <div class="card"><h2>Student details</h2>
-<div class="row"><div><label class="field-label">Name</label><input id="d-name" value="NIKHIL CHARY SRIRAMOJU"></div><div><label class="field-label">Roll no.</label><input id="d-roll" placeholder="e.g. 23641A05K6"></div></div>
-<div class="row"><div><label class="field-label">Class</label><input id="d-class" value="B.Tech CSE"></div><div><label class="field-label">Year</label><input id="d-year" value="Final Year"></div></div>
+<div class="row"><div><label class="field-label">Name</label><input id="d-name" placeholder="Your full name"></div><div><label class="field-label">Roll no.</label><input id="d-roll" placeholder="Roll / hall ticket no."></div></div>
+<div class="row"><div><label class="field-label">Class</label><input id="d-class" placeholder="e.g. B.Tech CSE"></div><div><label class="field-label">Year</label><input id="d-year" placeholder="e.g. Final Year"></div></div>
 <div class="row"><div><label class="field-label">Group</label><input id="d-group" placeholder="e.g. CSE"></div><div><label class="field-label">Section</label><input id="d-section" placeholder="e.g. D"></div></div>
-<div><label class="field-label">College</label><input id="d-college" value="Vaagdevi College of Engineering"></div>
+<div><label class="field-label">College</label><input id="d-college" placeholder="Your college or institute name"></div>
 <div class="row"><div><label class="field-label">Subject</label><input id="d-subject" placeholder="e.g. Programming in C"></div><div><label class="field-label">Assignment</label><input id="d-assign" placeholder="e.g. Assignment 1"></div></div>
 <div><label class="field-label">Date</label><input id="d-date"></div>
 <div><label class="field-label">Faculty name</label><input id="d-faculty" placeholder="Faculty name"></div>
@@ -91,7 +109,7 @@ mark.name{background:#fde68a;color:#78350f;padding:0 2px;border-radius:3px;font-
 <button class="seg" id="b-diag" type="button">+ Mermaid diagram</button><span class="stats" id="stats"></span></div>
 <div class="tabs"><button class="seg on" data-v="edit" type="button">Edit</button><button class="seg" data-v="prev" type="button">Preview</button></div>
 <div class="panels" id="panels" data-v="edit"><div class="panel" id="edit"><div class="pt">Markdown</div><textarea id="markdown-input" placeholder="Run the Pro Agent, or paste Markdown here…"></textarea></div>
-<div class="panel" id="prevp"><div class="pt">Answer sheet</div><div id="preview-wrap"><div id="preview"></div></div></div></div></main></div>
+<div class="panel" id="prevp"><div class="pt">Answer sheet</div><div id="preview-wrap"><div class="pgb" id="pgb"></div><div id="preview"></div></div></div></div></main></div>
 <div id="toast"></div>
 <script>
 const $=id=>document.getElementById(id),md=$('markdown-input'),pv=$('preview'),wrap=$('preview-wrap');
@@ -104,6 +122,14 @@ function hl(root,names){const src='('+names.map(esc).join('|')+')',re=new RegExp
 while(w.nextNode())ns.push(w.currentNode);
 ns.forEach(n=>{if(n.parentNode.closest('pre,code,mark')||!t1.test(n.nodeValue))return;const f=document.createDocumentFragment();
 n.nodeValue.split(re).forEach((s,i)=>{if(i%2){const m=document.createElement('mark');m.className='name';m.textContent=s;f.append(m)}else f.append(s)});n.replaceWith(f)})}
+const FONTS={caveat:['Caveat','Caveat:wght@500;700','1.3rem'],kalam:['Kalam','Kalam:wght@400;700','1.05rem'],patrick:['Patrick Hand','Patrick+Hand','1.15rem'],indie:['Indie Flower','Indie+Flower','1.05rem'],shadows:['Shadows Into Light','Shadows+Into+Light','1.25rem'],nanum:['Nanum Pen Script','Nanum+Pen+Script','1.5rem'],apple:['Homemade Apple','Homemade+Apple','.95rem'],dancing:['Dancing Script','Dancing+Script:wght@500;700','1.2rem']};
+const INKS={blue:'#1d3a8a',black:'#111827',navy:'#0b2a6b',violet:'#4c1d95'},SIDS=['s-paper','s-size','s-font','s-ink'],loadedF=new Set(['caveat']);
+function getPS(){return{paper:$('s-paper').value,size:$('s-size').value,font:$('s-font').value,ink:$('s-ink').value,nat:$('s-nat').checked,border:$('s-border').checked}}
+function setPS(p){if(!p)return;SIDS.forEach(i=>{const k=i.slice(2);if(p[k])$(i).value=p[k]});$('s-nat').checked=p.nat!==false;$('s-border').checked=!!p.border}
+function applyStyle(){const p=getPS(),f=FONTS[p.font]||FONTS.caveat;
+if(!loadedF.has(p.font)){loadedF.add(p.font);const l=document.createElement('link');l.rel='stylesheet';l.href='https://fonts.googleapis.com/css2?family='+f[1]+'&display=swap';document.head.append(l)}
+pv.style.setProperty('--hwfont',"'"+f[0]+"',cursive");pv.style.setProperty('--hwsz',f[2]);pv.style.setProperty('--ink-h',INKS[p.ink]||INKS.blue);
+['plain','ruled','grid','dots'].forEach(k=>pv.classList.toggle('pp-'+k,k===p.paper));$('pgb').classList.toggle('on',p.border)}
 function cover(){const c=document.createElement('div');c.className='cover';const add=(cl,t)=>{if(!t)return;const e=document.createElement('div');e.className=cl;e.textContent=t;c.append(e)};
 add('cv-c',D.college.value.trim().toUpperCase());add('cv-t','Assignment');add('cv-s',D.subject.value.trim());add('cv-a',D.assign.value.trim());
 const tb=document.createElement('table');tb.className='cv-tb';[['Name',D.name],['Roll No.',D.roll],['Class',D.class],['Year',D.year],['Group',D.group],['Section',D.section],['Submitted to',D.faculty],['Date',D.date]].forEach(([l,el])=>{const v=el.value.trim();if(!v)return;const r=tb.insertRow();r.insertCell().textContent=l;r.insertCell().textContent=v});c.append(tb);return c}
@@ -119,16 +145,18 @@ if(id!==seq)return}
 const items=[];const filled=F.filter(k=>k!=='femail'&&D[k].value.trim());
 root.querySelectorAll('.page-break').forEach(b=>{const n=b.nextElementSibling;if(n)n.classList.add('pb');b.remove()});
 const nm=(D.name.value.trim()+(D.roll.value.trim()?' · '+D.roll.value.trim():'')).replace(/["\\]/g,'');
-$('pgs').textContent='@page{@bottom-left{content:"'+nm+'";font:8pt Inter,sans-serif;color:#64748b}@bottom-right{content:"Page " counter(page);font:8pt Inter,sans-serif;color:#64748b}}';
+$('pgs').textContent='@page{size:'+$('s-size').value+';@bottom-left{content:"'+nm+'";font:8pt Inter,sans-serif;color:#64748b}@bottom-right{content:"Page " counter(page);font:8pt Inter,sans-serif;color:#64748b}}';
 if($('t-cover').checked&&filled.length)items.push(cover());
 else if($('t-strip').checked&&filled.length){const s=document.createElement('div');s.className='strip';
 filled.forEach(k=>{const sp=document.createElement('span'),b=document.createElement('b');b.textContent=LB[k]+': ';sp.append(b,D[k].value.trim());s.append(sp)});items.push(s)}
+if(mode==='hw'&&$('s-nat').checked)root.querySelectorAll('p,li,h1,h2,h3').forEach((e,i)=>{const h=(e.textContent.length*31+i*17)%11;e.style.transform='rotate('+((h-5)/12).toFixed(2)+'deg) translateX('+(h%4-1.5)+'px)';e.style.transformOrigin='left center'});
 pv.replaceChildren(...items,...root.childNodes);pv.classList.toggle('nokey',!$('t-key').checked);
 const w=(pv.textContent.match(/\S+/g)||[]).length;$('stats').textContent=w?`~${w} words · ~${Math.max(1,Math.ceil(w/(mode==='hw'?230:500)))} pages`:''}
 let rt;const queue=()=>{clearTimeout(rt);rt=setTimeout(()=>{render();save()},250)};
-function save(){try{localStorage.setItem(KEY,JSON.stringify({md:md.value,d:Object.fromEntries(F.map(k=>[k,D[k].value])),s:$('t-strip').checked,k:$('t-key').checked,c:$('t-cover').checked}))}catch{}}
-try{const s=JSON.parse(localStorage.getItem(KEY)||'null');if(s){md.value=s.md||'';F.forEach(k=>{if(s.d&&k in s.d)D[k].value=s.d[k]});$('t-strip').checked=s.s!==false;$('t-key').checked=s.k!==false;$('t-cover').checked=!!s.c}}catch{}
-md.addEventListener('input',queue);F.forEach(k=>D[k].addEventListener('input',queue));['t-strip','t-key','t-cover'].forEach(i=>$(i).addEventListener('change',queue));
+function save(){try{localStorage.setItem(KEY,JSON.stringify({md:md.value,d:Object.fromEntries(F.map(k=>[k,D[k].value])),s:$('t-strip').checked,k:$('t-key').checked,c:$('t-cover').checked,ps:getPS()}))}catch{}}
+try{const s=JSON.parse(localStorage.getItem(KEY)||'null');if(s){md.value=s.md||'';F.forEach(k=>{if(s.d&&k in s.d)D[k].value=s.d[k]});$('t-strip').checked=s.s!==false;$('t-key').checked=s.k!==false;$('t-cover').checked=!!s.c;setPS(s.ps);if(D.college.value==='Vaagdevi College of Engineering'&&!localStorage.getItem('asw-mig8')){D.college.value='';try{localStorage.setItem('asw-mig8','1')}catch{}}}}catch{}
+md.addEventListener('input',queue);F.forEach(k=>D[k].addEventListener('input',queue));[...SIDS,'s-nat','s-border'].forEach(i=>$(i).addEventListener('change',()=>{applyStyle();queue()}));
+['t-strip','t-key','t-cover'].forEach(i=>$(i).addEventListener('change',queue));
 function setMode(m){mode=m;pv.classList.toggle('hw',m==='hw');$('m-sys').classList.toggle('on',m==='sys');$('m-hw').classList.toggle('on',m==='hw');$('hw-size').style.display=m==='hw'?'flex':'none';render()}
 $('m-sys').onclick=()=>setMode('sys');$('m-hw').onclick=()=>setMode('hw');$('hw-r').oninput=e=>pv.style.setProperty('--hw',e.target.value);
 document.querySelectorAll('.tabs .seg').forEach(b=>b.onclick=()=>{$('panels').dataset.v=b.dataset.v;document.querySelectorAll('.tabs .seg').forEach(x=>x.classList.toggle('on',x===b))});
@@ -137,7 +165,7 @@ $('b-copy').onclick=async()=>{try{await navigator.clipboard.writeText(md.value);
 $('b-dl').onclick=()=>{const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([md.value],{type:'text/markdown'}));a.download='answer-sheet.md';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1e3)};
 $('b-clear').onclick=()=>{if(confirm('Clear the editor and the saved draft?')){md.value='';try{localStorage.removeItem(KEY)}catch{}render()}};
 $('b-sample').onclick=()=>{md.value=`# Question 1: Database Normalization (16 Marks)\n\n## 1. Overview\n\n==Normalization== decomposes tables to remove redundancy and the insertion, update and deletion anomalies.\n\n| Form | Rule |\n| :-- | :-- |\n| 1NF | Atomic values only |\n| 2NF | No partial dependency |\n| 3NF | No transitive dependency |\n\n\`\`\`mermaid\nflowchart LR\n A[Unnormalized] --> B[1NF] --> C[2NF] --> D[3NF] --> E[BCNF]\n\`\`\`\n\n> Mnemonic: Atomic, Partial gone, Transitive gone, Boyce key only.\n`;queue()};
-$('b-print').onclick=()=>{const t=document.title;document.title='Answer Sheet - '+(D.name.value.trim()||'Student');window.print();setTimeout(()=>document.title=t,1500)};
+$('b-print').onclick=async()=>{try{await document.fonts.ready}catch{}const t=document.title;document.title='Answer Sheet - '+(D.name.value.trim()||'Student');window.print();setTimeout(()=>document.title=t,1500)};
 $('b-send').onclick=async()=>{const n=D.name.value.trim()||'Student',f=new File([md.value],'answer-sheet.md',{type:'text/markdown'});
 if(navigator.canShare&&navigator.canShare({files:[f]})){try{await navigator.share({files:[f],title:'Answer sheet - '+n,text:'Answer sheet by '+n});return}catch{}}
 const q=encodeURIComponent;location.href='mailto:'+D.femail.value.trim()+'?subject='+q('Answer sheet - '+n)+'&body='+q('Respected sir/madam,\n\nPlease find my answer sheet attached.\n\nRegards,\n'+n+(D.roll.value?'\nRoll No: '+D.roll.value:''))};
@@ -154,7 +182,7 @@ const ok=j.filter(x=>x&&typeof x.md==='string'&&typeof x.title==='string').map((
 drawLib();window.drawLib=drawLib;
 if('serviceWorker' in navigator&&location.protocol==='https:')navigator.serviceWorker.register('sw.js').catch(()=>{});
 if(!D.date.value)D.date.value=new Date().toLocaleDateString('en-GB');
-window.addEventListener('beforeunload',save);render();
+applyStyle();window.addEventListener('beforeunload',save);render();
 </script>
 <script src="assets/lib.js"></script><script src="assets/pro.js"></script><script src="assets/watermark.js"></script>
 <script>

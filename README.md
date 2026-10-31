@@ -24,3 +24,6 @@ Answers now come from one tightly specified write step, an independent correctne
 
 ## v8
 Lean answers: only the sections the question needs. Programs get Program + Output by default; algorithm, flowchart, explanation, complexity, table, example, pros/cons and conclusion are opt-in. Each run starts a fresh sheet (the old one is saved to My library). Code is no longer touched by key-term highlighting, diagrams are auto-fixed or dropped cleanly, and printed code wraps instead of being cut off.
+
+## v9
+Paper choices (plain white, ruled, squared, dotted), page size (A4/Letter), optional page border, 8 handwriting fonts loaded on demand, 4 ink colours and natural variation. No institute or personal details are prefilled; the watermark falls back to the student name.
