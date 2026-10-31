@@ -21,3 +21,6 @@ Multiple question fields (each with its own marks), auto-detected marks, answer 
 
 ## v7
 Answers now come from one tightly specified write step, an independent correctness check (second model if you add both keys), then verification of topic, length, diagrams and tables. Truncated outputs are continued automatically. Added subject, assignment and date fields, an optional cover page, and page numbers with your name and roll number in the printed footer. Removed the question bank, CNN button, builder/security cards and the optional server files (shipped separately in AssignmentWriter-Extras.zip).
+
+## v8
+Lean answers: only the sections the question needs. Programs get Program + Output by default; algorithm, flowchart, explanation, complexity, table, example, pros/cons and conclusion are opt-in. Each run starts a fresh sheet (the old one is saved to My library). Code is no longer touched by key-term highlighting, diagrams are auto-fixed or dropped cleanly, and printed code wraps instead of being cut off.

@@ -39,6 +39,10 @@
     polish(t) { let code = false;
       return String(t).split('\n').filter(l => { if (/^\s*```/.test(l)) { code = !code; return true; } if (code) return true;
         return !/(would|will|can|could)\s+(fetch|secure|score|earn|get)\b.*\bmarks?\b|full\s+\d+\s*marks?|jntuh|exam answer|answer sheet|\bmermaid\b/i.test(l); }).join('\n').replace(/\n{3,}/g, '\n\n').trim(); },
+    dropEmptyHeadings: t => String(t).replace(/^#{1,4}[^\n]*(flowchart|diagram|chart|figure|sequence|mind ?map|timeline|gantt)[^\n]*\n+(?=#{1,4}\s|(?![\s\S]))/gim, '').replace(/\n{3,}/g, '\n\n').trim(),
+    mermaidSanitize(c) { c = String(c); if (!/^\s*(flowchart|graph)\b/m.test(c)) return c;
+      return c.split('\n').map(l => /^\s*(%%|subgraph|end\b|style|classDef|class\b|click|linkStyle)/.test(l) ? l :
+        l.replace(/\[([^\]"\n]*[()<>{}&|#;][^\]"\n]*)\]/g, '["$1"]').replace(/\{([^}"\n]*[()<>&|#;][^}"\n]*)\}/g, '{"$1"}')).join('\n'); },
     parseVerdict(t) { try { return JSON.parse(String(t).match(/\{[\s\S]*\}/)[0]); } catch { return null; } },
     count: t => ({ w: (t.replace(/```[\s\S]*?```/g, ' ').replace(/[#>*_|=`\-:]+/g, ' ').match(/\S+/g) || []).length,
       d: (t.match(/```mermaid/g) || []).length, t: (t.match(/^\|.*\|[ \t]*\n\|[ \t:|-]+\|/gm) || []).length })

@@ -47,7 +47,7 @@ main{display:flex;flex-direction:column;min-width:0;padding:6px 16px 14px 0;gap:
 #preview table{border-collapse:collapse;width:100%;margin:1.2em 0;font:.88rem 'Inter',sans-serif}#preview th,#preview td{border:1px solid #94a3b8;padding:7px 10px;text-align:left}#preview th{background:#f1f5f9}
 #preview blockquote{border-left:3px solid var(--or);background:#fff7ed;padding:8px 14px;margin:1em 0;font-size:.92rem}
 #preview pre{background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:12px;overflow:auto;margin-bottom:1em;font:.82rem/1.5 ui-monospace,Consolas,monospace}
-.mermaid{display:flex;justify-content:center;margin:18px 0}.fb{background:#fef2f2;border:1px solid #fecaca;color:#991b1b;border-radius:8px;padding:10px 12px;margin:14px 0;font:.85rem 'Inter',sans-serif}
+.mermaid{display:flex;justify-content:center;margin:18px 0}.mermaid svg{max-width:100%;height:auto;max-height:200mm}#preview h2+.mermaid,#preview h3+.mermaid{break-before:avoid}.fb{background:#fef2f2;border:1px solid #fecaca;color:#991b1b;border-radius:8px;padding:10px 12px;margin:14px 0;font:.85rem 'Inter',sans-serif}
 mark.name{background:#fde68a;color:#78350f;padding:0 2px;border-radius:3px;font-weight:600}mark.key{background:#bbf7d0;color:#14532d;padding:0 2px;border-radius:3px;font-weight:600}
 #preview.nokey mark.key{background:none;color:inherit;font-weight:700}
 .strip{display:flex;flex-wrap:wrap;gap:4px 16px;border:1px solid #cbd5e1;border-radius:8px;background:#f8fafc;padding:9px 13px;margin-bottom:18px;font:.78rem 'Inter',sans-serif}.strip b{color:var(--ink)}
@@ -59,7 +59,7 @@ mark.name{background:#fde68a;color:#78350f;padding:0 2px;border-radius:3px;font-
 #toast{position:fixed;bottom:18px;right:18px;background:var(--ink);color:var(--on);padding:10px 16px;border-radius:10px;font-weight:600;font-size:13px;opacity:0;transform:translateY(8px);transition:.25s;z-index:60;pointer-events:none}#toast.show{opacity:1;transform:none}
 #preview table,#preview .mermaid,#preview pre,#preview blockquote,.strip{break-inside:avoid}#preview h1,#preview h2,#preview h3{break-after:avoid}
 @media(max-width:900px){body{height:auto}.app{display:block;height:auto}main{height:auto;min-height:100vh;padding:6px 16px 20px}.tabs{display:flex;gap:8px}.panels{display:block}.panel{display:none;height:78vh}.panels[data-v=edit] #edit,.panels[data-v=prev] #prevp{display:flex}#preview{padding:22px 18px}}
-@media print{nav,#sidebar,.bar,.tabs,#toast,.pt{display:none!important}html,body,.app,main{display:block;height:auto;overflow:visible;background:#fff;padding:0}.panels{display:block}#edit{display:none!important}#prevp{display:block!important}#preview-wrap{overflow:visible;border:0;box-shadow:none;border-radius:0}#preview{overflow:visible;height:auto;padding:0}@page{margin:18mm 20mm 16mm}#preview .pb{break-before:page;border:0;padding-top:0;margin-top:0}#preview .cover{break-after:page;min-height:75vh}#preview .cover+.pb,#preview>.pb:first-child{break-before:auto}#preview.hw{background-attachment:local}}
+@media print{nav,#sidebar,.bar,.tabs,#toast,.pt{display:none!important}html,body,.app,main{display:block;height:auto;overflow:visible;background:#fff;padding:0}.panels{display:block}#edit{display:none!important}#prevp{display:block!important}#preview-wrap{overflow:visible;border:0;box-shadow:none;border-radius:0}#preview{overflow:visible;height:auto;padding:0}@page{margin:18mm 20mm 16mm}#preview pre{white-space:pre-wrap;word-break:break-word;overflow:visible}#preview .pb{break-before:page;border:0;padding-top:0;margin-top:0}#preview .cover{break-after:page;min-height:75vh}#preview .cover+.pb,#preview>.pb:first-child{break-before:auto}#preview.hw{background-attachment:local}}
 </style><style id="pgs"></style></head><body>
 <nav><div class="pillnav"><a href="./" aria-label="Home"><svg width="24" height="24" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M 256 256 L 128 256 L 0 128 L 128 128 Z"/><path d="M 256 128 L 128 128 L 0 0 L 128 0 Z"/></svg></a>
 <a class="lk" href="./">Home</a><a class="lk" href="https://console.groq.com/keys" target="_blank" rel="noopener">Free key</a><button class="btn btn-ghost sm" id="b-theme" type="button" aria-label="Toggle dark mode">◐</button><button class="pill" id="b-print" type="button">Export PDF</button></div></nav>
@@ -110,7 +110,7 @@ const tb=document.createElement('table');tb.className='cv-tb';[['Name',D.name],[
 async function render(){const id=++seq;
 if(!window.marked||!window.DOMPurify){pv.textContent='Libraries failed to load. Check your connection and reload.';return}
 const root=document.createElement('div');
-root.innerHTML=DOMPurify.sanitize(marked.parse(md.value.replace(/==([^=\n]+)==/g,'<mark class="key">$1</mark>')));
+root.innerHTML=DOMPurify.sanitize(marked.parse(md.value.split(/(```[\s\S]*?```)/g).map((x,i)=>i%2?x:x.replace(/==([^=\n]+)==/g,'<mark class="key">$1</mark>')).join('')));
 const names=[D.name.value,D.faculty.value].map(s=>s.trim()).filter(s=>s.length>2);if(names.length)hl(root,names);
 const nodes=[...root.querySelectorAll('pre>code.language-mermaid')].map(c=>{const d=document.createElement('div');d.className='mermaid';d.dataset.src=c.textContent;c.parentNode.replaceWith(d);return d});
 for(const [i,n] of nodes.entries()){try{n.innerHTML=(await mermaid.render('mm'+id+'_'+i,n.dataset.src)).svg}
@@ -151,7 +151,7 @@ a.unshift({id:Date.now(),title:($('lib-title').value.trim()||h).slice(0,80),md:m
 $('lib-exp').onclick=()=>{const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify(lib())],{type:'application/json'}));a.download='sheetstudio-library.json';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1e3)};
 $('lib-imp').onchange=async e=>{const f=e.target.files[0];if(!f)return;try{const j=JSON.parse(await f.text());if(!Array.isArray(j))throw 0;
 const ok=j.filter(x=>x&&typeof x.md==='string'&&typeof x.title==='string').map((x,i)=>({id:Date.now()+i,title:x.title.slice(0,80),md:x.md.slice(0,200000),t:+x.t||Date.now()}));putLib([...ok,...lib()]);drawLib();toast('Imported '+ok.length)}catch{toast('Invalid backup file')}e.target.value=''};
-drawLib();
+drawLib();window.drawLib=drawLib;
 if('serviceWorker' in navigator&&location.protocol==='https:')navigator.serviceWorker.register('sw.js').catch(()=>{});
 if(!D.date.value)D.date.value=new Date().toLocaleDateString('en-GB');
 window.addEventListener('beforeunload',save);render();
